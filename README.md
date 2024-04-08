@@ -1,7 +1,7 @@
 Piskel
 ======
 
-[![Github Pages](https://mateusz-nejman.github.io/piskel/)]
+[![Github Pages]()](https://mateusz-nejman.github.io/piskel/)
 
 [![Travis Status](https://api.travis-ci.org/piskelapp/piskel.png?branch=master)](https://travis-ci.org/piskelapp/piskel) [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](https://gruntjs.com/)
 
