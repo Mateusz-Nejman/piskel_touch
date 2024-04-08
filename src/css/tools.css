@@ -46,6 +46,10 @@
   cursor: url(../img/cursors/dither.png) 1 14, pointer;
 }
 
+.tool-dithering-new .drawing-canvas-container:hover {
+  cursor: url(../img/cursors/dither.png) 1 14, pointer;
+}
+
 .tool-lighten .drawing-canvas-container:hover {
   cursor: url(../img/cursors/lighten.png) 1 15, pointer;
 }
