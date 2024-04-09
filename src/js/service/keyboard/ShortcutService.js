@@ -19,7 +19,7 @@
    */
   ns.ShortcutService.prototype.registerShortcut = function (shortcut, callback) {
     if (!(shortcut instanceof ns.Shortcut)) {
-      throw 'Invalid shortcut argument, please use instances of pskl.service.keyboard.Shortcut';
+      return;
     }
 
     if (typeof callback != 'function') {

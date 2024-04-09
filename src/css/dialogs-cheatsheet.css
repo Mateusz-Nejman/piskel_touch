@@ -183,8 +183,13 @@
 }
 
 .cheatsheet-icon-tool-noise {
-  background-image: url(../img/icons/tools/tool-dithering.png);
+  background-image: url(../img/icons/tools/tool-noise.png);
 }
+
+.cheatsheet-icon-tool-noise-fill {
+  background-image: url(../img/icons/tools/tool-noise-fill.png);
+}
+
 
 .cheatsheet-icon-tool-eraser {
   background-image: url(../img/icons/tools/tool-eraser.png);

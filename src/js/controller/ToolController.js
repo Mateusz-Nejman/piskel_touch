@@ -18,8 +18,9 @@
       new pskl.tools.drawing.selection.LassoSelect(),
       new pskl.tools.drawing.Lighten(),
       new pskl.tools.drawing.DitheringTool(),
+      new pskl.tools.drawing.ColorPicker(),
       new pskl.tools.drawing.NoiseTool(),
-      new pskl.tools.drawing.ColorPicker()
+      new pskl.tools.drawing.NoiseFillTool()
     ];
 
     this.toolIconBuilder = new pskl.tools.ToolIconBuilder();

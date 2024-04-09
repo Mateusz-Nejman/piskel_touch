@@ -31,7 +31,8 @@
       LASSO_SELECT : createShortcut('tool-lasso-select', 'Lasso selection', 'H'),
       LIGHTEN : createShortcut('tool-lighten', 'Lighten tool', 'U'),
       DITHERING : createShortcut('tool-dithering', 'Dithering tool', 'T'),
-      NOISE_TOOL : createShortcut('tool-noise', 'Darker nois tool', 'Q'),
+      NOISE_TOOL : createShortcut('tool-noise', 'Pixelart noise tool', 'Q'),
+      NOISE_Fill_TOOL : createShortcut('tool-noise-fill', 'Pixelart noise fill tool', 'Q'),
       COLORPICKER : createShortcut('tool-colorpicker', 'Color picker', 'O')
     },
 

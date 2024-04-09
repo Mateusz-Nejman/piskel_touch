@@ -1046,7 +1046,11 @@ body {
 }
 
 .tool-noise .drawing-canvas-container:hover {
-  cursor: url(../img/cursors/dither.png) 1 14, pointer;
+  cursor: url(../img/cursors/pen.png) 1 14, pointer;
+}
+
+.tool-noise-fill .drawing-canvas-container:hover {
+  cursor: url(../img/cursors/paint-bucket.png) 1 14, pointer;
 }
 
 .tool-lighten .drawing-canvas-container:hover {
@@ -1195,67 +1199,67 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 .icon-common-keyboard-gold {
   background-image: url(../img/icons.png);
-  background-position: -274px -136px;
+  background-position: -274px -228px;
   width: 36px;
   height: 21px;
 }
 .icon-common-swapcolors-arrow-grey {
   background-image: url(../img/icons.png);
-  background-position: -300px -157px;
+  background-position: -295px -249px;
   width: 18px;
   height: 18px;
 }
 .icon-common-warning-red {
   background-image: url(../img/icons.png);
-  background-position: -274px -183px;
+  background-position: -274px -249px;
   width: 21px;
   height: 21px;
 }
 .icon-frame-dragndrop-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -46px;
+  background-position: -274px -138px;
   width: 30px;
   height: 30px;
 }
 .icon-frame-duplicate-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -76px;
+  background-position: -274px -168px;
   width: 30px;
   height: 30px;
 }
 .icon-frame-plus-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -157px;
+  background-position: -228px -184px;
   width: 26px;
   height: 26px;
 }
 .icon-frame-recyclebin-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -106px;
+  background-position: -274px -198px;
   width: 30px;
   height: 30px;
 }
 .icon-minimap-grid-gold {
   background-image: url(../img/icons.png);
-  background-position: -295px -183px;
+  background-position: -254px -184px;
   width: 18px;
   height: 18px;
 }
 .icon-minimap-grid-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -204px;
+  background-position: -228px -210px;
   width: 18px;
   height: 18px;
 }
 .icon-minimap-popup-preview-arrow-gold {
   background-image: url(../img/icons.png);
-  background-position: -292px -204px;
+  background-position: -246px -210px;
   width: 18px;
   height: 18px;
 }
 .icon-minimap-popup-preview-arrow-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -222px;
+  background-position: -182px -138px;
   width: 18px;
   height: 18px;
 }
@@ -1307,7 +1311,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-tool-dithering, .icon-tool-noise {
+.icon-tool-dithering {
   background-image: url(../img/icons.png);
   background-position: -182px 0px;
   width: 46px;
@@ -1337,75 +1341,87 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-tool-paint-bucket {
+.icon-tool-noise-fill {
   background-image: url(../img/icons.png);
   background-position: -92px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-pen {
+.icon-tool-noise {
   background-image: url(../img/icons.png);
   background-position: -138px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle-select {
+.icon-tool-paint-bucket {
   background-image: url(../img/icons.png);
   background-position: -228px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle {
+.icon-tool-pen {
   background-image: url(../img/icons.png);
   background-position: -228px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-shape-select {
+.icon-tool-rectangle-select {
   background-image: url(../img/icons.png);
   background-position: -228px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-stroke {
+.icon-tool-rectangle {
   background-image: url(../img/icons.png);
   background-position: -228px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-vertical-mirror-pen {
+.icon-tool-shape-select {
   background-image: url(../img/icons.png);
   background-position: 0px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-center {
+.icon-tool-stroke {
   background-image: url(../img/icons.png);
   background-position: -46px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-clone {
+.icon-tool-vertical-mirror-pen {
   background-image: url(../img/icons.png);
   background-position: -92px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-crop {
+.icon-tool-center {
   background-image: url(../img/icons.png);
   background-position: -138px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-flip {
+.icon-tool-clone {
   background-image: url(../img/icons.png);
   background-position: -184px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rotate {
+.icon-tool-crop {
   background-image: url(../img/icons.png);
   background-position: -274px 0px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-flip {
+  background-image: url(../img/icons.png);
+  background-position: -274px -46px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-rotate {
+  background-image: url(../img/icons.png);
+  background-position: -274px -92px;
   width: 46px;
   height: 46px;
 }
@@ -1492,7 +1508,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-image: url(../img/icons@2x.png);
     background-size: 320px 274px;
   }
-  .icon-tool-dithering, .icon-tool-noise {
+  .icon-tool-dithering {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 274px;
   }
@@ -1509,6 +1525,14 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-size: 320px 274px;
   }
   .icon-tool-move {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 274px;
+  }
+  .icon-tool-noise-fill {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 274px;
+  }
+  .icon-tool-noise {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 274px;
   }
@@ -2140,8 +2164,13 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .cheatsheet-icon-tool-noise {
-  background-image: url(../img/icons/tools/tool-dithering.png);
+  background-image: url(../img/icons/tools/tool-noise.png);
 }
+
+.cheatsheet-icon-tool-noise-fill {
+  background-image: url(../img/icons/tools/tool-noise-fill.png);
+}
+
 
 .cheatsheet-icon-tool-eraser {
   background-image: url(../img/icons/tools/tool-eraser.png);

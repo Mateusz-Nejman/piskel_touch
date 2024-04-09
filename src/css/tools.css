@@ -47,7 +47,11 @@
 }
 
 .tool-noise .drawing-canvas-container:hover {
-  cursor: url(../img/cursors/dither.png) 1 14, pointer;
+  cursor: url(../img/cursors/pen.png) 1 14, pointer;
+}
+
+.tool-noise-fill .drawing-canvas-container:hover {
+  cursor: url(../img/cursors/paint-bucket.png) 1 14, pointer;
 }
 
 .tool-lighten .drawing-canvas-container:hover {
