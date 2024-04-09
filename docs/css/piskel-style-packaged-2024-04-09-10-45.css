@@ -1045,7 +1045,7 @@ body {
   cursor: url(../img/cursors/dither.png) 1 14, pointer;
 }
 
-.tool-dithering-new .drawing-canvas-container:hover {
+.tool-noise .drawing-canvas-container:hover {
   cursor: url(../img/cursors/dither.png) 1 14, pointer;
 }
 
@@ -1307,7 +1307,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-tool-dithering {
+.icon-tool-dithering, .icon-tool-noise {
   background-image: url(../img/icons.png);
   background-position: -182px 0px;
   width: 46px;
@@ -1492,7 +1492,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-image: url(../img/icons@2x.png);
     background-size: 320px 274px;
   }
-  .icon-tool-dithering {
+  .icon-tool-dithering, .icon-tool-noise {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 274px;
   }
@@ -2139,7 +2139,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   background-image: url(../img/icons/tools/tool-dithering.png);
 }
 
-.cheatsheet-icon-tool-dithering-new {
+.cheatsheet-icon-tool-noise {
   background-image: url(../img/icons/tools/tool-dithering.png);
 }
 

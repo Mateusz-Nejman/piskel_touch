@@ -10,8 +10,7 @@
 
     pskl.utils.BlobUtils.stringToBlob(serialized, function(blob) {
       var piskelName = piskel.getDescriptor().name;
-      var timestamp = pskl.utils.DateUtils.format(new Date(), '{{Y}}{{M}}{{D}}-{{H}}{{m}}{{s}}');
-      var fileName = piskelName + '-' + timestamp + '.piskel';
+      var fileName = piskelName + '.piskel';
 
       try {
         pskl.utils.FileUtils.downloadAsFile(blob, fileName);

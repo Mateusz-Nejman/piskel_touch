@@ -46,7 +46,7 @@
   cursor: url(../img/cursors/dither.png) 1 14, pointer;
 }
 
-.tool-dithering-new .drawing-canvas-container:hover {
+.tool-noise .drawing-canvas-container:hover {
   cursor: url(../img/cursors/dither.png) 1 14, pointer;
 }
 
