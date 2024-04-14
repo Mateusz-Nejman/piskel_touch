@@ -263,7 +263,7 @@
       }
 
       context.lineWidth = 1;
-      context.strokeStyle = 'gold';
+      context.strokeStyle = '#039BE5';
       context.stroke();
 
       // Show the canvas

@@ -31,6 +31,7 @@
   "css/toolbox-palettes-list.css",
   "css/toolbox-animated-preview.css",
   "css/transformations.css",
+  "css/touch-buttons.css",
   "css/spectrum/spectrum.css",
   "css/spectrum/spectrum-overrides.css",
   "css/bootstrap/bootstrap.css",

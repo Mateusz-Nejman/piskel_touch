@@ -111,14 +111,10 @@
   z-index: 10;
   position: absolute;
   background-color: rgba(100, 100, 100, 0.6);
-  opacity: 0;
+  opacity: 1.0;
   height: 30px;
   width: 30px;
   border: none;
-}
-
-.preview-tile:hover .tile-overlay {
-  opacity: 1.0;
 }
 
 .preview-tile .tile-overlay.tile-count {
@@ -136,7 +132,7 @@
 }
 
 .preview-tile .tile-overlay.tile-count.toggled {
-  background-color: gold;
+  background-color: #039BE5;
   color: black;
 }
 

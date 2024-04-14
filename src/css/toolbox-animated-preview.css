@@ -177,8 +177,8 @@
 
 .preview-drop-down .size-button-selected {
   opacity: 1;
-  color: gold;
-  border-color: gold;
+  color: #039BE5;
+  border-color: #039BE5;
   z-index: 5;
 }
 

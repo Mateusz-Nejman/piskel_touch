@@ -119,6 +119,7 @@
   "js/controller/ToolController.js",
   "js/controller/PaletteController.js",
   "js/controller/PalettesListController.js",
+  "js/controller/TouchButtonsController.js",
   "js/controller/PenSizeController.js",
   "js/controller/ProgressBarController.js",
   "js/controller/NotificationController.js",

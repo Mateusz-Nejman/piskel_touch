@@ -83,74 +83,79 @@
   ns.SelectionManager.prototype.copy = function(event, domEvent) {
     if (this.currentSelection && this.piskelController.getCurrentFrame()) {
       this.currentSelection.fillSelectionFromFrame(this.piskelController.getCurrentFrame());
-      if (domEvent) {
-        domEvent.clipboardData.setData('text/plain', this.currentSelection.stringify());
-        domEvent.preventDefault();
-      }
-      if (event.type === Events.CLIPBOARD_CUT) {
-        this.erase();
-      }
+      navigator.clipboard.writeText(this.currentSelection.stringify()).then(() => {
+        if (event.type == Events.CLIPBOARD_CUT)
+        {
+          this.erase();
+        }
+      });
+      domEvent.preventDefault();
     }
   };
 
   ns.SelectionManager.prototype.paste = function(event, domEvent) {
-    var items = domEvent ? domEvent.clipboardData.items : [];
+    navigator.clipboard.read().then(items => {
+      try {
+        for (var i = 0 ; i < items.length ; i++) {
+          var item = items[i];
+          const type = item.types[0];
 
-    try {
-      for (var i = 0 ; i < items.length ; i++) {
-        var item = items[i];
-
-        if (/^image/i.test(item.type)) {
-          this.pasteImage_(item);
-          event.stopPropagation();
-          return;
+          if (/^image/i.test(type)) {
+            this.pasteImage_(item, type);
+            event.stopPropagation();
+            return;
+          }
+  
+          if (/^text\/plain/i.test(type)) {
+            this.pasteText_(item, type);
+            event.stopPropagation();
+            return;
+          }
         }
-
-        if (/^text\/plain/i.test(item.type)) {
-          this.pasteText_(item);
-          event.stopPropagation();
-          return;
-        }
+      } catch (e) {
+        // Some of the clipboard APIs are not available on Safari/IE
+        // Allow Piskel to fallback on local currentSelection pasting.
       }
-    } catch (e) {
-      // Some of the clipboard APIs are not available on Safari/IE
-      // Allow Piskel to fallback on local currentSelection pasting.
-    }
-
-    // temporarily keeping this code path for tests and fallbacks.
-    if (this.currentSelection && this.currentSelection.hasPastedContent) {
-      this.pastePixelsOnCurrentFrame_(this.currentSelection.pixels);
-    }
+  
+      // temporarily keeping this code path for tests and fallbacks.
+      console.log(this.currentSelection);
+      if (this.currentSelection && this.currentSelection.hasPastedContent) {
+        this.pastePixelsOnCurrentFrame_(this.currentSelection.pixels);
+      }
+    });
   };
 
-  ns.SelectionManager.prototype.pasteImage_ = function(clipboardItem) {
-    var blob = clipboardItem.getAsFile();
-    pskl.utils.FileUtils.readImageFile(blob, function (image) {
-      pskl.app.fileDropperService.dropPosition_ = {x: 0, y: 0};
-      pskl.app.fileDropperService.onImageLoaded_(image, blob);
-    }.bind(this));
+  ns.SelectionManager.prototype.pasteImage_ = function(clipboardItem, type) {
+    clipboardItem.getType(type).then(blob => {
+      pskl.utils.FileUtils.readImageFile(blob, function (image) {
+        pskl.app.fileDropperService.dropPosition_ = {x: 0, y: 0};
+        pskl.app.fileDropperService.onImageLoaded_(image, blob);
+      }.bind(this));
+    });
   };
 
-  ns.SelectionManager.prototype.pasteText_ = function(clipboardItem) {
-    var blob = clipboardItem.getAsString(function (selectionString) {
-      var selectionData = JSON.parse(selectionString);
-      var time = selectionData.time;
-      var pixels = selectionData.pixels;
-
-      if (this.currentSelection && this.currentSelection.time >= time) {
-        // If the local selection is newer or equal to the one coming from the clipboard event
-        // use the local one. The reason is that the "move" information is only updated locally
-        // without synchronizing it to the clipboard.
-        // TODO: the selection should store the origin of the selection and the selection itself
-        // separately.
-        pixels = this.currentSelection.pixels;
-      }
-
-      if (pixels) {
-        // If the current clipboard data is some random text, pixels will not be defined.
-        this.pastePixelsOnCurrentFrame_(pixels);
-      }
-    }.bind(this));
+  ns.SelectionManager.prototype.pasteText_ = function(clipboardItem, type) {
+    clipboardItem.getType(type).then(blob => {
+      blob.text().then(selectionString => {
+        var selectionData = JSON.parse(selectionString);
+        var time = selectionData.time;
+        var pixels = selectionData.pixels;
+        if (this.currentSelection && (this.currentSelection.time >= time || this.currentSelection.time === undefined)) {
+          // If the local selection is newer or equal to the one coming from the clipboard event
+          // use the local one. The reason is that the "move" information is only updated locally
+          // without synchronizing it to the clipboard.
+          // TODO: the selection should store the origin of the selection and the selection itself
+          // separately.
+          pixels = this.currentSelection.pixels;
+        }
+  
+        if (pixels) {
+          // If the current clipboard data is some random text, pixels will not be defined.
+          this.pastePixelsOnCurrentFrame_(pixels);
+        }
+      });
+      
+    });
   };
 
   ns.SelectionManager.prototype.pastePixelsOnCurrentFrame_ = function (pixels) {

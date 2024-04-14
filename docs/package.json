@@ -1,0 +1,17 @@
+{
+    "app_name": "Piskel",
+    "main": "index.html",
+    "name": "piskel",
+    "webkit": {},
+    "window": {
+        "exe_icon": "logo.png",
+        "frame": true,
+        "icon": "logo.png",
+        "id": "docs",
+        "resizable": true,
+        "show": true,
+        "show_in_taskbar": true,
+        "title": "docs",
+        "visible": true
+    }
+}

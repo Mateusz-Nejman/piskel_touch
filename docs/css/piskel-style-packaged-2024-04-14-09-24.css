@@ -1,5 +1,5 @@
 html, body {
-  --highlight-color: gold;
+  --highlight-color: #039BE5;
 }
 html, body {
   height : 100%; width: 100%;
@@ -51,7 +51,7 @@ input[type="range"] {
 }
 
 a, a:visited {
-  color: gold;
+  color: #039BE5;
 }
 body {
   background: #1D1D1D;
@@ -76,7 +76,7 @@ body {
 }
 
 .highlight {
-  color: gold;
+  color: #039BE5;
 }
 
 .pull-top,
@@ -123,7 +123,7 @@ body {
  * TOOLTIPS
  */
 .tooltip-shortcut {
-  color: gold;
+  color: #039BE5;
 }
 
 .tooltip-container {
@@ -242,7 +242,7 @@ body {
 }
 
 .cursor-coordinates {
-  color: gold;
+  color: #039BE5;
   font-size: 12px;
   font-weight: bold;
   font-family: monospace;
@@ -454,7 +454,7 @@ body {
 }
 
 .textfield:focus {
-  border-color: gold;
+  border-color: #039BE5;
   outline: none;
 }
 
@@ -480,11 +480,11 @@ body {
 }
 
 .button:hover {
-  color: gold;
+  color: #039BE5;
 }
 
 .button-primary {
-  background-color: gold;
+  background-color: #039BE5;
   color: black;
 }
 
@@ -561,7 +561,7 @@ body {
   background-color: #444;
   margin-right: 0;
   padding-right: 2px;
-  border-left : 3px solid gold;
+  border-left : 3px solid #039BE5;
 }
 
 /************************************************************************************************/
@@ -585,7 +585,7 @@ body {
   text-transform: uppercase;
   border-bottom: 1px #aaa solid;
   padding-bottom: 5px;
-  color: gold;
+  color: #039BE5;
 }
 
 .settings-description {
@@ -641,7 +641,7 @@ body {
 }
 
 .background-picker.selected {
-  border-color: gold;
+  border-color: #039BE5;
 }
 
 .settings-opacity-input {
@@ -738,7 +738,7 @@ body {
 }
 
 .grid-colors-item.selected {
-  border-color: gold;
+  border-color: #039BE5;
 }
 
 .settings-section-preferences > .settings-title {
@@ -1016,7 +1016,7 @@ body {
   position : absolute;
   height : 100%;
   width : 100%;
-  border: 3px solid gold;
+  border: 3px solid #039BE5;
   box-sizing: border-box;
 }
 
@@ -1199,67 +1199,67 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 .icon-common-keyboard-gold {
   background-image: url(../img/icons.png);
-  background-position: -274px -228px;
+  background-position: -136px -92px;
   width: 36px;
   height: 21px;
 }
 .icon-common-swapcolors-arrow-grey {
   background-image: url(../img/icons.png);
-  background-position: -295px -249px;
+  background-position: -157px -113px;
   width: 18px;
   height: 18px;
 }
 .icon-common-warning-red {
   background-image: url(../img/icons.png);
-  background-position: -274px -249px;
+  background-position: -136px -113px;
   width: 21px;
   height: 21px;
 }
 .icon-frame-dragndrop-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -138px;
+  background-position: -274px -230px;
   width: 30px;
   height: 30px;
 }
 .icon-frame-duplicate-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -168px;
+  background-position: -228px -184px;
   width: 30px;
   height: 30px;
 }
 .icon-frame-plus-white {
   background-image: url(../img/icons.png);
-  background-position: -228px -184px;
+  background-position: -90px -46px;
   width: 26px;
   height: 26px;
 }
 .icon-frame-recyclebin-white {
   background-image: url(../img/icons.png);
-  background-position: -274px -198px;
+  background-position: -182px -138px;
   width: 30px;
   height: 30px;
 }
 .icon-minimap-grid-gold {
   background-image: url(../img/icons.png);
-  background-position: -254px -184px;
+  background-position: -116px -46px;
   width: 18px;
   height: 18px;
 }
 .icon-minimap-grid-white {
   background-image: url(../img/icons.png);
-  background-position: -228px -210px;
+  background-position: -90px -72px;
   width: 18px;
   height: 18px;
 }
 .icon-minimap-popup-preview-arrow-gold {
   background-image: url(../img/icons.png);
-  background-position: -246px -210px;
+  background-position: -108px -72px;
   width: 18px;
   height: 18px;
 }
 .icon-minimap-popup-preview-arrow-white {
   background-image: url(../img/icons.png);
-  background-position: -182px -138px;
+  background-position: -92px -90px;
   width: 18px;
   height: 18px;
 }
@@ -1293,135 +1293,165 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-tool-circle {
+.icon-settings-touch-white {
   background-image: url(../img/icons.png);
   background-position: 0px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-colorpicker {
+.icon-tool-circle {
   background-image: url(../img/icons.png);
   background-position: -46px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-colorswap {
+.icon-tool-colorpicker {
   background-image: url(../img/icons.png);
   background-position: -92px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-dithering {
+.icon-tool-colorswap {
   background-image: url(../img/icons.png);
   background-position: -182px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-eraser {
+.icon-tool-dithering {
   background-image: url(../img/icons.png);
   background-position: -182px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-lasso-select {
+.icon-tool-eraser {
   background-image: url(../img/icons.png);
   background-position: -182px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-lighten {
+.icon-tool-lasso-select {
   background-image: url(../img/icons.png);
   background-position: 0px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-move {
+.icon-tool-lighten {
   background-image: url(../img/icons.png);
   background-position: -46px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-noise-fill {
+.icon-tool-move {
   background-image: url(../img/icons.png);
   background-position: -92px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-noise {
+.icon-tool-noise-fill {
   background-image: url(../img/icons.png);
   background-position: -138px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-paint-bucket {
+.icon-tool-noise {
   background-image: url(../img/icons.png);
   background-position: -228px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-pen {
+.icon-tool-paint-bucket {
   background-image: url(../img/icons.png);
   background-position: -228px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle-select {
+.icon-tool-pen {
   background-image: url(../img/icons.png);
   background-position: -228px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle {
+.icon-tool-rectangle-select {
   background-image: url(../img/icons.png);
   background-position: -228px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-shape-select {
+.icon-tool-rectangle {
   background-image: url(../img/icons.png);
   background-position: 0px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-stroke {
+.icon-tool-shape-select {
   background-image: url(../img/icons.png);
   background-position: -46px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-vertical-mirror-pen {
+.icon-tool-stroke {
   background-image: url(../img/icons.png);
   background-position: -92px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-center {
+.icon-tool-vertical-mirror-pen {
   background-image: url(../img/icons.png);
   background-position: -138px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-clone {
+.icon-touch-copy {
   background-image: url(../img/icons.png);
   background-position: -184px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-crop {
+.icon-touch-cut {
   background-image: url(../img/icons.png);
   background-position: -274px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-flip {
+.icon-touch-delete {
   background-image: url(../img/icons.png);
   background-position: -274px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rotate {
+.icon-touch-paste {
   background-image: url(../img/icons.png);
   background-position: -274px -92px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-center {
+  background-image: url(../img/icons.png);
+  background-position: -274px -138px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-clone {
+  background-image: url(../img/icons.png);
+  background-position: -274px -184px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-crop {
+  background-image: url(../img/icons.png);
+  background-position: 0px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-flip {
+  background-image: url(../img/icons.png);
+  background-position: -46px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-rotate {
+  background-image: url(../img/icons.png);
+  background-position: -92px -274px;
   width: 46px;
   height: 46px;
 }
@@ -1430,159 +1460,179 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
        (min-resolution: 192dpi) {
   .icon-common-backup-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-common-keyboard-gold {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-common-swapcolors-arrow-grey {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-common-warning-red {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-frame-dragndrop-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-frame-duplicate-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-frame-plus-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-frame-recyclebin-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-minimap-grid-gold {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-minimap-grid-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-minimap-popup-preview-arrow-gold {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-minimap-popup-preview-arrow-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-settings-export-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-settings-gear-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-settings-open-folder-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-settings-resize-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-settings-save-white {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
+  }
+  .icon-settings-touch-white {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
   }
   .icon-tool-circle {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-colorpicker {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-colorswap {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-dithering {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-eraser {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-lasso-select {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-lighten {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-move {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-noise-fill {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-noise {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-paint-bucket {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-pen {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-rectangle-select {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-rectangle {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-shape-select {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-stroke {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-vertical-mirror-pen {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
+  }
+  .icon-touch-copy {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-cut {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-delete {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-paste {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
   }
   .icon-tool-center {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-clone {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-crop {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-flip {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
   .icon-tool-rotate {
     background-image: url(../img/icons@2x.png);
-    background-size: 320px 274px;
+    background-size: 320px 320px;
   }
 }
 
@@ -1732,7 +1782,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   -moz-box-sizing : border-box;
 
   border-radius: 3px;
-  border : 3px solid gold;
+  border : 3px solid #039BE5;
   background: #444;
   overflow: auto;
 }
@@ -1756,7 +1806,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .dialog-head {
   width: 100%;
-  background: gold;
+  background: #039BE5;
   margin: 0;
   padding: 10px;
   color: black;
@@ -1827,7 +1877,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .browse-backups .browse-backups-disclaimer .backups-icon {
-  border: 1px solid gold;
+  border: 1px solid #039BE5;
   flex-shrink: 0;
   width: 90px;
   height: 90px;
@@ -1972,7 +2022,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .local-piskel-list-head {
   font-weight: bold;
-  color: gold;
+  color: #039BE5;
 }
 
 .local-piskel-load-button,
@@ -1984,7 +2034,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   bottom: 10px;
   left: 10px;
 
-  color : gold;
+  color : #039BE5;
   font-weight: bold;
   font-size : 1.25em;
   line-height: 20px;
@@ -2094,8 +2144,8 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .cheatsheet-shortcut-editable .cheatsheet-key {
-  border-color: gold;
-  color: gold;
+  border-color: #039BE5;
+  color: #039BE5;
 }
 
 .cheatsheet-shortcut-editing .cheatsheet-key {
@@ -2121,7 +2171,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   padding : 10px;
   overflow: hidden;
 
-  background-color : gold;
+  background-color : #039BE5;
 }
 
 .cheatsheet-helptext {
@@ -2321,7 +2371,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   transition : border-color 0.2s;
 }
 .create-palette-color:hover {
-  border:1px solid gold;
+  border:1px solid #039BE5;
 }
 
 .colors-list-drop-proxy {
@@ -2329,17 +2379,17 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .create-palette-new-color {
-  border:2px dotted gold;
+  border:2px dotted #039BE5;
 
   border-radius: 2px;
   line-height: 40px;
   text-align: center;
   font-size: 20px;
-  color: gold;
+  color: #039BE5;
 }
 
 .create-palette-color.selected {
-  border:2px solid gold;
+  border:2px solid #039BE5;
 }
 
 .create-palette-remove-color {
@@ -2518,7 +2568,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   font-style: italic;
   font-weight: normal;
   text-shadow: none;
-  color: gold;
+  color: #039BE5;
 }
 
 [name=smooth-resize-checkbox] {
@@ -2543,7 +2593,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   box-sizing: border-box;
 
   padding: 10px;
-  border-right: 3px solid gold;
+  border-right: 3px solid #039BE5;
 }
 
 .import-preview canvas {
@@ -2574,7 +2624,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .import-meta-label {
   border-radius: 2px 0 0 2px;
-  color: gold;
+  color: #039BE5;
 }
 
 .import-meta-value {
@@ -2626,7 +2676,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .import-resize-option :checked + span,
 .insert-mode-option :checked + span {
-  color: gold;
+  color: #039BE5;
 }
 
 .import-resize-option input,
@@ -2650,11 +2700,11 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .import-resize-option :checked + span {
-  color: gold;
+  color: #039BE5;
 }
 
 .import-resize-warning {
-  color: gold;
+  color: #039BE5;
 }
 
 /**
@@ -2724,7 +2774,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .dialog-performance-info-body sup {
-  color: gold;
+  color: #039BE5;
   cursor: pointer;
 }
 
@@ -2772,7 +2822,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 #current-user-agent {
-  color: gold;
+  color: #039BE5;
 }
 
 .user-message {
@@ -2788,7 +2838,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   border-bottom: 0;
 
   color: #222;
-  background-color: gold;
+  background-color: #039BE5;
 
   font-weight: bold;
   font-size: 13px;
@@ -2818,7 +2868,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   padding: 10px;
   width: 360px;
   border-top-right-radius: 2px;
-  border: gold 2px solid;
+  border: #039BE5 2px solid;
   border-left: 0;
   border-bottom: 0;
   background-color: #444;
@@ -2844,7 +2894,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   margin-top: 8px;
   height : 4px;
   width : 300px;
-  background : linear-gradient(to left, gold, gold) no-repeat -300px 0;
+  background : linear-gradient(to left, #039BE5, #039BE5) no-repeat -300px 0;
   background-color : black;
 }
 .toolbox-container {
@@ -2929,7 +2979,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .layers-toggle-preview-enabled,
 .layers-toggle-preview-enabled:hover {
-  color : gold;
+  color : #039BE5;
 }
 
 /**
@@ -2988,7 +3038,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 .current-layer-item,
 .current-layer-item:hover {
   background : #333;
-  color: gold;
+  color: #039BE5;
 }
 .palettes-list-container {
   min-height: 100px;
@@ -3125,7 +3175,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   right: 0;
 
   background-color: black;
-  color: gold;
+  color: #039BE5;
 
   font-family: Tahoma;
   font-size: 0.5em;
@@ -3216,7 +3266,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .preview-toggle-onion-skin-enabled,
 .preview-toggle-onion-skin-enabled:hover {
-  color : gold;
+  color : #039BE5;
 }
 
 .preview-contextual-actions {
@@ -3257,16 +3307,16 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .preview-contextual-action:hover {
-  color: gold;
-  border-color: gold;
+  color: #039BE5;
+  border-color: #039BE5;
 }
 
 /**
  * If the icon represents an enabled state, the border should always be gold.
  */
 .preview-contextual-action-enabled {
-  color: gold;
-  border-color: gold;
+  color: #039BE5;
+  border-color: #039BE5;
 }
 
 /**
@@ -3314,8 +3364,8 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 
 .preview-drop-down .size-button-selected {
   opacity: 1;
-  color: gold;
-  border-color: gold;
+  color: #039BE5;
+  border-color: #039BE5;
   z-index: 5;
 }
 
@@ -3326,7 +3376,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .open-popup-preview-button:hover {
-  border-color: gold;
+  border-color: #039BE5;
 }
 
 /**
@@ -3383,8 +3433,48 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 }
 
 .show-more .transformations-show-more-link {
-  color: gold;
+  color: #039BE5;
 }
+.touch-buttons-container {
+    flex-shrink: 0;
+  }
+  
+  .touch-buttons-container .tool-icon {
+    margin: 0 0 5px 0;
+  }
+  
+  .touch-buttons-container .tools-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 46px;
+  
+    /* Override the float:left set on tools-wrapper in layout.css; */
+    float: initial;
+  }
+  
+  .touch-buttons-container.show-more .tools-wrapper {
+    height: auto;
+    /* Compensate the 5px bottom-margin coming from the tool-icon */
+    margin-bottom: -5px;
+  }
+  
+  .touch-buttons-show-more-link {
+    position: absolute;
+    color: #999;
+    right: 10px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: 0.2s linear;
+  }
+  
+  .touch-buttons-show-more-link:hover {
+    color: white;
+  }
+  
+  .show-more .touch-buttons-show-more-link {
+    color: #039BE5;
+  }
 /***
 Spectrum Colorpicker v1.1.2
 https://github.com/bgrins/spectrum
@@ -3965,8 +4055,8 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .sp-palette .sp-thumb-el.sp-thumb-active {
-  border-color: gold;
-  box-shadow: 0 0 0px 1px gold;
+  border-color: #039BE5;
+  box-shadow: 0 0 0px 1px #039BE5;
 }
 
 .sp-input {
@@ -4187,7 +4277,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .add-frame-action:hover {
-  border-color: gold;
+  border-color: #039BE5;
 }
 
 .preview-tile {
@@ -4215,14 +4305,10 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   z-index: 10;
   position: absolute;
   background-color: rgba(100, 100, 100, 0.6);
-  opacity: 0;
+  opacity: 1.0;
   height: 30px;
   width: 30px;
   border: none;
-}
-
-.preview-tile:hover .tile-overlay {
-  opacity: 1.0;
 }
 
 .preview-tile .tile-overlay.tile-count {
@@ -4240,7 +4326,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .preview-tile .tile-overlay.tile-count.toggled {
-  background-color: gold;
+  background-color: #039BE5;
   color: black;
 }
 
@@ -4266,7 +4352,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .preview-tile.selected {
-  border-color: gold;
+  border-color: #039BE5;
 }
 
 .preview-tile.selected:after {
@@ -4275,7 +4361,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   top: 38px;
   right: -9px;
   border: transparent 4px solid;
-  border-left-color: gold;
+  border-left-color: #039BE5;
   border-width: 6px 0 6px 6px;
   border-style: solid;
 }
@@ -4286,13 +4372,13 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
  */
 
 .preview-tile-drop-proxy {
-  border: 3px dashed gold;
+  border: 3px dashed #039BE5;
   background-color: rgba(255, 215,0, 0.2);
 }
 
 .minimap-crop-frame {
   position: absolute;
-  border: 2px solid gold;
+  border: 2px solid #039BE5;
   z-index: 100;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -4340,7 +4426,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .anchor-option.selected {
-  border : 3px solid gold;
+  border : 3px solid #039BE5;
 }
 
 .anchor-option:before {
@@ -4356,7 +4442,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   content: '';
   width: 4px;
   height: 4px;
-  background: gold;
+  background: #039BE5;
 }
 
 .disabled .anchor-option.selected:before {
@@ -4376,24 +4462,24 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .anchor-option[data-neighbor="bottom"]:before {
-  border-top-color: gold;
+  border-top-color: #039BE5;
   margin-left: -4px;
 }
 
 .anchor-option[data-neighbor="left"]:before {
-  border-right-color: gold;
+  border-right-color: #039BE5;
   margin-top: -4px;
   margin-left: -6px;
 }
 
 .anchor-option[data-neighbor="top"]:before {
-  border-bottom-color: gold;
+  border-bottom-color: #039BE5;
   margin-top: -6px;
   margin-left: -4px;
 }
 
 .anchor-option[data-neighbor="right"]:before {
-  border-left-color: gold;
+  border-left-color: #039BE5;
   margin-top: -4px;
 }
 
@@ -4503,11 +4589,11 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 }
 
 .size-picker-option.selected:before {
-  background-color: gold;
+  background-color: #039BE5;
 }
 
 .size-picker-option.selected {
-  border-color: gold;
+  border-color: #039BE5;
 }
 
 .size-picker-option.labeled:before {
@@ -4532,7 +4618,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   width: 100%;
   height: 1px;
   z-index: 0;
-  background-color: gold;
+  background-color: #039BE5;
 }
 
 .tab-item {
@@ -4548,11 +4634,11 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 
 .tab-item.selected,
 .tab-item:hover {
-  color: gold;
+  color: #039BE5;
 }
 
 .tab-item.selected {
-  border-color: gold;
+  border-color: #039BE5;
   border-bottom-color: #444;
   border-style: solid;
   border-width: 1px;

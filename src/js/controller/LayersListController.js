@@ -155,7 +155,7 @@
     }
     var opacity = layer.getOpacity();
     if (opacity == 1) {
-      layerItem.querySelector('.layer-item-opacity').style.color = '#ffd700';
+      layerItem.querySelector('.layer-item-opacity').style.color = '#039BE5';
     } else if (opacity == 0) {
       layerItem.querySelector('.layer-item-opacity').style.color = '#969696';
     } else {

@@ -1,0 +1,40 @@
+.touch-buttons-container {
+    flex-shrink: 0;
+  }
+  
+  .touch-buttons-container .tool-icon {
+    margin: 0 0 5px 0;
+  }
+  
+  .touch-buttons-container .tools-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 46px;
+  
+    /* Override the float:left set on tools-wrapper in layout.css; */
+    float: initial;
+  }
+  
+  .touch-buttons-container.show-more .tools-wrapper {
+    height: auto;
+    /* Compensate the 5px bottom-margin coming from the tool-icon */
+    margin-bottom: -5px;
+  }
+  
+  .touch-buttons-show-more-link {
+    position: absolute;
+    color: #999;
+    right: 10px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: 0.2s linear;
+  }
+  
+  .touch-buttons-show-more-link:hover {
+    color: white;
+  }
+  
+  .show-more .touch-buttons-show-more-link {
+    color: #039BE5;
+  }
