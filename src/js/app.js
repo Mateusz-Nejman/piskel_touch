@@ -59,11 +59,8 @@
       this.palettesListController = new pskl.controller.PalettesListController(this.currentColorsService);
       this.palettesListController.init();
 
-      this.touchButtonsController = new pskl.controller.TouchButtonsController();
-      this.touchButtonsController.init();
-
-      this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
-      this.cursorCoordinatesController.init();
+      //this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
+      //this.cursorCoordinatesController.init();
 
       this.drawingController = new pskl.controller.DrawingController(
         this.piskelController,
@@ -104,6 +101,10 @@
 
       this.historyService = new pskl.service.HistoryService(this.piskelController);
       this.historyService.init();
+
+      this.touchButtonsController =
+        new pskl.controller.TouchButtonsController(this.historyService, this.drawingController);
+      this.touchButtonsController.init();
 
       this.notificationController = new pskl.controller.NotificationController();
       this.notificationController.init();

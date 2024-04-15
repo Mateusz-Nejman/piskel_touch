@@ -1438,33 +1438,57 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-tool-center {
+.icon-touch-redo {
   background-image: url(../img/icons.png);
   background-position: -274px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-clone {
+.icon-touch-undo {
   background-image: url(../img/icons.png);
   background-position: -274px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-crop {
+.icon-touch-zoom-in {
   background-image: url(../img/icons.png);
   background-position: -274px -184px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-flip {
+.icon-touch-zoom-out {
   background-image: url(../img/icons.png);
   background-position: 0px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rotate {
+.icon-tool-center {
   background-image: url(../img/icons.png);
   background-position: -46px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-clone {
+  background-image: url(../img/icons.png);
+  background-position: -92px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-crop {
+  background-image: url(../img/icons.png);
+  background-position: -138px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-flip {
+  background-image: url(../img/icons.png);
+  background-position: -184px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-rotate {
+  background-image: url(../img/icons.png);
+  background-position: -230px -274px;
   width: 46px;
   height: 46px;
 }
@@ -1620,6 +1644,22 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-size: 320px 320px;
   }
   .icon-touch-paste {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-redo {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-undo {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-zoom-in {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-touch-zoom-out {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }
@@ -3219,7 +3259,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    height: 46px;
+    height: 97px;
   
     /* Override the float:left set on tools-wrapper in layout.css; */
     float: initial;

@@ -23121,9 +23121,13 @@ return Q;
   ns.DrawingController.prototype.onMousedown_ = function (event) {
     $.publish(Events.MOUSE_EVENT, [event, this]);
     var frame = this.piskelController.getCurrentFrame();
-    var coords = this.getSpriteCoordinates(event.clientX, event.clientY);
+    var coords = this.getSpriteCoordinates(event.clientX, event.clientY);;
     if (event.changedTouches && event.changedTouches[0]) {
       coords = this.getSpriteCoordinates(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    }
+
+    if (!frame.containsPixel(coords.x, coords.y)) {
+      return;
     }
 
     this.isClicked = true;
@@ -23150,11 +23154,17 @@ return Q;
    * @private
    */
   ns.DrawingController.prototype.onMousemove_ = function (event) {
+    var frame = this.piskelController.getCurrentFrame();
     this._clientX = event.clientX;
     this._clientY = event.clientY;
     if (event.changedTouches && event.changedTouches[0]) {
       this._clientX = event.changedTouches[0].clientX;
       this._clientY = event.changedTouches[0].clientY;
+    }
+
+    var coords = this.getSpriteCoordinates(this._clientX, this._clientY);
+    if (!frame.containsPixel(coords.x, coords.y)) {
+      return;
     }
 
     var currentTime = new Date().getTime();
@@ -23206,6 +23216,7 @@ return Q;
 
   ns.DrawingController.prototype.onMousewheel_ = function (evt) {
     // Ratio between wheelDeltaY (mousewheel event) and deltaY (wheel event) is -40
+    console.log(evt);
     var delta;
     if (pskl.utils.UserAgent.isIE11) {
       delta = evt.wheelDelta;
@@ -25316,8 +25327,11 @@ return Q;
 })();
 ;(function () {
   var ns = $.namespace('pskl.controller');
-  
-  ns.TouchButtonsController = function () {
+
+  ns.TouchButtonsController = function (historyService, drawingController) {
+    this.historyService = historyService;
+    this.drawingController = drawingController;
+
     this.tools = [
       {
         toolId: 'touch-copy',
@@ -25334,12 +25348,28 @@ return Q;
       {
         toolId: 'touch-paste',
         help: 'Paste seleciton'
-      }
+      },
+      {
+        toolId: 'touch-undo',
+        help: 'Undo'
+      },
+      {
+        toolId: 'touch-zoom-in',
+        help: 'Zoom In'
+      },
+      {
+        toolId: 'touch-zoom-out',
+        help: 'Zoom Out'
+      },
+      {
+        toolId: 'touch-redo',
+        help: 'Redo'
+      },
     ];
-  
+
     this.toolIconBuilder = new pskl.tools.ToolIconBuilder();
   };
-  
+
   ns.TouchButtonsController.prototype.init = function () {
     this.container = document.querySelector('.touch-buttons-container');
     this.createToolsDom_();
@@ -25355,28 +25385,52 @@ return Q;
 
     this.pasteButton = document.querySelector('.icon-touch-paste');
     this.pasteButton.addEventListener('click', this.paste.bind(this));
+
+    this.undoButton = document.querySelector('.icon-touch-undo');
+    this.undoButton.addEventListener('click', this.undo.bind(this));
+
+    this.redoButton = document.querySelector('.icon-touch-redo');
+    this.redoButton.addEventListener('click', this.redo.bind(this));
+
+    this.zoomInButton = document.querySelector('.icon-touch-zoom-in');
+    this.zoomInButton.addEventListener('click', this.zoomIn.bind(this));
+
+    this.zoomOutButton = document.querySelector('.icon-touch-zoom-out');
+    this.zoomOutButton.addEventListener('click', this.zoomOut.bind(this));
   };
 
-  ns.TouchButtonsController.prototype.copy = function(event)
-  {
+  ns.TouchButtonsController.prototype.copy = function(event) {
     $.publish(Events.CLIPBOARD_COPY, event);
   };
 
-  ns.TouchButtonsController.prototype.cut = function(event)
-  {
+  ns.TouchButtonsController.prototype.cut = function(event) {
     $.publish(Events.CLIPBOARD_CUT, event);
   };
 
-  ns.TouchButtonsController.prototype.delete = function(event)
-  {
+  ns.TouchButtonsController.prototype.delete = function(event) {
     $.publish(Events.CLIPBOARD_CUT, event);
   };
 
-  ns.TouchButtonsController.prototype.paste = function(event)
-  {
+  ns.TouchButtonsController.prototype.paste = function(event) {
     $.publish(Events.CLIPBOARD_PASTE, event);
   };
-  
+
+  ns.TouchButtonsController.prototype.undo = function(event) {
+    this.historyService.undo();
+  };
+
+  ns.TouchButtonsController.prototype.redo = function(event) {
+    this.historyService.redo();
+  };
+
+  ns.TouchButtonsController.prototype.zoomIn = function(event) {
+    this.drawingController.onMousewheel_({ wheelDeltaY: 150, clientX: 230, clientY: 50});
+  };
+
+  ns.TouchButtonsController.prototype.zoomOut = function(event) {
+    this.drawingController.onMousewheel_({ wheelDeltaY: -150, clientX: 230, clientY: 50});
+  };
+
   ns.TouchButtonsController.prototype.createToolsDom_ = function() {
     var html = this.tools.reduce(function (p, tool) {
       return p + this.createIcon(tool, 'left');
@@ -25395,13 +25449,13 @@ return Q;
       tooltipposition : tooltipPosition
     });
   };
-    
+
   ns.TouchButtonsController.prototype.getTooltipText = function(tool) {
     var descriptors = tool.tooltipDescriptors;
     return pskl.utils.TooltipFormatter.format(tool.help, tool.shortcut, descriptors);
   };
 })();
-  ;(function () {
+;(function () {
   var ns = $.namespace('pskl.controller');
 
   ns.PenSizeController = function () {
@@ -34455,11 +34509,8 @@ ns.ToolsHelper = {
       this.palettesListController = new pskl.controller.PalettesListController(this.currentColorsService);
       this.palettesListController.init();
 
-      this.touchButtonsController = new pskl.controller.TouchButtonsController();
-      this.touchButtonsController.init();
-
-      this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
-      this.cursorCoordinatesController.init();
+      //this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
+      //this.cursorCoordinatesController.init();
 
       this.drawingController = new pskl.controller.DrawingController(
         this.piskelController,
@@ -34500,6 +34551,10 @@ ns.ToolsHelper = {
 
       this.historyService = new pskl.service.HistoryService(this.piskelController);
       this.historyService.init();
+
+      this.touchButtonsController =
+        new pskl.controller.TouchButtonsController(this.historyService, this.drawingController);
+      this.touchButtonsController.init();
 
       this.notificationController = new pskl.controller.NotificationController();
       this.notificationController.init();

@@ -155,9 +155,13 @@
   ns.DrawingController.prototype.onMousedown_ = function (event) {
     $.publish(Events.MOUSE_EVENT, [event, this]);
     var frame = this.piskelController.getCurrentFrame();
-    var coords = this.getSpriteCoordinates(event.clientX, event.clientY);
+    var coords = this.getSpriteCoordinates(event.clientX, event.clientY);;
     if (event.changedTouches && event.changedTouches[0]) {
       coords = this.getSpriteCoordinates(event.changedTouches[0].clientX, event.changedTouches[0].clientY);
+    }
+
+    if (!frame.containsPixel(coords.x, coords.y)) {
+      return;
     }
 
     this.isClicked = true;
@@ -184,11 +188,17 @@
    * @private
    */
   ns.DrawingController.prototype.onMousemove_ = function (event) {
+    var frame = this.piskelController.getCurrentFrame();
     this._clientX = event.clientX;
     this._clientY = event.clientY;
     if (event.changedTouches && event.changedTouches[0]) {
       this._clientX = event.changedTouches[0].clientX;
       this._clientY = event.changedTouches[0].clientY;
+    }
+
+    var coords = this.getSpriteCoordinates(this._clientX, this._clientY);
+    if (!frame.containsPixel(coords.x, coords.y)) {
+      return;
     }
 
     var currentTime = new Date().getTime();
