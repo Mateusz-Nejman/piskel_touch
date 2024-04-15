@@ -1,7 +1,7 @@
 {% raw %}
 <div id="main-wrapper" class="main-wrapper">
-  <div class="sticky-section left-sticky-section" id="tool-section">
-<div class="sticky-section-wrap">
+  <div class="left-tools-section" id="tool-section">
+<div class="table-wrap">
   <div class="vertical-centerer">
     <div class="pen-size-container size-picker-container" title="Pen size<br/>from 1 to 4 pixels" rel="tooltip" data-placement="top">
       <div class="pen-size-option size-picker-option" data-size="1"></div>
@@ -418,8 +418,6 @@
 </script>
 </div>
 
-<span class="cheatsheet-link icon-common-keyboard-gold"
-      rel="tooltip" data-placement="right" title="Keyboard shortcuts">&nbsp;</span>
 <div class="performance-link icon-common-warning-red"
      rel="tooltip" data-placement="left" title="Performance problem detected, learn more.">&nbsp;</div>
 
@@ -535,55 +533,6 @@
   <td><button type="button" data-action="load" data-name="{{name}}" class="button button-primary local-piskel-load-button">Load</button></td>
   <td><button type="button" data-action="delete" data-name="{{name}}" class="button local-piskel-delete-button">Delete</button></td>
 </tr>
-</script>
-<script type="text/template" id="templates/dialogs/cheatsheet.html">
-<div id="cheatsheetContainer" class="dialog-wrapper">
-  <h3 class="dialog-head">
-    <span class="dialog-title">Keyboard shortcuts</span>
-    <span class="dialog-close">X</span>
-  </h3>
-  <div class="cheatsheet-container dialog-content">
-    <div class="cheatsheet-section">
-      <h3 class="cheatsheet-title">Tool shortcuts</h3>
-      <ul class="cheatsheet-tool-shortcuts"></ul>
-    </div>
-    <div class="cheatsheet-section">
-      <h3 class="cheatsheet-title">Misc shortcuts</h3>
-      <ul class="cheatsheet-misc-shortcuts"></ul>
-    </div>
-    <div class="cheatsheet-boxes">
-      <div class="cheatsheet-section">
-        <h3 class="cheatsheet-title">Selection shortcuts</h3>
-        <ul class="cheatsheet-selection-shortcuts"></ul>
-      </div>
-      <div class="cheatsheet-section">
-        <h3 class="cheatsheet-title">Color shortcuts</h3>
-        <ul class="cheatsheet-color-shortcuts"></ul>
-      </div>
-      <div class="cheatsheet-section">
-        <h3 class="cheatsheet-title">Storage shortcuts</h3>
-        <ul class="cheatsheet-storage-shortcuts"></ul>
-      </div>
-    </div>
-  </div>
-  <div class="cheatsheet-actions">
-    <span class="cheatsheet-helptext" rel="tooltip" data-placement="top" title="!!!Set in CheatsheetController!!!"><b>Customize shortcuts ?</b></span>
-    <button type="button" name="cheatsheet-restore-defaults" data-action="restore-defaults" class="button cheatsheet-button cheatsheet-restore-defaults">Restore default shortcuts</button>
-  </div>
-
-  <!-- Event trap to capture keyboard remaps -->
-  <div style="position:relative; overflow:hidden; width:1px; height:1px;">
-    <input type="text" id="cheatsheetEventTrap" style="position:absolute; top:-1000px;" />
-  </div>
-</div>
-</script>
-
-<script type="text/template" id="cheatsheet-shortcut-template">
-<li class="cheatsheet-shortcut {{className}}" data-shortcut-id="{{id}}">
-  <div class="cheatsheet-icon {{icon}}"></div>
-  <span class="cheatsheet-key" rel="tooltip" data-placement="top" title="{{title}}">{{!key!}}</span>
-  <span class="cheatsheet-description">{{description}}</span>
-</li>
 </script>
 <script type="text/template" id="templates/dialogs/create-palette.html">
 <div class="dialog-wrapper">
@@ -918,7 +867,7 @@
     Piskel
     <span rel="tooltip" data-placement="bottom" title="View release notes">
       <a  class="settings-version" target="_blank"
-          href="https://github.com/piskelapp/piskel/releases/tag/v0.15.2-SNAPSHOT">v0.15.2-SNAPSHOT</a>
+          href="https://github.com/piskelapp/piskel/releases/tag/v1.0">v1.0</a>
     </span>
   </div>
 </div>
@@ -1378,9 +1327,9 @@
   (function () {
 
 /**
- * See @Gruntfile.js => after build, -2024-04-14-09-24 is replaced by the build version
+ * See @Gruntfile.js => after build, -2024-04-15-08-52 is replaced by the build version
  */
-var version = '-2024-04-14-09-24';
+var version = '-2024-04-15-08-52';
 var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
 if (versionHasNotBeenReplaced)  {
   version = '';
@@ -1395,7 +1344,7 @@ window._onPiskelReady = function () {
   loadingMask.style.opacity = 0;
   window.setTimeout(function () {loadingMask.parentNode.removeChild(loadingMask);}, 600);
   pskl.app.init();
-  pskl._releaseVersion = '0.15.2-SNAPSHOT';
+  pskl._releaseVersion = '1.0';
   // cleanup
   delete window.pskl_exports;
   delete window.loadDebugScripts;

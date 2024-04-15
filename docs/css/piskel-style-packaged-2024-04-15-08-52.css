@@ -177,7 +177,7 @@ body {
   display: flex;
 
   position: absolute;
-  left: 100px; /* Reserve room for tools on the left edge of the screen. */
+  left: 106px; /* Reserve room for tools on the left edge of the screen. */
   top: 0;
   right: 50px; /* Reserve room for actions on the right edge of the screen. */
   bottom: 0;
@@ -185,7 +185,7 @@ body {
 
 .left-column {
   vertical-align: top;
-  height: 100%;
+  height: calc(100vh - 40px);
   padding-right: 7px;
   flex-shrink: 0;
 }
@@ -198,7 +198,7 @@ body {
 .right-column {
   box-sizing: border-box;
   vertical-align: top;
-  height: 100%;
+  height: calc(100vh - 40px);
   flex-shrink: 0;
 
   display: flex;
@@ -209,6 +209,8 @@ body {
   padding-left: 10px;
   /* Add some padding for the absolutely positioned .cursor-coordinates */
   padding-bottom: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .drawing-canvas-container {
@@ -232,13 +234,25 @@ body {
   vertical-align: middle;
 }
 
-.left-sticky-section.sticky-section {
+.left-tools-section {
   left: 0;
-  max-width: 100px;
+  max-width: 104px;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
 }
 
-.left-sticky-section .tool-icon {
+.left-tools-section .table-wrap {
+  display: table;
+  height: 100%;
+}
+
+.left-tools-section .tool-icon {
   float: left;
+}
+
+.left-tools-section .vertical-centerer {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .cursor-coordinates {
@@ -317,6 +331,11 @@ body {
 .options-wrapper,
 .palette-wrapper {
   float : left;
+}
+
+.palette-wrapper {
+  width: 75px;
+  height: 75px;
 }
 
 /**
@@ -1293,165 +1312,159 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-settings-touch-white {
+.icon-tool-circle {
   background-image: url(../img/icons.png);
   background-position: 0px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-circle {
+.icon-tool-colorpicker {
   background-image: url(../img/icons.png);
   background-position: -46px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-colorpicker {
+.icon-tool-colorswap {
   background-image: url(../img/icons.png);
   background-position: -92px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-colorswap {
+.icon-tool-dithering {
   background-image: url(../img/icons.png);
   background-position: -182px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-dithering {
+.icon-tool-eraser {
   background-image: url(../img/icons.png);
   background-position: -182px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-eraser {
+.icon-tool-lasso-select {
   background-image: url(../img/icons.png);
   background-position: -182px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-lasso-select {
+.icon-tool-lighten {
   background-image: url(../img/icons.png);
   background-position: 0px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-lighten {
+.icon-tool-move {
   background-image: url(../img/icons.png);
   background-position: -46px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-move {
+.icon-tool-noise-fill {
   background-image: url(../img/icons.png);
   background-position: -92px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-noise-fill {
+.icon-tool-noise {
   background-image: url(../img/icons.png);
   background-position: -138px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-noise {
+.icon-tool-paint-bucket {
   background-image: url(../img/icons.png);
   background-position: -228px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-paint-bucket {
+.icon-tool-pen {
   background-image: url(../img/icons.png);
   background-position: -228px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-pen {
+.icon-tool-rectangle-select {
   background-image: url(../img/icons.png);
   background-position: -228px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle-select {
+.icon-tool-rectangle {
   background-image: url(../img/icons.png);
   background-position: -228px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle {
+.icon-tool-shape-select {
   background-image: url(../img/icons.png);
   background-position: 0px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-shape-select {
+.icon-tool-stroke {
   background-image: url(../img/icons.png);
   background-position: -46px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-stroke {
+.icon-tool-vertical-mirror-pen {
   background-image: url(../img/icons.png);
   background-position: -92px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-vertical-mirror-pen {
+.icon-touch-copy {
   background-image: url(../img/icons.png);
   background-position: -138px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-copy {
+.icon-touch-cut {
   background-image: url(../img/icons.png);
   background-position: -184px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-cut {
+.icon-touch-delete {
   background-image: url(../img/icons.png);
   background-position: -274px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-delete {
+.icon-touch-paste {
   background-image: url(../img/icons.png);
   background-position: -274px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-paste {
+.icon-tool-center {
   background-image: url(../img/icons.png);
   background-position: -274px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-center {
+.icon-tool-clone {
   background-image: url(../img/icons.png);
   background-position: -274px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-clone {
+.icon-tool-crop {
   background-image: url(../img/icons.png);
   background-position: -274px -184px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-crop {
+.icon-tool-flip {
   background-image: url(../img/icons.png);
   background-position: 0px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-flip {
-  background-image: url(../img/icons.png);
-  background-position: -46px -274px;
-  width: 46px;
-  height: 46px;
-}
 .icon-tool-rotate {
   background-image: url(../img/icons.png);
-  background-position: -92px -274px;
+  background-position: -46px -274px;
   width: 46px;
   height: 46px;
 }
@@ -1523,10 +1536,6 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-size: 320px 320px;
   }
   .icon-settings-save-white {
-    background-image: url(../img/icons@2x.png);
-    background-size: 320px 320px;
-  }
-  .icon-settings-touch-white {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }
@@ -2029,243 +2038,6 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 .local-piskel-delete-button {
   width : 75px;
 }
-.cheatsheet-link {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-
-  color : #039BE5;
-  font-weight: bold;
-  font-size : 1.25em;
-  line-height: 20px;
-
-  cursor: pointer;
-
-  opacity: 0.5;
-  z-index: 11000;
-  transition : opacity 0.3s;
-}
-
-.cheatsheet-link:hover {
-  opacity: 1;
-}
-
-.cheatsheet-container {
-  box-sizing: border-box;
-  display: block;
-
-  bottom: 46px;
-  padding: 20px 3%;
-  border-radius: 3px;
-  background-color: rgba(0,0,0,0.9);
-  overflow: auto;
-}
-
-.cheatsheet-container .cheatsheet-title {
-  font-size:24px;
-  margin-top: 30px;
-}
-
-.cheatsheet-container .cheatsheet-title:nth-of-type(1) {
-  margin-top: 0;
-}
-
-.cheatsheet-section {
-  box-sizing: border-box;
-  float: left;
-
-  vertical-align: top;
-  padding : 0 20px 20px 20px;
-  min-width: 300px;
-}
-
-.cheatsheet-boxes {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  float: left;
-}
-
-@media (min-width: 1300px) {
-  .cheatsheet-container > div {
-    width: 33%;
-  }
-  .cheatsheet-boxes {
-    flex-direction: column;
-  }
-}
-
-.cheatsheet-shortcut {
-  overflow: hidden;
-  margin: 10px 0;
-}
-
-.cheatsheet-icon.tool-icon {
-  float: left;
-
-  height: 30px;
-  width: 30px;
-  margin: 0 10px 0 0;
-  background-size: 30px 30px;
-}
-
-.cheatsheet-description {
-  color: white;
-  font-size : 14px;
-  margin-left: 10px;
-  line-height : 30px;
-}
-
-.cheatsheet-key {
-  box-sizing: border-box;
-  display : inline-block;
-  height: 30px;
-  line-height: 26px;
-  padding: 0 10px;
-
-  border : 2px solid white;
-  border-radius: 2px;
-
-  text-align: center;
-  font-family: monospace;
-  font-weight: bold;
-  font-size : 18px;
-  color: white;
-}
-
-.cheatsheet-shorcut-conflict .cheatsheet-key {
-  border-color: red;
-  color: red;
-}
-
-.cheatsheet-shortcut-editable {
-  cursor : pointer;
-}
-
-.cheatsheet-shortcut-editable .cheatsheet-key {
-  border-color: #039BE5;
-  color: #039BE5;
-}
-
-.cheatsheet-shortcut-editing .cheatsheet-key {
-  animation: fade .5s infinite;
-}
-
-.cheatsheet-shortcut-undefined .cheatsheet-key {
-  border-color: red;
-  color: red;
-}
-
-/*Cheatsheet actions*/
-
-.cheatsheet-actions {
-  position: absolute;
-  box-sizing: border-box;
-
-  bottom : 0;
-  left : 0;
-  right : 0;
-  height : 46px;
-
-  padding : 10px;
-  overflow: hidden;
-
-  background-color : #039BE5;
-}
-
-.cheatsheet-helptext {
-  font-size: 14px;
-  height : 26px;
-  line-height : 26px;
-  color: black;
-}
-
-.cheatsheet-helptext-tooltip {
-  text-align: left;
-}
-
-.cheatsheet-helptext-tooltip-item {
-  line-height: 0.9em;
-  margin: 10px 0;
-}
-
-.cheatsheet-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-
-
-.cheatsheet-icon-tool-circle {
-  background-image: url(../img/icons/tools/tool-circle.png);
-}
-
-.cheatsheet-icon-tool-colorpicker {
-  background-image: url(../img/icons/tools/tool-colorpicker.png);
-}
-
-.cheatsheet-icon-tool-colorswap {
-  background-image: url(../img/icons/tools/tool-colorswap.png);
-}
-
-.cheatsheet-icon-tool-dithering {
-  background-image: url(../img/icons/tools/tool-dithering.png);
-}
-
-.cheatsheet-icon-tool-noise {
-  background-image: url(../img/icons/tools/tool-noise.png);
-}
-
-.cheatsheet-icon-tool-noise-fill {
-  background-image: url(../img/icons/tools/tool-noise-fill.png);
-}
-
-
-.cheatsheet-icon-tool-eraser {
-  background-image: url(../img/icons/tools/tool-eraser.png);
-}
-
-.cheatsheet-icon-tool-lasso-select {
-  background-image: url(../img/icons/tools/tool-lasso-select.png);
-}
-
-.cheatsheet-icon-tool-lighten {
-  background-image: url(../img/icons/tools/tool-lighten.png);
-}
-
-.cheatsheet-icon-tool-move {
-  background-image: url(../img/icons/tools/tool-move.png);
-}
-
-.cheatsheet-icon-tool-paint-bucket {
-  background-image: url(../img/icons/tools/tool-paint-bucket.png);
-}
-
-.cheatsheet-icon-tool-pen {
-  background-image: url(../img/icons/tools/tool-pen.png);
-}
-
-.cheatsheet-icon-tool-rectangle-select {
-  background-image: url(../img/icons/tools/tool-rectangle-select.png);
-}
-
-.cheatsheet-icon-tool-rectangle {
-  background-image: url(../img/icons/tools/tool-rectangle.png);
-}
-
-.cheatsheet-icon-tool-shape-select {
-  background-image: url(../img/icons/tools/tool-shape-select.png);
-}
-
-.cheatsheet-icon-tool-stroke {
-  background-image: url(../img/icons/tools/tool-stroke.png);
-}
-
-.cheatsheet-icon-tool-vertical-mirror-pen {
-  background-image: url(../img/icons/tools/tool-vertical-mirror-pen.png);
-}
-
 #dialog-container.create-palette {
   width: 500px;
   height: 600px;

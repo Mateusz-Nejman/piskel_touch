@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Piskel</title>
+  <title>Piskel Touch Edition</title>
   <meta name="description" content="">
   <meta name="author" content="Julian Descottes">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
   <div
@@ -71,15 +72,12 @@
   @@include('templates/data-uri-export.html', {})
   @@include('templates/popup-preview.html', {})
 
-  <span class="cheatsheet-link icon-common-keyboard-gold"
-        rel="tooltip" data-placement="right" title="Keyboard shortcuts">&nbsp;</span>
   <div class="performance-link icon-common-warning-red"
        rel="tooltip" data-placement="left" title="Performance problem detected, learn more.">&nbsp;</div>
 
   <!-- dialogs partials -->
   @@include('templates/dialogs/browse-backups.html', {})
   @@include('templates/dialogs/browse-local.html', {})
-  @@include('templates/dialogs/cheatsheet.html', {})
   @@include('templates/dialogs/create-palette.html', {})
   @@include('templates/dialogs/import.html', {})
   @@include('templates/dialogs/performance-info.html', {})

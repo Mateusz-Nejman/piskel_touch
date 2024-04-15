@@ -2,10 +2,6 @@
   var ns = $.namespace('pskl.controller.dialogs');
 
   var dialogs = {
-    'cheatsheet' : {
-      template : 'templates/dialogs/cheatsheet.html',
-      controller : ns.CheatsheetController
-    },
     'create-palette' : {
       template : 'templates/dialogs/create-palette.html',
       controller : ns.CreatePaletteController
@@ -48,10 +44,6 @@
     var createPaletteShortcut = pskl.service.keyboard.Shortcuts.COLOR.CREATE_PALETTE;
     pskl.app.shortcutService.registerShortcut(createPaletteShortcut, this.onCreatePaletteShortcut_.bind(this));
 
-    var cheatsheetShortcut = pskl.service.keyboard.Shortcuts.MISC.CHEATSHEET;
-    pskl.app.shortcutService.registerShortcut(cheatsheetShortcut, this.onCheatsheetShortcut_.bind(this));
-    pskl.utils.Event.addEventListener('.cheatsheet-link', 'click', this.onCheatsheetShortcut_, this);
-
     // adding the .animated class here instead of in the markup to avoid an animation during app startup
     this.dialogWrapper_.classList.add('animated');
     pskl.utils.Event.addEventListener(this.dialogWrapper_, 'click', this.onWrapperClicked_, this);
@@ -59,10 +51,6 @@
 
   ns.DialogsController.prototype.onCreatePaletteShortcut_ = function () {
     this.toggleDialog_('create-palette');
-  };
-
-  ns.DialogsController.prototype.onCheatsheetShortcut_ = function () {
-    this.toggleDialog_('cheatsheet');
   };
 
   /**

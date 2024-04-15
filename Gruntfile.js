@@ -269,16 +269,15 @@ module.exports = function(grunt) {
      * DESKTOP BUILDS
      */
 
-    nwjs: {
-      windows : {
+    nwjs : {
+      win_x64 : {
         options: {
-          downloadUrl: 'https://dl.nwjs.io/',
-          version : "0.19.4",
-          build_dir: './dest/desktop/', // destination folder of releases.
-          win: true,
-          linux32: true,
-          linux64: true,
+          mode: "build",
+          version : "0.85.0",
           flavor: "normal",
+          platform: "win",
+          arch: "x64",
+          outDir: './dest/desktop/',
         },
         src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
       },
@@ -328,7 +327,7 @@ module.exports = function(grunt) {
   grunt.registerTask('merge-statics', ['concat:js', 'concat:css', 'uglify']);
   grunt.registerTask('build',  ['clean:prod', 'sprite', 'merge-statics', 'build-index.html', 'replace:mainPartial', 'replace:css', 'copy:prod']);
   grunt.registerTask('build-dev',  ['clean:dev', 'sprite', 'build-index.html', 'copy:dev']);
-  grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:windows']);
+  grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:win_x64']);
   grunt.registerTask('desktop-mac', ['clean:desktop', 'default', 'nwjs:macos']);
   grunt.registerTask('desktop-mac-old', ['clean:desktop', 'default', 'replace:desktop', 'nwjs:macos_old']);
 
@@ -345,5 +344,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test-local', ['test']);
 
   // Default task
-  grunt.registerTask('default', ['lint', 'build']);
+  grunt.registerTask('default', ['build']);
 };

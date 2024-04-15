@@ -16,7 +16,7 @@
   display: flex;
 
   position: absolute;
-  left: 100px; /* Reserve room for tools on the left edge of the screen. */
+  left: 106px; /* Reserve room for tools on the left edge of the screen. */
   top: 0;
   right: 50px; /* Reserve room for actions on the right edge of the screen. */
   bottom: 0;
@@ -24,7 +24,7 @@
 
 .left-column {
   vertical-align: top;
-  height: 100%;
+  height: calc(100vh - 40px);
   padding-right: 7px;
   flex-shrink: 0;
 }
@@ -37,7 +37,7 @@
 .right-column {
   box-sizing: border-box;
   vertical-align: top;
-  height: 100%;
+  height: calc(100vh - 40px);
   flex-shrink: 0;
 
   display: flex;
@@ -48,6 +48,8 @@
   padding-left: 10px;
   /* Add some padding for the absolutely positioned .cursor-coordinates */
   padding-bottom: 20px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .drawing-canvas-container {
@@ -71,13 +73,25 @@
   vertical-align: middle;
 }
 
-.left-sticky-section.sticky-section {
+.left-tools-section {
   left: 0;
-  max-width: 100px;
+  max-width: 104px;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
 }
 
-.left-sticky-section .tool-icon {
+.left-tools-section .table-wrap {
+  display: table;
+  height: 100%;
+}
+
+.left-tools-section .tool-icon {
   float: left;
+}
+
+.left-tools-section .vertical-centerer {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .cursor-coordinates {
@@ -156,6 +170,11 @@
 .options-wrapper,
 .palette-wrapper {
   float : left;
+}
+
+.palette-wrapper {
+  width: 75px;
+  height: 75px;
 }
 
 /**
