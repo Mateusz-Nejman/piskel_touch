@@ -40,6 +40,7 @@
         <div id="drawing-canvas-container" class="drawing-canvas-container canvas-container">
           <div class="canvas-background"></div>
         </div>
+        <div class="cursor-coordinates"></div>
       </div>
 
       <div class="column right-column">
@@ -48,7 +49,6 @@
         @@include('templates/transformations.html', {})
         @@include('templates/palettes-list.html', {})
         @@include('templates/touch-buttons.html', {})
-        <div class="pull-bottom cursor-coordinates"></div>
       </div>
     </div>
 
@@ -77,7 +77,6 @@
 
   <!-- dialogs partials -->
   @@include('templates/dialogs/browse-backups.html', {})
-  @@include('templates/dialogs/browse-local.html', {})
   @@include('templates/dialogs/create-palette.html', {})
   @@include('templates/dialogs/import.html', {})
   @@include('templates/dialogs/performance-info.html', {})
@@ -95,7 +94,6 @@
   @@include('templates/settings/export/png.html', {})
   @@include('templates/settings/export/gif.html', {})
   @@include('templates/settings/export/zip.html', {})
-  @@include('templates/settings/export/misc.html', {})
 
   <script type="text/javascript">
     @@include('piskel-boot.js', {})

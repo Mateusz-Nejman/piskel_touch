@@ -33,7 +33,7 @@
     var y = this.coordinates.y;
     var currentFrame = this.piskelController.getCurrentFrame();
     if (currentFrame.containsPixel(x, y)) {
-      html += x + ':' + y;
+      html += 'Cursor: (' + x + ':' + y + ') ';
       if (this.origin) {
         var dX = Math.abs(x - this.origin.x) + 1;
         var dY = Math.abs(y - this.origin.y) + 1;
@@ -43,7 +43,7 @@
 
     if (pskl.app.drawingController) {
       var zoom = pskl.app.drawingController.compositeRenderer.getZoom().toFixed(2);
-      html += '<div class="drawing-zoom">x' + zoom + '</div>';
+      html += 'Zoom (' + zoom + ') ';
     }
 
     this.coordinatesContainer.innerHTML = this.getFrameSizeHTML_() + html + this.getCurrentFrameIndexHTML_();
@@ -52,13 +52,13 @@
   ns.CursorCoordinatesController.prototype.getCurrentFrameIndexHTML_ = function () {
     var currentFrameIndex = this.piskelController.getCurrentFrameIndex() + 1;
     var frameCount = this.piskelController.getFrameCount();
-    return '<div class="frame-info">' + currentFrameIndex + '/' + frameCount + '</div>';
+    return 'Frame (' + currentFrameIndex + '/' + frameCount + ')';
   };
 
   ns.CursorCoordinatesController.prototype.getFrameSizeHTML_ = function () {
     var w = this.piskelController.getWidth();
     var h = this.piskelController.getHeight();
-    return '[' + w + 'x' + h + '] ';
+    return 'Size [' + w + 'x' + h + '] ';
   };
 
   ns.CursorCoordinatesController.prototype.onCursorMoved_ = function (event, x, y) {

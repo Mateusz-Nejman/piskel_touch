@@ -23,19 +23,6 @@
     return this.savingFlag_;
   };
 
-  ns.StorageService.prototype.saveToGallery = function (piskel) {
-    return this.delegateSave_(pskl.app.galleryStorageService, piskel);
-  };
-
-  // @deprecated, use saveToIndexedDb unless indexedDb is not available.
-  ns.StorageService.prototype.saveToLocalStorage = function (piskel) {
-    return this.delegateSave_(pskl.app.localStorageService, piskel);
-  };
-
-  ns.StorageService.prototype.saveToIndexedDb = function (piskel) {
-    return this.delegateSave_(pskl.app.indexedDbStorageService, piskel);
-  };
-
   ns.StorageService.prototype.saveToFileDownload = function (piskel) {
     return this.delegateSave_(pskl.app.fileDownloadStorageService, piskel);
   };

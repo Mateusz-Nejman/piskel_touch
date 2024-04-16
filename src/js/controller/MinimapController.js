@@ -22,6 +22,9 @@
     this.container.addEventListener('mousedown', this.onMinimapMousedown_.bind(this));
     document.body.addEventListener('mousemove', this.onMinimapMousemove_.bind(this));
     document.body.addEventListener('mouseup', this.onMinimapMouseup_.bind(this));
+    document.body.addEventListener('touchstart', this.onMinimapMousedown_.bind(this));
+    document.body.addEventListener('touchmove' , this.onMinimapMousemove_.bind(this));
+    document.body.addEventListener('touchend', this.onMinimapMouseup_.bind(this));
 
     $.subscribe(Events.ZOOM_CHANGED, this.renderMinimap_.bind(this));
   };
@@ -102,6 +105,12 @@
   ns.MinimapController.prototype.onMinimapMousemove_ = function (evt) {
     if (this.isVisible && this.isClicked) {
       var coords = this.getCoordinatesCenteredAround_(evt.clientX, evt.clientY);
+
+      if (evt.changedTouches !== undefined) {
+        const first = evt.changedTouches[0];
+        coords = this.getCoordinatesCenteredAround_(first.clientX, first.clientY);
+      }
+
       this.drawingController.setOffset(coords.x, coords.y);
     }
   };

@@ -63,6 +63,7 @@
       <div id="drawing-canvas-container" class="drawing-canvas-container canvas-container">
         <div class="canvas-background"></div>
       </div>
+      <div class="cursor-coordinates"></div>
     </div>
 
     <div class="column right-column">
@@ -194,7 +195,6 @@
   </h3>
   <ul class="tools-wrapper"></ul>
 </div>
-      <div class="pull-bottom cursor-coordinates"></div>
     </div>
   </div>
 
@@ -504,35 +504,6 @@
   <button class="button button-primary" data-action="load" data-snapshot-id="{{id}}">Load</button>
 </div>
 </div>
-</script>
-<script type="text/template" id="templates/dialogs/browse-local.html">
-<div class="dialog-wrapper">
-  <h3 class="dialog-head">
-    Browse Local Piskels
-    <span class="dialog-close">X</span>
-  </h3>
-  <div class="dialog-content" style="padding:10px 20px; font-size:1.5em; overflow: auto;">
-    <table class="local-piskel-list">
-      <thead>
-        <tr class="local-piskel-list-head">
-          <td class="local-piskel-name">Name</td>
-          <td class="local-piskel-save-date">Date</td>
-          <td colspan=2>Actions</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</div>
-</script>
-
-<script type="text/template" id="local-storage-item-template">
-<tr class="local-piskel-item">
-  <td class="local-piskel-name">{{name}}</td>
-  <td class="local-piskel-save-date">{{date}}</td>
-  <td><button type="button" data-action="load" data-name="{{name}}" class="button button-primary local-piskel-load-button">Load</button></td>
-  <td><button type="button" data-action="delete" data-name="{{name}}" class="button local-piskel-delete-button">Delete</button></td>
-</tr>
 </script>
 <script type="text/template" id="templates/dialogs/create-palette.html">
 <div class="dialog-wrapper">
@@ -1067,35 +1038,9 @@
 </div>
 </script>
 
-<!-- save-gallery-partial -->
-<script type="text/template" id="save-gallery-partial">
-<div class="settings-title">Save online</div>
-<div class="settings-item">
-  <input type="button" class="button button-primary" id="save-gallery-button" value="Save to your gallery" />
-  <div class="save-status save-online-status">Your piskel will be stored online in your gallery.</div>
-</div>
-</script>
-
 <script type="text/template" id="save-gallery-warning-partial">
 <div class="save-status-warning-icon icon-common-warning-red">&nbsp;</div>
 <div class="save-status-warning-text">Saving to the gallery might fail due to the sprite size.</div>
-</script>
-
-<!-- save-gallery-unavailable-partial -->
-<script type="text/template" id="save-gallery-unavailable-partial">
-<div class="settings-title">Save online</div>
-<div class="settings-item">
-  <div class="save-status">Login to <a href="https://www.piskelapp.com" target="_blank">piskelapp.com</a> to save and share your sprites online.</div>
-</div>
-</script>
-
-<!-- save-localstorage-partial -->
-<script type="text/template" id="save-localstorage-partial">
-<div class="settings-title">Save offline in Browser</div>
-<div class="settings-item">
-  <input type="button" class="button button-primary" id="save-localstorage-button" value="Save in Browser" />
-  <div class="save-status">Your piskel will be saved locally and will only be accessible from this browser.</div>
-</div>
 </script>
 
 <!-- save-desktop-partial -->
@@ -1118,15 +1063,6 @@
 </script>
 <script type="text/template" id="templates/settings/import.html">
 <div class="settings-section settings-section-import">
-  <div class="settings-title">
-    Load from Browser
-  </div>
-  <div class="settings-item">
-    <span>Load a <span class="import-highlight">local piskel</span> saved in this Browser</span>
-    <div class="import-section">
-      <button type="button" class="button  button-primary browse-local-button">Browse local saves</button>
-    </div>
-  </div>
   <div class="settings-title">
     Load .piskel file
   </div>
@@ -1184,7 +1120,6 @@
     <div class="export-tab tab-item" data-tab-id="gif">GIF</div>
     <div class="export-tab tab-item" data-tab-id="png">PNG</div>
     <div class="export-tab tab-item" data-tab-id="zip">Zip</div>
-    <div class="export-tab tab-item" data-tab-id="misc">Others</div>
   </div>
   <div class="export-panel tab-content"></div>
 </div>
@@ -1306,30 +1241,14 @@
 </div>
 </script>
 
-<script type="text/html" id="templates/settings/export/misc.html">
-<div class="export-panel-misc">
-  <div class="export-panel-header export-info">
-    Less usual export formats. Feedback and improvements welcome.
-  </div>
-  <div class="export-panel-section">
-    <div style="padding-bottom: 5px">
-      <span class="highlight">Export as C File: </span>
-      <span class="export-info">
-        C file with frame rendered as array.
-      </span>
-    </div>
-    <button type="button" class="button button-primary c-download-button">Download C file</button>
-  </div>
-</div>
-</script>
 
 <script type="text/javascript">
   (function () {
 
 /**
- * See @Gruntfile.js => after build, -2024-04-15-11-28 is replaced by the build version
+ * See @Gruntfile.js => after build, -2024-04-16-08-26 is replaced by the build version
  */
-var version = '-2024-04-15-11-28';
+var version = '-2024-04-16-08-26';
 var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
 if (versionHasNotBeenReplaced)  {
   version = '';

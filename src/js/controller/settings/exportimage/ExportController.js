@@ -13,10 +13,6 @@
     'zip' : {
       template : 'templates/settings/export/zip.html',
       controller : ns.ZipExportController
-    },
-    'misc' : {
-      template : 'templates/settings/export/misc.html',
-      controller : ns.MiscExportController
     }
   };
 

@@ -136,7 +136,6 @@
   "js/controller/settings/exportimage/GifExportController.js",
   "js/controller/settings/exportimage/PngExportController.js",
   "js/controller/settings/exportimage/ZipExportController.js",
-  "js/controller/settings/exportimage/MiscExportController.js",
   "js/controller/settings/exportimage/ExportController.js",
   "js/controller/settings/resize/ResizeController.js",
   "js/controller/settings/resize/DefaultSizeController.js",
@@ -149,7 +148,6 @@
   // Dialogs sub-controllers
   "js/controller/dialogs/AbstractDialogController.js",
   "js/controller/dialogs/CreatePaletteController.js",
-  "js/controller/dialogs/BrowseLocalController.js",
   "js/controller/dialogs/backups/steps/SelectSession.js",
   "js/controller/dialogs/backups/steps/SessionDetails.js",
   "js/controller/dialogs/backups/BrowseBackups.js",

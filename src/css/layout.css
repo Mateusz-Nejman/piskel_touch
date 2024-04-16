@@ -96,9 +96,15 @@
 
 .cursor-coordinates {
   color: var(--highlight-color);
+  background-color: rgba(0, 0, 0, 128);
   font-size: 12px;
   font-weight: bold;
   font-family: monospace;
+  position: fixed;
+  bottom: 6px;
+  right: auto;
+  left: auto;
+  z-index: 10;
 }
 
 .cursor-coordinates .drawing-zoom {

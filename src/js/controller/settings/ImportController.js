@@ -13,7 +13,6 @@
 
     this.hiddenOpenPiskelInput = document.querySelector('[name="open-piskel-input"]');
 
-    this.addEventListener('.browse-local-button', 'click', this.onBrowseLocalClick_);
     this.addEventListener('.browse-backups-button', 'click', this.onBrowseBackupsClick_);
     this.addEventListener('.file-input-button', 'click', this.onFileInputClick_);
 
@@ -51,13 +50,6 @@
 
   ns.ImportController.prototype.onOpenPiskelClick_ = function (evt) {
     this.hiddenOpenPiskelInput.click();
-  };
-
-  ns.ImportController.prototype.onBrowseLocalClick_ = function (evt) {
-    $.publish(Events.DIALOG_SHOW, {
-      dialogId : 'browse-local'
-    });
-    this.closeDrawer_();
   };
 
   ns.ImportController.prototype.onBrowseBackupsClick_ = function (evt) {

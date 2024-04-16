@@ -257,9 +257,15 @@ body {
 
 .cursor-coordinates {
   color: #039BE5;
+  background-color: rgba(0, 0, 0, 128);
   font-size: 12px;
   font-weight: bold;
   font-family: monospace;
+  position: fixed;
+  bottom: 6px;
+  right: auto;
+  left: auto;
+  z-index: 10;
 }
 
 .cursor-coordinates .drawing-zoom {
@@ -2027,57 +2033,6 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   margin-bottom: 0;
 }
 
-
-/************************************************************************************************/
-/* Browse local piskels panel                                                                   */
-/************************************************************************************************/
-
-#dialog-container.browse-local {
-  width: 700px;
-  height: 500px;
-  top : 50%;
-  left : 50%;
-  position : absolute;
-  margin-left: -350px;
-}
-
-.show #dialog-container.browse-local {
-  margin-top: -250px;
-}
-
-.local-piskel-list {
-  width: 100%;
-}
-
-.local-piskel-item {
-  height: 3em;
-}
-
-.local-piskel-name {
-  width: 40%;
-}
-
-.local-piskel-save-date {
-  font-weight : normal;
-}
-
-.local-piskel-list a {
-  text-decoration: none;
-}
-
-.local-piskel-list a:hover {
-  text-decoration: underline;
-}
-
-.local-piskel-list-head {
-  font-weight: bold;
-  color: #039BE5;
-}
-
-.local-piskel-load-button,
-.local-piskel-delete-button {
-  width : 75px;
-}
 #dialog-container.create-palette {
   width: 500px;
   height: 600px;

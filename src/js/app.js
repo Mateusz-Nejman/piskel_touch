@@ -59,8 +59,8 @@
       this.palettesListController = new pskl.controller.PalettesListController(this.currentColorsService);
       this.palettesListController.init();
 
-      //this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
-      //this.cursorCoordinatesController.init();
+      this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
+      this.cursorCoordinatesController.init();
 
       this.drawingController = new pskl.controller.DrawingController(
         this.piskelController,

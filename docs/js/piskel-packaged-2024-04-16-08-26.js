@@ -22915,7 +22915,7 @@ return Q;
     var y = this.coordinates.y;
     var currentFrame = this.piskelController.getCurrentFrame();
     if (currentFrame.containsPixel(x, y)) {
-      html += x + ':' + y;
+      html += 'Cursor: (' + x + ':' + y + ') ';
       if (this.origin) {
         var dX = Math.abs(x - this.origin.x) + 1;
         var dY = Math.abs(y - this.origin.y) + 1;
@@ -22925,7 +22925,7 @@ return Q;
 
     if (pskl.app.drawingController) {
       var zoom = pskl.app.drawingController.compositeRenderer.getZoom().toFixed(2);
-      html += '<div class="drawing-zoom">x' + zoom + '</div>';
+      html += 'Zoom (' + zoom + ') ';
     }
 
     this.coordinatesContainer.innerHTML = this.getFrameSizeHTML_() + html + this.getCurrentFrameIndexHTML_();
@@ -22934,13 +22934,13 @@ return Q;
   ns.CursorCoordinatesController.prototype.getCurrentFrameIndexHTML_ = function () {
     var currentFrameIndex = this.piskelController.getCurrentFrameIndex() + 1;
     var frameCount = this.piskelController.getFrameCount();
-    return '<div class="frame-info">' + currentFrameIndex + '/' + frameCount + '</div>';
+    return 'Frame (' + currentFrameIndex + '/' + frameCount + ')';
   };
 
   ns.CursorCoordinatesController.prototype.getFrameSizeHTML_ = function () {
     var w = this.piskelController.getWidth();
     var h = this.piskelController.getHeight();
-    return '[' + w + 'x' + h + '] ';
+    return 'Size [' + w + 'x' + h + '] ';
   };
 
   ns.CursorCoordinatesController.prototype.onCursorMoved_ = function (event, x, y) {
@@ -23216,7 +23216,6 @@ return Q;
 
   ns.DrawingController.prototype.onMousewheel_ = function (evt) {
     // Ratio between wheelDeltaY (mousewheel event) and deltaY (wheel event) is -40
-    console.log(evt);
     var delta;
     if (pskl.utils.UserAgent.isIE11) {
       delta = evt.wheelDelta;
@@ -24724,6 +24723,9 @@ return Q;
     this.container.addEventListener('mousedown', this.onMinimapMousedown_.bind(this));
     document.body.addEventListener('mousemove', this.onMinimapMousemove_.bind(this));
     document.body.addEventListener('mouseup', this.onMinimapMouseup_.bind(this));
+    document.body.addEventListener('touchstart', this.onMinimapMousedown_.bind(this));
+    document.body.addEventListener('touchmove' , this.onMinimapMousemove_.bind(this));
+    document.body.addEventListener('touchend', this.onMinimapMouseup_.bind(this));
 
     $.subscribe(Events.ZOOM_CHANGED, this.renderMinimap_.bind(this));
   };
@@ -24804,6 +24806,12 @@ return Q;
   ns.MinimapController.prototype.onMinimapMousemove_ = function (evt) {
     if (this.isVisible && this.isClicked) {
       var coords = this.getCoordinatesCenteredAround_(evt.clientX, evt.clientY);
+
+      if (evt.changedTouches !== undefined) {
+        const first = evt.changedTouches[0];
+        coords = this.getCoordinatesCenteredAround_(first.clientX, first.clientY);
+      }
+
       this.drawingController.setOffset(coords.x, coords.y);
     }
   };
@@ -26569,82 +26577,6 @@ return Q;
 ;(function () {
   var ns = $.namespace('pskl.controller.settings.exportimage');
 
-  var BLACK = '#000000';
-
-  ns.MiscExportController = function (piskelController) {
-    this.piskelController = piskelController;
-  };
-
-  pskl.utils.inherit(ns.MiscExportController, pskl.controller.settings.AbstractSettingController);
-
-  ns.MiscExportController.prototype.init = function () {
-    var cDownloadButton = document.querySelector('.c-download-button');
-    this.addEventListener(cDownloadButton, 'click', this.onDownloadCFileClick_);
-  };
-
-  ns.MiscExportController.prototype.onDownloadCFileClick_ = function (evt) {
-    var fileName = this.getPiskelName_() + '.c';
-    var cName = this.getPiskelName_().replace(' ','_');
-    var width = this.piskelController.getWidth();
-    var height = this.piskelController.getHeight();
-    var frameCount = this.piskelController.getFrameCount();
-
-    // Useful defines for C routines
-    var frameStr = '#include <stdint.h>\n\n';
-    frameStr += '#define ' + cName.toUpperCase() + '_FRAME_COUNT ' +  this.piskelController.getFrameCount() + '\n';
-    frameStr += '#define ' + cName.toUpperCase() + '_FRAME_WIDTH ' + width + '\n';
-    frameStr += '#define ' + cName.toUpperCase() + '_FRAME_HEIGHT ' + height + '\n\n';
-
-    frameStr += '/* Piskel data for \"' + this.getPiskelName_() + '\" */\n\n';
-
-    frameStr += 'static const uint32_t ' + cName.toLowerCase();
-    frameStr += '_data[' + frameCount + '][' + width * height + '] = {\n';
-
-    for (var i = 0 ; i < frameCount ; i++) {
-      var render = this.piskelController.renderFrameAt(i, true);
-      var context = render.getContext('2d');
-      var imgd = context.getImageData(0, 0, width, height);
-      var pix = imgd.data;
-
-      frameStr += '{\n';
-      for (var j = 0; j < pix.length; j += 4) {
-        frameStr += this.rgbToCHex(pix[j], pix[j + 1], pix[j + 2], pix[j + 3]);
-        if (j != pix.length - 4) {
-          frameStr += ', ';
-        }
-        if (((j + 4) % (width * 4)) === 0) {
-          frameStr += '\n';
-        }
-      }
-      if (i != (frameCount - 1)) {
-        frameStr += '},\n';
-      } else {
-        frameStr += '}\n';
-      }
-    }
-
-    frameStr += '};\n';
-    pskl.utils.BlobUtils.stringToBlob(frameStr, function(blob) {
-      pskl.utils.FileUtils.downloadAsFile(blob, fileName);
-    }.bind(this), 'application/text');
-  };
-
-  ns.MiscExportController.prototype.getPiskelName_ = function () {
-    return this.piskelController.getPiskel().getDescriptor().name;
-  };
-
-  ns.MiscExportController.prototype.rgbToCHex = function (r, g, b, a) {
-    var hexStr = '0x';
-    hexStr += ('00' + a.toString(16)).substr(-2);
-    hexStr += ('00' + b.toString(16)).substr(-2);
-    hexStr += ('00' + g.toString(16)).substr(-2);
-    hexStr += ('00' + r.toString(16)).substr(-2);
-    return hexStr;
-  };
-})();
-;(function () {
-  var ns = $.namespace('pskl.controller.settings.exportimage');
-
   var tabs = {
     'png' : {
       template : 'templates/settings/export/png.html',
@@ -26657,10 +26589,6 @@ return Q;
     'zip' : {
       template : 'templates/settings/export/zip.html',
       controller : ns.ZipExportController
-    },
-    'misc' : {
-      template : 'templates/settings/export/misc.html',
-      controller : ns.MiscExportController
     }
   };
 
@@ -26893,9 +26821,6 @@ return Q;
 
   var PARTIALS = {
     DESKTOP : 'save-desktop-partial',
-    GALLERY : 'save-gallery-partial',
-    GALLERY_UNAVAILABLE : 'save-gallery-unavailable-partial',
-    LOCALSTORAGE : 'save-localstorage-partial',
     FILEDOWNLOAD : 'save-file-download-partial'
   };
 
@@ -26918,14 +26843,10 @@ return Q;
     this.isPublicCheckbox = document.querySelector('input[name=save-public-checkbox]');
     this.updateDescriptorInputs_();
 
-    this.saveLocalStorageButton = document.querySelector('#save-localstorage-button');
-    this.saveGalleryButton = document.querySelector('#save-gallery-button');
     this.saveDesktopButton = document.querySelector('#save-desktop-button');
     this.saveDesktopAsNewButton = document.querySelector('#save-desktop-as-new-button');
     this.saveFileDownloadButton = document.querySelector('#save-file-download-button');
 
-    this.safeAddEventListener_(this.saveLocalStorageButton, 'click', this.saveToIndexedDb_);
-    this.safeAddEventListener_(this.saveGalleryButton, 'click', this.saveToGallery_);
     this.safeAddEventListener_(this.saveDesktopButton, 'click', this.saveToDesktop_);
     this.safeAddEventListener_(this.saveDesktopAsNewButton, 'click', this.saveToDesktopAsNew_);
     this.safeAddEventListener_(this.saveFileDownloadButton, 'click', this.saveToFileDownload_);
@@ -26936,18 +26857,8 @@ return Q;
       this.disableSaveButtons_();
     }
 
-    this.updateSaveToGalleryMessage_();
-
     $.subscribe(Events.BEFORE_SAVING_PISKEL, this.disableSaveButtons_.bind(this));
     $.subscribe(Events.AFTER_SAVING_PISKEL, this.enableSaveButtons_.bind(this));
-  };
-
-  ns.SaveController.prototype.updateSaveToGalleryMessage_ = function (spritesheetSize) {
-    var saveToGalleryStatus = document.querySelector('.save-online-status');
-    if (saveToGalleryStatus && pskl.app.performanceReportService.hasProblem()) {
-      var warningPartial = pskl.utils.Template.get('save-gallery-warning-partial');
-      saveToGalleryStatus.innerHTML = warningPartial;
-    }
   };
 
   ns.SaveController.prototype.insertSavePartials_ = function () {
@@ -26958,14 +26869,10 @@ return Q;
 
   ns.SaveController.prototype.getPartials_ = function () {
     if (pskl.utils.Environment.detectNodeWebkit()) {
-      return [PARTIALS.DESKTOP, PARTIALS.LOCALSTORAGE, PARTIALS.GALLERY_UNAVAILABLE];
+      return [PARTIALS.DESKTOP];
     }
 
-    if (pskl.app.isLoggedIn()) {
-      return [PARTIALS.GALLERY, PARTIALS.LOCALSTORAGE, PARTIALS.FILEDOWNLOAD];
-    }
-
-    return [PARTIALS.FILEDOWNLOAD, PARTIALS.LOCALSTORAGE, PARTIALS.GALLERY_UNAVAILABLE];
+    return [PARTIALS.FILEDOWNLOAD];
   };
 
   ns.SaveController.prototype.updateDescriptorInputs_ = function (evt) {
@@ -26985,24 +26892,10 @@ return Q;
   ns.SaveController.prototype.onSaveFormSubmit_ = function (evt) {
     evt.preventDefault();
     evt.stopPropagation();
-
-    if (pskl.app.isLoggedIn()) {
-      this.saveToGallery_();
-    } else {
-      this.saveToIndexedDb_();
-    }
   };
 
   ns.SaveController.prototype.saveToFileDownload_ = function () {
     this.saveTo_('saveToFileDownload', false);
-  };
-
-  ns.SaveController.prototype.saveToGallery_ = function () {
-    this.saveTo_('saveToGallery', false);
-  };
-
-  ns.SaveController.prototype.saveToIndexedDb_ = function () {
-    this.saveTo_('saveToIndexedDb', false);
   };
 
   ns.SaveController.prototype.saveToDesktop_ = function () {
@@ -27038,16 +26931,12 @@ return Q;
   };
 
   ns.SaveController.prototype.disableSaveButtons_ = function () {
-    this.setDisabled_(this.saveLocalStorageButton, true);
-    this.setDisabled_(this.saveGalleryButton, true);
     this.setDisabled_(this.saveDesktopButton, true);
     this.setDisabled_(this.saveDesktopAsNewButton, true);
     this.setDisabled_(this.saveFileDownloadButton, true);
   };
 
   ns.SaveController.prototype.enableSaveButtons_ = function () {
-    this.setDisabled_(this.saveLocalStorageButton, false);
-    this.setDisabled_(this.saveGalleryButton, false);
     this.setDisabled_(this.saveDesktopButton, false);
     this.setDisabled_(this.saveDesktopAsNewButton, false);
     this.setDisabled_(this.saveFileDownloadButton, false);
@@ -27087,7 +26976,6 @@ return Q;
 
     this.hiddenOpenPiskelInput = document.querySelector('[name="open-piskel-input"]');
 
-    this.addEventListener('.browse-local-button', 'click', this.onBrowseLocalClick_);
     this.addEventListener('.browse-backups-button', 'click', this.onBrowseBackupsClick_);
     this.addEventListener('.file-input-button', 'click', this.onFileInputClick_);
 
@@ -27125,13 +27013,6 @@ return Q;
 
   ns.ImportController.prototype.onOpenPiskelClick_ = function (evt) {
     this.hiddenOpenPiskelInput.click();
-  };
-
-  ns.ImportController.prototype.onBrowseLocalClick_ = function (evt) {
-    $.publish(Events.DIALOG_SHOW, {
-      dialogId : 'browse-local'
-    });
-    this.closeDrawer_();
   };
 
   ns.ImportController.prototype.onBrowseBackupsClick_ = function (evt) {
@@ -27469,64 +27350,6 @@ return Q;
 
   ns.CreatePaletteController.prototype.onNameInputChange_ = function (evt) {
     this.palette.name = pskl.utils.escapeHtml(this.nameInput.value);
-  };
-})();
-;(function () {
-  var ns = $.namespace('pskl.controller.dialogs');
-
-  ns.BrowseLocalController = function (piskelController) {};
-
-  pskl.utils.inherit(ns.BrowseLocalController, ns.AbstractDialogController);
-
-  ns.BrowseLocalController.prototype.init = function () {
-    this.superclass.init.call(this);
-
-    this.localStorageItemTemplate_ = pskl.utils.Template.get('local-storage-item-template');
-
-    this.service_ = pskl.app.indexedDbStorageService;
-    this.piskelList = document.querySelector('.local-piskel-list');
-
-    this.fillLocalPiskelsList_();
-
-    this.piskelList.addEventListener('click', this.onPiskelsListClick_.bind(this));
-  };
-
-  ns.BrowseLocalController.prototype.onPiskelsListClick_ = function (evt) {
-    var action = evt.target.getAttribute('data-action');
-    var name = evt.target.getAttribute('data-name');
-    if (action === 'load') {
-      if (window.confirm('This will erase your current piskel. Continue ?')) {
-        this.service_.load(name);
-        this.closeDialog();
-      }
-    } else if (action === 'delete') {
-      if (window.confirm('This will permanently DELETE this piskel from your computer. Continue ?')) {
-        this.service_.remove(name);
-        this.fillLocalPiskelsList_();
-      }
-    }
-  };
-
-  ns.BrowseLocalController.prototype.fillLocalPiskelsList_ = function () {
-    this.service_.getKeys().then(function (keys) {
-      var html = '';
-      keys.sort(function (k1, k2) {
-        if (k1.date < k2.date) {return 1;}
-        if (k1.date > k2.date) {return -1;}
-        return 0;
-      });
-
-      keys.forEach((function (key) {
-        var date = pskl.utils.DateUtils.format(key.date, '{{Y}}/{{M}}/{{D}} {{H}}:{{m}}');
-        html += pskl.utils.Template.replace(this.localStorageItemTemplate_, {
-          name : key.name,
-          date : date
-        });
-      }).bind(this));
-
-      var tableBody_ = this.piskelList.tBodies[0];
-      tableBody_.innerHTML = html;
-    }.bind(this));
   };
 })();
 ;(function () {
@@ -28603,10 +28426,6 @@ return Q;
     'create-palette' : {
       template : 'templates/dialogs/create-palette.html',
       controller : ns.CreatePaletteController
-    },
-    'browse-local' : {
-      template : 'templates/dialogs/browse-local.html',
-      controller : ns.BrowseLocalController
     },
     'import' : {
       template : 'templates/dialogs/import.html',
@@ -29783,19 +29602,6 @@ return Q;
 
   ns.StorageService.prototype.isSaving = function () {
     return this.savingFlag_;
-  };
-
-  ns.StorageService.prototype.saveToGallery = function (piskel) {
-    return this.delegateSave_(pskl.app.galleryStorageService, piskel);
-  };
-
-  // @deprecated, use saveToIndexedDb unless indexedDb is not available.
-  ns.StorageService.prototype.saveToLocalStorage = function (piskel) {
-    return this.delegateSave_(pskl.app.localStorageService, piskel);
-  };
-
-  ns.StorageService.prototype.saveToIndexedDb = function (piskel) {
-    return this.delegateSave_(pskl.app.indexedDbStorageService, piskel);
   };
 
   ns.StorageService.prototype.saveToFileDownload = function (piskel) {
@@ -34509,8 +34315,8 @@ ns.ToolsHelper = {
       this.palettesListController = new pskl.controller.PalettesListController(this.currentColorsService);
       this.palettesListController.init();
 
-      //this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
-      //this.cursorCoordinatesController.init();
+      this.cursorCoordinatesController = new pskl.controller.CursorCoordinatesController(this.piskelController);
+      this.cursorCoordinatesController.init();
 
       this.drawingController = new pskl.controller.DrawingController(
         this.piskelController,

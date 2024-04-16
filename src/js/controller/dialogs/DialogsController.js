@@ -6,10 +6,6 @@
       template : 'templates/dialogs/create-palette.html',
       controller : ns.CreatePaletteController
     },
-    'browse-local' : {
-      template : 'templates/dialogs/browse-local.html',
-      controller : ns.BrowseLocalController
-    },
     'import' : {
       template : 'templates/dialogs/import.html',
       controller : ns.importwizard.ImportWizard
