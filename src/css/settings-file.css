@@ -1,3 +1,61 @@
+/************************************************************************************************/
+/* Import panel                                                                                 */
+/************************************************************************************************/
+
+.import-section,
+.resize-section {
+  margin: 10px 0;
+}
+
+.file-input-button {
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.import-highlight {
+  font-weight: bold;
+  color: white;
+}
+
+
+.save-field {
+    width: 100%;
+  }
+  
+  .save-status {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    vertical-align: middle;
+    font-weight: normal;
+    text-shadow: none;
+    font-style: italic;
+  }
+  
+  .save-file-name {
+    white-space: nowrap;
+    font-weight: bold;
+    color: white;
+    font-style: normal;
+  }
+  
+  .save-desktop-file-name {
+      word-wrap: break-word;
+      font-weight: bold;
+      color: white;
+      font-style: normal;
+  }
+  
+  .save-status-warning-icon {
+    float: left;
+    margin-top: 5px;
+  }
+  
+  .save-status-warning-icon {
+    overflow: hidden;
+    padding-left: 10px;
+  }
+  
+
 /*******************************/
 /* Gif/Png Export Setting panel*/
 /*******************************/

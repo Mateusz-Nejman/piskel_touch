@@ -2,6 +2,10 @@
   var ns = $.namespace('pskl.controller.settings');
 
   var settings = {
+    'file' : {
+      template : 'templates/settings/file.html',
+      controller : ns.FileController
+    },
     'user' : {
       template : 'templates/settings/preferences.html',
       controller : ns.PreferencesController
@@ -10,22 +14,10 @@
       template : 'templates/settings/resize.html',
       controller : ns.resize.ResizeController
     },
-    'export' : {
-      template : 'templates/settings/export.html',
-      controller : ns.exportimage.ExportController
-    },
-    'import' : {
-      template : 'templates/settings/import.html',
-      controller : ns.ImportController
-    },
     'localstorage' : {
       template : 'templates/settings/localstorage.html',
       controller : ns.LocalStorageController
     },
-    'save' : {
-      template : 'templates/settings/save.html',
-      controller : ns.SaveController
-    }
   };
 
   var SEL_SETTING_CLS = 'has-expanded-drawer';

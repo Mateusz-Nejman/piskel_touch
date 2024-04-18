@@ -1,0 +1,81 @@
+<script type="text/template" id="templates/settings/file.html">
+    <div class="settings-section settings-section-file">
+        <div class="settings-title">
+            Open
+        </div>
+        <div class="settings-item">
+            <span>Load a <span class="import-highlight">piskel project</span> or image from your computer</span>
+    
+            <div class="import-section">
+            <button type="button" class="button  button-primary open-button">Open</button>
+            <span class="file-input-open-status"></span>
+            <input style="display:none"
+                type="file" name="open-input"
+                value="file" accept=".piskel,image/*"/>
+            </div>
+        </div>
+
+        <div class="settings-title">
+            Recover recent sessions
+        </div>
+        <div class="settings-item">
+            Browse backups of previous sessions.
+            <div style="margin-top:10px;">
+            <button type="button" class="button button-primary browse-backups-button">Browse backups</button>
+            </div>
+        </div>
+        <div class="settings-item"></div>
+        <form action="" method="POST" class="save-form" name="save-form">
+            <div class="settings-title">Save</div>
+            <div class="settings-item">
+            <div class="settings-form-section" style="overflow:hidden">
+                <label class="row" style="line-height:20px;">Title : </label>
+                <input id="save-name" type="text" class="save-field textfield" autocomplete="off" />
+            </div>
+            <div class="settings-form-section">
+                <label class="row" style="line-height:20px;">Description : </label>
+                <textarea id="save-description" class="save-field textfield"></textarea>
+            </div>
+            </div>
+        </form>
+        <div class="settings-item"></div>
+        <div class="settings-title">Export</div>
+        <div class="settings-item export-scale" title="Scale the animation for export"
+            rel="tooltip"
+            data-placement="top">
+        <label for="scale-input">Scale</label>
+        <input type="range" class="scale-input" name="scale-input" min="1"  max="32" step="1"/>
+        <span class="scale-text"></span>
+        </div>
+        <div class="settings-item export-resize">
+        <span class="resize-label">Resolution</span>
+        <input type="text" class="textfield  resize-field  resize-width" autocomplete="off" name="resize-width"/>
+        <div class="resize-label">x</div>
+        <input type="text" class="textfield  resize-field  resize-height" autocomplete="off" name="resize-height"/>
+        </div>
+        <div class="export-tabs tab-list">
+        <div class="export-tab tab-item" data-tab-id="gif">GIF</div>
+        <div class="export-tab tab-item" data-tab-id="png">PNG</div>
+        <div class="export-tab tab-item" data-tab-id="zip">Zip</div>
+        </div>
+        <div class="export-panel tab-content"></div>
+    </div>
+  </script>
+
+
+<!-- save-desktop-partial -->
+<script type="text/template" id="save-desktop-partial">
+    <div class="settings-item">
+      <input type="button" class="button button-primary" id="save-desktop-button" value="Save" />
+      <input type="button" class="button button-primary" id="save-desktop-as-new-button" value="Save as ..." />
+      <div class="save-status">Your sprite will be saved as a .piskel file.</div>
+    </div>
+  </script>
+
+<!-- save-file-download-partial -->
+<script type="text/template" id="save-file-download-partial">
+    <div class="settings-item">
+      <input type="button" class="button button-primary" id="save-file-download-button" value="Save" />
+      <div class="save-status">Your sprite will be downloaded as a .piskel file.</div>
+    </div>
+  </script>

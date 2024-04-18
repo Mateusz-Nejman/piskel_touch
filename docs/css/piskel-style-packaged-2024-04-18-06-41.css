@@ -547,7 +547,7 @@ body {
 }
 
 .right-sticky-section.expanded {
-  right: 280px;
+  right: 296px;
 }
 
 .right-sticky-section .tool-icon {
@@ -567,25 +567,21 @@ body {
 }
 
 .drawer-content {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: #444;
   height: 550px;
   max-height: 100%;
-  width: 280px;
+  width: 296px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   box-shadow: 0 0 5px 0 black;
-}
-
-.right-sticky-section.expanded .tool-icon {
-  padding-right: 1px;
 }
 
 .right-sticky-section .tool-icon.has-expanded-drawer {
   position: relative;
   background-color: #444;
   margin-right: 0;
-  padding-right: 2px;
   border-left : 3px solid #039BE5;
 }
 
@@ -790,6 +786,77 @@ body {
   text-decoration: none !important;
 }
 
+.resize-section-title {
+  vertical-align: top;
+  display: inline-block;
+  padding-top: 5px;
+  width: 25%;
+}
+
+.resize-anchor-container {
+  position: relative;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+/************************************************************************************************/
+/* Import panel                                                                                 */
+/************************************************************************************************/
+
+.import-section,
+.resize-section {
+  margin: 10px 0;
+}
+
+.file-input-button {
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.import-highlight {
+  font-weight: bold;
+  color: white;
+}
+
+
+.save-field {
+    width: 100%;
+  }
+  
+  .save-status {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    vertical-align: middle;
+    font-weight: normal;
+    text-shadow: none;
+    font-style: italic;
+  }
+  
+  .save-file-name {
+    white-space: nowrap;
+    font-weight: bold;
+    color: white;
+    font-style: normal;
+  }
+  
+  .save-desktop-file-name {
+      word-wrap: break-word;
+      font-weight: bold;
+      color: white;
+      font-style: normal;
+  }
+  
+  .save-status-warning-icon {
+    float: left;
+    margin-top: 5px;
+  }
+  
+  .save-status-warning-icon {
+    overflow: hidden;
+    padding-left: 10px;
+  }
+  
+
 /*******************************/
 /* Gif/Png Export Setting panel*/
 /*******************************/
@@ -952,74 +1019,6 @@ body {
   /* Override default textfield padding-right to keep the number spinners
      aligned to the right. */
   padding-right: 0;
-}
-
-/************************************************************************************************/
-/* Import panel                                                                                 */
-/************************************************************************************************/
-
-.import-section,
-.resize-section {
-  margin: 10px 0;
-}
-
-.file-input-button {
-  margin-right: 8px;
-  border-radius: 2px;
-}
-
-.import-highlight {
-  font-weight: bold;
-  color: white;
-}
-.resize-section-title {
-  vertical-align: top;
-  display: inline-block;
-  padding-top: 5px;
-  width: 25%;
-}
-
-.resize-anchor-container {
-  position: relative;
-  margin-top: 5px;
-  display: inline-block;
-}
-
-.save-field {
-  width: 100%;
-}
-
-.save-status {
-  margin-top: 10px;
-  margin-bottom: -10px;
-  vertical-align: middle;
-  font-weight: normal;
-  text-shadow: none;
-  font-style: italic;
-}
-
-.save-file-name {
-  white-space: nowrap;
-  font-weight: bold;
-  color: white;
-  font-style: normal;
-}
-
-.save-desktop-file-name {
-    word-wrap: break-word;
-    font-weight: bold;
-    color: white;
-    font-style: normal;
-}
-
-.save-status-warning-icon {
-  float: left;
-  margin-top: 5px;
-}
-
-.save-status-warning-icon {
-  overflow: hidden;
-  padding-left: 10px;
 }
 
 .tool-icon {
@@ -1288,7 +1287,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 18px;
   height: 18px;
 }
-.icon-settings-export-white {
+.icon-settings-file-white {
   background-image: url(../img/icons.png);
   background-position: -90px 0px;
   width: 46px;
@@ -1300,201 +1299,189 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-settings-open-folder-white {
+.icon-settings-resize-white {
   background-image: url(../img/icons.png);
   background-position: -46px -90px;
   width: 46px;
   height: 46px;
 }
-.icon-settings-resize-white {
+.icon-tool-circle {
   background-image: url(../img/icons.png);
   background-position: -136px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-settings-save-white {
+.icon-tool-colorpicker {
   background-image: url(../img/icons.png);
   background-position: -136px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-circle {
+.icon-tool-colorswap {
   background-image: url(../img/icons.png);
   background-position: 0px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-colorpicker {
+.icon-tool-dithering {
   background-image: url(../img/icons.png);
   background-position: -46px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-colorswap {
+.icon-tool-eraser {
   background-image: url(../img/icons.png);
   background-position: -92px -136px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-dithering {
+.icon-tool-lasso-select {
   background-image: url(../img/icons.png);
   background-position: -182px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-eraser {
+.icon-tool-lighten {
   background-image: url(../img/icons.png);
   background-position: -182px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-lasso-select {
+.icon-tool-move {
   background-image: url(../img/icons.png);
   background-position: -182px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-lighten {
+.icon-tool-noise-fill {
   background-image: url(../img/icons.png);
   background-position: 0px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-move {
+.icon-tool-noise {
   background-image: url(../img/icons.png);
   background-position: -46px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-noise-fill {
+.icon-tool-paint-bucket {
   background-image: url(../img/icons.png);
   background-position: -92px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-noise {
+.icon-tool-pen {
   background-image: url(../img/icons.png);
   background-position: -138px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-paint-bucket {
+.icon-tool-rectangle-select {
   background-image: url(../img/icons.png);
   background-position: -228px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-pen {
+.icon-tool-rectangle {
   background-image: url(../img/icons.png);
   background-position: -228px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle-select {
+.icon-tool-shape-select {
   background-image: url(../img/icons.png);
   background-position: -228px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle {
+.icon-tool-stroke {
   background-image: url(../img/icons.png);
   background-position: -228px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-shape-select {
+.icon-tool-vertical-mirror-pen {
   background-image: url(../img/icons.png);
   background-position: 0px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-stroke {
+.icon-touch-copy {
   background-image: url(../img/icons.png);
   background-position: -46px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-vertical-mirror-pen {
+.icon-touch-cut {
   background-image: url(../img/icons.png);
   background-position: -92px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-copy {
+.icon-touch-delete {
   background-image: url(../img/icons.png);
   background-position: -138px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-cut {
+.icon-touch-paste {
   background-image: url(../img/icons.png);
   background-position: -184px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-delete {
+.icon-touch-redo {
   background-image: url(../img/icons.png);
   background-position: -274px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-paste {
+.icon-touch-undo {
   background-image: url(../img/icons.png);
   background-position: -274px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-redo {
+.icon-touch-zoom-in {
   background-image: url(../img/icons.png);
   background-position: -274px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-undo {
+.icon-touch-zoom-out {
   background-image: url(../img/icons.png);
   background-position: -274px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-zoom-in {
+.icon-tool-center {
   background-image: url(../img/icons.png);
   background-position: -274px -184px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-zoom-out {
+.icon-tool-clone {
   background-image: url(../img/icons.png);
   background-position: 0px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-center {
+.icon-tool-crop {
   background-image: url(../img/icons.png);
   background-position: -46px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-clone {
+.icon-tool-flip {
   background-image: url(../img/icons.png);
   background-position: -92px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-crop {
-  background-image: url(../img/icons.png);
-  background-position: -138px -274px;
-  width: 46px;
-  height: 46px;
-}
-.icon-tool-flip {
-  background-image: url(../img/icons.png);
-  background-position: -184px -274px;
-  width: 46px;
-  height: 46px;
-}
 .icon-tool-rotate {
   background-image: url(../img/icons.png);
-  background-position: -230px -274px;
+  background-position: -138px -274px;
   width: 46px;
   height: 46px;
 }
@@ -1549,7 +1536,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }
-  .icon-settings-export-white {
+  .icon-settings-file-white {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }
@@ -1557,15 +1544,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }
-  .icon-settings-open-folder-white {
-    background-image: url(../img/icons@2x.png);
-    background-size: 320px 320px;
-  }
   .icon-settings-resize-white {
-    background-image: url(../img/icons@2x.png);
-    background-size: 320px 320px;
-  }
-  .icon-settings-save-white {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }

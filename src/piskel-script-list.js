@@ -136,11 +136,9 @@
   "js/controller/settings/exportimage/GifExportController.js",
   "js/controller/settings/exportimage/PngExportController.js",
   "js/controller/settings/exportimage/ZipExportController.js",
-  "js/controller/settings/exportimage/ExportController.js",
   "js/controller/settings/resize/ResizeController.js",
   "js/controller/settings/resize/DefaultSizeController.js",
-  "js/controller/settings/SaveController.js",
-  "js/controller/settings/ImportController.js",
+  "js/controller/settings/FileController.js",
 
   // Settings controller
   "js/controller/settings/SettingsController.js",

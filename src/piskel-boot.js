@@ -16,7 +16,10 @@
   window._onPiskelReady = function () {
     var loadingMask = document.getElementById('loading-mask');
     loadingMask.style.opacity = 0;
-    window.setTimeout(function () {loadingMask.parentNode.removeChild(loadingMask);}, 600);
+    window.setTimeout(function () {
+      loadingMask.parentNode.removeChild(loadingMask);
+      document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
+    }, 600);
     pskl.app.init();
     pskl._releaseVersion = '@@releaseVersion';
     // cleanup

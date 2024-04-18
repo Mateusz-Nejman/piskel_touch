@@ -10,18 +10,67 @@
   <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
+  <style id="loading-style">
+    
+    .lds-ring,
+    .lds-ring div {
+      box-sizing: border-box;
+    }
+    .lds-ring {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border: 8px solid currentColor;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: currentColor transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    
+      </style>
   <div
     id="loading-mask"
     style="
     position:fixed;
-    top:0;right:0;bottom:0;left:0;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background:black;
     opacity:1;
     text-align:center;
     z-index : 20000;
     transition:opacity 0.5s;
-    color:white;">
-      <span style="top:45%">Loading Piskel ...</span>
+    color:white;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   </div>
   @@include('templates/debug-header.html', {})
 
@@ -88,9 +137,7 @@
   @@include('templates/settings/preferences/misc.html', {})
   @@include('templates/settings/preferences/tile.html', {})
   @@include('templates/settings/resize.html', {})
-  @@include('templates/settings/save.html', {})
-  @@include('templates/settings/import.html', {})
-  @@include('templates/settings/export.html', {})
+  @@include('templates/settings/file.html', {})
   @@include('templates/settings/export/png.html', {})
   @@include('templates/settings/export/gif.html', {})
   @@include('templates/settings/export/zip.html', {})

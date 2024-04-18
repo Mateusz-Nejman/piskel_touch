@@ -10,18 +10,67 @@
   <link rel="icon" type="image/png" href="logo.png" />
 </head>
 <body>
+  <style id="loading-style">
+    
+    .lds-ring,
+    .lds-ring div {
+      box-sizing: border-box;
+    }
+    .lds-ring {
+      width: 80px;
+      height: 80px;
+      display: block;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border: 8px solid currentColor;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: currentColor transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    
+      </style>
   <div
     id="loading-mask"
     style="
     position:fixed;
-    top:0;right:0;bottom:0;left:0;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background:black;
     opacity:1;
     text-align:center;
     z-index : 20000;
     transition:opacity 0.5s;
-    color:white;">
-      <span style="top:45%">Loading Piskel ...</span>
+    color:white;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   </div>
   <style type="text/css">
   #main-wrapper {
@@ -281,6 +330,13 @@
       <div class="sticky-section-wrap">
         <div class="vertical-centerer">
   <div
+    data-setting="file"
+    class="tool-icon  icon-settings-file-white"
+    title="<span class='highlight'>PROJECT</span></br>Open, save or export"
+    rel="tooltip" data-placement="left" >
+  </div>
+  
+  <div
     data-setting="user"
     class="tool-icon icon-settings-gear-white"
     title="<span class='highlight'>PREFERENCES</span></br>"
@@ -293,28 +349,6 @@
     title="<span class='highlight'>RESIZE</span></br>Resize the drawing area"
     rel="tooltip" data-placement="left">
   </div>
-
-  <div
-    data-setting="save"
-    class="tool-icon  icon-settings-save-white"
-    title="<span class='highlight'>SAVE</span></br>Save to your gallery, save locally<br/>or export as a file"
-    rel="tooltip" data-placement="left" >
-  </div>
-
-  <div
-    data-setting="export"
-    class="tool-icon  icon-settings-export-white"
-    title="<span class='highlight'>EXPORT</span></br>Export as Image, as Spritesheet<br/>or as Animated GIF"
-    rel="tooltip" data-placement="left">
-  </div>
-
-  <div
-    data-setting="import"
-    class="tool-icon  icon-settings-open-folder-white"
-    title="<span class='highlight'>IMPORT</span></br>Import an existing image,<br/>an animated GIF or a .piskel file"
-    rel="tooltip" data-placement="left">
-  </div>
-
 </div>
         <div class="drawer vertical-centerer">
           <div class="drawer-content" id="drawer-container">
@@ -1094,116 +1128,87 @@
   </div>
 </script>
 
-  <script type="text/template" id="templates/settings/save.html">
-  <div class="settings-section settings-section-save">
-    <form action="" method="POST" class="save-form" name="save-form">
-      <div class="settings-title">Sprite Information</div>
-      <div class="settings-item">
-        <div class="settings-form-section" style="overflow:hidden">
-          <label class="row" style="line-height:20px;">Title : </label>
-          <input id="save-name" type="text" class="save-field textfield" autocomplete="off" />
+  <script type="text/template" id="templates/settings/file.html">
+    <div class="settings-section settings-section-file">
+        <div class="settings-title">
+            Open
         </div>
-        <div class="settings-form-section">
-          <label class="row" style="line-height:20px;">Description : </label>
-          <textarea id="save-description" class="save-field textfield"></textarea>
+        <div class="settings-item">
+            <span>Load a <span class="import-highlight">piskel project</span> or image from your computer</span>
+    
+            <div class="import-section">
+            <button type="button" class="button  button-primary open-button">Open</button>
+            <span class="file-input-open-status"></span>
+            <input style="display:none"
+                type="file" name="open-input"
+                value="file" accept=".piskel,image/*"/>
+            </div>
         </div>
-        <div class="settings-form-section  save-public-section">
-          <label class="row">
-            Public : <input type="checkbox" value="1" name="save-public-checkbox"/>
-          </label>
-        </div>
-      </div>
-    </form>
-  </div>
-</script>
 
-<script type="text/template" id="save-gallery-warning-partial">
-  <div class="save-status-warning-icon icon-common-warning-red">&nbsp;</div>
-  <div class="save-status-warning-text">Saving to the gallery might fail due to the sprite size.</div>
-</script>
+        <div class="settings-title">
+            Recover recent sessions
+        </div>
+        <div class="settings-item">
+            Browse backups of previous sessions.
+            <div style="margin-top:10px;">
+            <button type="button" class="button button-primary browse-backups-button">Browse backups</button>
+            </div>
+        </div>
+        <div class="settings-item"></div>
+        <form action="" method="POST" class="save-form" name="save-form">
+            <div class="settings-title">Save</div>
+            <div class="settings-item">
+            <div class="settings-form-section" style="overflow:hidden">
+                <label class="row" style="line-height:20px;">Title : </label>
+                <input id="save-name" type="text" class="save-field textfield" autocomplete="off" />
+            </div>
+            <div class="settings-form-section">
+                <label class="row" style="line-height:20px;">Description : </label>
+                <textarea id="save-description" class="save-field textfield"></textarea>
+            </div>
+            </div>
+        </form>
+        <div class="settings-item"></div>
+        <div class="settings-title">Export</div>
+        <div class="settings-item export-scale" title="Scale the animation for export"
+            rel="tooltip"
+            data-placement="top">
+        <label for="scale-input">Scale</label>
+        <input type="range" class="scale-input" name="scale-input" min="1"  max="32" step="1"/>
+        <span class="scale-text"></span>
+        </div>
+        <div class="settings-item export-resize">
+        <span class="resize-label">Resolution</span>
+        <input type="text" class="textfield  resize-field  resize-width" autocomplete="off" name="resize-width"/>
+        <div class="resize-label">x</div>
+        <input type="text" class="textfield  resize-field  resize-height" autocomplete="off" name="resize-height"/>
+        </div>
+        <div class="export-tabs tab-list">
+        <div class="export-tab tab-item" data-tab-id="gif">GIF</div>
+        <div class="export-tab tab-item" data-tab-id="png">PNG</div>
+        <div class="export-tab tab-item" data-tab-id="zip">Zip</div>
+        </div>
+        <div class="export-panel tab-content"></div>
+    </div>
+  </script>
+
 
 <!-- save-desktop-partial -->
 <script type="text/template" id="save-desktop-partial">
-  <div class="settings-title">Save as File</div>
-  <div class="settings-item">
-    <input type="button" class="button button-primary" id="save-desktop-button" value="Save" />
-    <input type="button" class="button button-primary" id="save-desktop-as-new-button" value="Save as ..." />
-    <div class="save-status">Your sprite will be saved as a .piskel file.</div>
-  </div>
-</script>
+    <div class="settings-item">
+      <input type="button" class="button button-primary" id="save-desktop-button" value="Save" />
+      <input type="button" class="button button-primary" id="save-desktop-as-new-button" value="Save as ..." />
+      <div class="save-status">Your sprite will be saved as a .piskel file.</div>
+    </div>
+  </script>
 
 <!-- save-file-download-partial -->
 <script type="text/template" id="save-file-download-partial">
-  <div class="settings-title">Save offline as File</div>
-  <div class="settings-item">
-    <input type="button" class="button button-primary" id="save-file-download-button" value="Save as .piskel" />
-    <div class="save-status">Your sprite will be downloaded as a .piskel file.</div>
-  </div>
-</script>
-  <script type="text/template" id="templates/settings/import.html">
-  <div class="settings-section settings-section-import">
-    <div class="settings-title">
-      Load .piskel file
-    </div>
     <div class="settings-item">
-      <span>Load a <span class="import-highlight">.piskel</span> file from your computer</span>
-
-      <div class="import-section">
-        <button type="button" class="button  button-primary open-piskel-button">Browse .piskel files</button>
-        <span class="file-input-open-piskel-status"></span>
-        <input style="display:none"
-          type="file" name="open-piskel-input"
-          value="file" accept=".piskel"/>
-      </div>
+      <input type="button" class="button button-primary" id="save-file-download-button" value="Save" />
+      <div class="save-status">Your sprite will be downloaded as a .piskel file.</div>
     </div>
-    <div class="settings-title">
-      Import From Picture
-    </div>
-    <div class="settings-item">
-      <div style="margin-top:5px;margin-bottom:5px;">Supports <span class="import-highlight">PNG, JPG, BMP, Animated GIF</span></div>
-      <div class="import-section">
-        <button type="button" class="button  button-primary file-input-button">Browse images</button>
-        <input style="display:none"
-          type="file" name="file-upload-input"
-          value="file" accept="image/*"/>
-      </div>
-    </div>
-    <div class="settings-title">
-      Recover recent sessions
-    </div>
-    <div class="settings-item">
-      Browse backups of previous sessions.
-      <div style="margin-top:10px;">
-        <button type="button" class="button button-primary browse-backups-button">Browse backups</button>
-      </div>
-    </div>
-  </div>
-</script>
-  <script type="text/html" id="templates/settings/export.html">
-  <div class="settings-section settings-section-export">
-    <div class="settings-title">Export</div>
-    <div class="settings-item export-scale" title="Scale the animation for export"
-        rel="tooltip"
-        data-placement="top">
-      <label for="scale-input">Scale</label>
-      <input type="range" class="scale-input" name="scale-input" min="1"  max="32" step="1"/>
-      <span class="scale-text"></span>
-    </div>
-    <div class="settings-item export-resize">
-      <span class="resize-label">Resolution</span>
-      <input type="text" class="textfield  resize-field  resize-width" autocomplete="off" name="resize-width"/>
-      <div class="resize-label">x</div>
-      <input type="text" class="textfield  resize-field  resize-height" autocomplete="off" name="resize-height"/>
-    </div>
-    <div class="export-tabs tab-list">
-      <div class="export-tab tab-item" data-tab-id="gif">GIF</div>
-      <div class="export-tab tab-item" data-tab-id="png">PNG</div>
-      <div class="export-tab tab-item" data-tab-id="zip">Zip</div>
-    </div>
-    <div class="export-panel tab-content"></div>
-  </div>
-</script>
-
+  </script>
   <script type="text/html" id="templates/settings/export/png.html">
   <div class="export-panel-png">
     <div class="export-panel-header export-info">Export your animation as a PNG spritesheet containing all frames.</div>
@@ -1325,9 +1330,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-04-16-08-26 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-04-18-06-41 is replaced by the build version
    */
-  var version = '-2024-04-16-08-26';
+  var version = '-2024-04-18-06-41';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
@@ -1340,7 +1345,10 @@
   window._onPiskelReady = function () {
     var loadingMask = document.getElementById('loading-mask');
     loadingMask.style.opacity = 0;
-    window.setTimeout(function () {loadingMask.parentNode.removeChild(loadingMask);}, 600);
+    window.setTimeout(function () {
+      loadingMask.parentNode.removeChild(loadingMask);
+      document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
+    }, 600);
     pskl.app.init();
     pskl._releaseVersion = '1.0';
     // cleanup
