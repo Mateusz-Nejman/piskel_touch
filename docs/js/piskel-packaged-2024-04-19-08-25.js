@@ -26762,12 +26762,8 @@ return Q;
     this.hiddenOpenInput = document.querySelector('[name="open-input"]');
     this.addEventListener('.browse-backups-button', 'click', this.onBrowseBackupsClick_);
     // different handlers, depending on the Environment
-    if (pskl.utils.Environment.detectNodeWebkit()) {
-      this.addEventListener('.open-button', 'click', this.openDesktop_);
-    } else {
-      this.addEventListener(this.hiddenOpenInput, 'change', this.onOpenChange_);
-      this.addEventListener('.open-button', 'click', this.onOpenClick_);
-    }
+    this.addEventListener(this.hiddenOpenInput, 'change', this.onOpenChange_);
+    this.addEventListener('.open-button', 'click', this.onOpenClick_);
 
     this.saveForm = document.querySelector('.save-form');
     this.insertSavePartials_();
