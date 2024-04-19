@@ -94,20 +94,18 @@
 
   .new-piskel-desktop {
     position: absolute;
-
     display: flex;
-    top: 7px;
-    right: 7px;
+    top: 3px;
+    right: 3px;
 
-    height: 26px;
-    width: 26px;
+    height: 30px;
+    width: 30px;
 
     border-radius: 3px;
     font-size: 22px;
     color: black;
     background: #039BE5;
     text-decoration: none;
-
     align-items: center;
     justify-content: center;
   }
@@ -1330,9 +1328,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-04-18-06-41 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-04-19-06-13 is replaced by the build version
    */
-  var version = '-2024-04-18-06-41';
+  var version = '-2024-04-19-06-13';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
@@ -1348,7 +1346,7 @@
     window.setTimeout(function () {
       loadingMask.parentNode.removeChild(loadingMask);
       document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
-    }, 600);
+    }, 300);
     pskl.app.init();
     pskl._releaseVersion = '1.0';
     // cleanup

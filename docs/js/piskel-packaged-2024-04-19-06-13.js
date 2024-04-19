@@ -24723,9 +24723,9 @@ return Q;
     this.container.addEventListener('mousedown', this.onMinimapMousedown_.bind(this));
     document.body.addEventListener('mousemove', this.onMinimapMousemove_.bind(this));
     document.body.addEventListener('mouseup', this.onMinimapMouseup_.bind(this));
-    document.body.addEventListener('touchstart', this.onMinimapMousedown_.bind(this));
-    document.body.addEventListener('touchmove' , this.onMinimapMousemove_.bind(this));
-    document.body.addEventListener('touchend', this.onMinimapMouseup_.bind(this));
+    this.container.addEventListener('touchstart', this.onMinimapMousedown_.bind(this));
+    this.container.addEventListener('touchmove' , this.onMinimapMousemove_.bind(this));
+    this.container.addEventListener('touchend', this.onMinimapMouseup_.bind(this));
 
     $.subscribe(Events.ZOOM_CHANGED, this.renderMinimap_.bind(this));
   };
