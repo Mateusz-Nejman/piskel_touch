@@ -112,7 +112,7 @@
   ns.FileController.prototype.onOpenChange_ = function (evt) {
     var files = this.hiddenOpenInput.files;
     if (files.length == 1) {
-      if (this.isPiskel(files[0])) {
+      if (this.isPiskel_(files[0])) {
         this.openPiskelFile_(files[0]);
       } else {
         this.onFileUploadChange_(evt);
