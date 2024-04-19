@@ -95,11 +95,11 @@
   .new-piskel-desktop {
     position: absolute;
     display: flex;
-    top: 3px;
-    right: 3px;
+    top: 7px;
+    right: 7px;
 
-    height: 30px;
-    width: 30px;
+    height: 26px;
+    width: 26px;
 
     border-radius: 3px;
     font-size: 22px;
@@ -108,6 +108,10 @@
     text-decoration: none;
     align-items: center;
     justify-content: center;
+  }
+
+  .new-piskel-desktop:visited {
+    color: black;
   }
 </style>
 <div class="fake-piskelapp-header">
@@ -1328,9 +1332,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-04-19-06-13 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-04-19-06-20 is replaced by the build version
    */
-  var version = '-2024-04-19-06-13';
+  var version = '-2024-04-19-06-20';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
