@@ -19,7 +19,7 @@
     window.setTimeout(function () {
       loadingMask.parentNode.removeChild(loadingMask);
       document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
-    }, 600);
+    }, 300);
     pskl.app.init();
     pskl._releaseVersion = '@@releaseVersion';
     // cleanup
