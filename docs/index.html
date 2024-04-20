@@ -953,7 +953,7 @@
       Piskel
       <span rel="tooltip" data-placement="bottom" title="View release notes">
         <a  class="settings-version" target="_blank"
-            href="https://github.com/piskelapp/piskel/releases/tag/v1.0">v1.0</a>
+            href="https://github.com/piskelapp/piskel/releases/tag/v1.1">v1.1</a>
       </span>
     </div>
   </div>
@@ -1139,7 +1139,7 @@
             <span>Load a <span class="import-highlight">piskel project</span> or image from your computer</span>
     
             <div class="import-section">
-            <button type="button" class="button  button-primary open-button">Open</button>
+            <button type="button" class="button  button-primary open-button">Open from disk</button>
             <span class="file-input-open-status"></span>
             <input style="display:none"
                 type="file" name="open-input"
@@ -1198,7 +1198,7 @@
 <!-- save-desktop-partial -->
 <script type="text/template" id="save-desktop-partial">
     <div class="settings-item">
-      <input type="button" class="button button-primary" id="save-desktop-button" value="Save" />
+      <input type="button" class="button button-primary" id="save-desktop-button" value="Save on disk" />
       <input type="button" class="button button-primary" id="save-desktop-as-new-button" value="Save as ..." />
       <div class="save-status">Your sprite will be saved as a .piskel file.</div>
     </div>
@@ -1207,7 +1207,7 @@
 <!-- save-file-download-partial -->
 <script type="text/template" id="save-file-download-partial">
     <div class="settings-item">
-      <input type="button" class="button button-primary" id="save-file-download-button" value="Save" />
+      <input type="button" class="button button-primary" id="save-file-download-button" value="Save on disk" />
       <div class="save-status">Your sprite will be downloaded as a .piskel file.</div>
     </div>
   </script>
@@ -1332,9 +1332,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-04-19-08-25 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-04-20-06-14 is replaced by the build version
    */
-  var version = '-2024-04-19-08-25';
+  var version = '-2024-04-20-06-14';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
@@ -1352,7 +1352,7 @@
       document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
     }, 300);
     pskl.app.init();
-    pskl._releaseVersion = '1.0';
+    pskl._releaseVersion = '1.1';
     // cleanup
     delete window.pskl_exports;
     delete window.loadDebugScripts;

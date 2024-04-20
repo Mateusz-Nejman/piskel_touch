@@ -23054,9 +23054,9 @@ return Q;
     window.addEventListener('mouseup', this.onMouseup_.bind(this));
     window.addEventListener('mousemove', this.onMousemove_.bind(this));
     window.addEventListener('keyup', this.onKeyup_.bind(this));
-    window.addEventListener('touchstart', this.onTouchstart_.bind(this));
-    window.addEventListener('touchmove' , this.onTouchmove_.bind(this));
-    window.addEventListener('touchend', this.onTouchend_.bind(this));
+    this.container.addEventListener('touchstart', this.onTouchstart_.bind(this));
+    this.container.addEventListener('touchmove' , this.onTouchmove_.bind(this));
+    this.container.addEventListener('touchend', this.onTouchend_.bind(this));
 
     // Deactivate right click:
     document.body.addEventListener('contextmenu', this.onCanvasContextMenu_.bind(this));

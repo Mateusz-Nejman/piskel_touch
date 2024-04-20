@@ -7,6 +7,6 @@ For original piskel, see **[piskelapp.com](https://www.piskelapp.com)**, **[GitH
 
 ### Changes
 
-* Touch support is main goal of this repo. Tested in dell latitude 7390
+* Touch support is main goal of this repo. Tested on Dell Latitude 7390
 * New tools
-* Changes designed for mine better work
+* Changes designed for personal better work
