@@ -131,6 +131,8 @@
       this.stateQueue = [];
       this.currentIndex = -1;
     }
+
+    $.publish(Events.FORCE_REFRESH, null);
   };
 
   ns.HistoryService.prototype.logError_ = function (error) {

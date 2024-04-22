@@ -11891,6 +11891,8 @@ var Events = {
   HISTORY_STATE_SAVED: 'HISTORY_STATE_SAVED',
   HISTORY_STATE_LOADED: 'HISTORY_STATE_LOADED',
 
+  FORCE_REFRESH: 'FORCE_REFRESH',
+
   PEN_SIZE_CHANGED : 'PEN_SIZE_CHANGED',
 
   /**
@@ -23026,6 +23028,7 @@ return Q;
 
     $.subscribe(Events.USER_SETTINGS_CHANGED, this.onUserSettingsChange_.bind(this));
     $.subscribe(Events.FRAME_SIZE_CHANGED, this.onFrameSizeChange_.bind(this));
+    $.subscribe(Events.FORCE_REFRESH, this.forceRefresh_.bind(this));
 
     var shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(shortcuts.MISC.RESET_ZOOM, this.resetZoom_.bind(this));
@@ -23113,6 +23116,15 @@ return Q;
 
   ns.DrawingController.prototype.onTouchend_ = function (event) {
     this.onMouseup_(event);
+  };
+
+  ns.DrawingController.prototype.forceRefresh_ = function(event) {
+    this.currentToolBehavior.moveUnactiveToolAt(
+      0, 0,
+      this.piskelController.getCurrentFrame(),
+      this.overlayFrame,
+      event
+    );
   };
 
   /**
@@ -30260,6 +30272,8 @@ return Q;
       this.stateQueue = [];
       this.currentIndex = -1;
     }
+
+    $.publish(Events.FORCE_REFRESH, null);
   };
 
   ns.HistoryService.prototype.logError_ = function (error) {

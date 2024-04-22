@@ -60,6 +60,7 @@
 
     $.subscribe(Events.USER_SETTINGS_CHANGED, this.onUserSettingsChange_.bind(this));
     $.subscribe(Events.FRAME_SIZE_CHANGED, this.onFrameSizeChange_.bind(this));
+    $.subscribe(Events.FORCE_REFRESH, this.forceRefresh_.bind(this));
 
     var shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(shortcuts.MISC.RESET_ZOOM, this.resetZoom_.bind(this));
@@ -147,6 +148,15 @@
 
   ns.DrawingController.prototype.onTouchend_ = function (event) {
     this.onMouseup_(event);
+  };
+
+  ns.DrawingController.prototype.forceRefresh_ = function(event) {
+    this.currentToolBehavior.moveUnactiveToolAt(
+      0, 0,
+      this.piskelController.getCurrentFrame(),
+      this.overlayFrame,
+      event
+    );
   };
 
   /**
