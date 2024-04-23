@@ -4,6 +4,7 @@
   // Core libraries
   "js/lib/jquery-1.8.0.js",
   "js/lib/jquery-ui-1.10.3.custom.js",
+  "js/lib/jquery.ui.touch-punch.js",
   "js/lib/pubsub.js",
   "js/lib/bootstrap/bootstrap.js",
 
