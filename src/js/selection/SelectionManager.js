@@ -84,8 +84,7 @@
     if (this.currentSelection && this.piskelController.getCurrentFrame()) {
       this.currentSelection.fillSelectionFromFrame(this.piskelController.getCurrentFrame());
       navigator.clipboard.writeText(this.currentSelection.stringify()).then(() => {
-        if (event.type == Events.CLIPBOARD_CUT)
-        {
+        if (event.type == Events.CLIPBOARD_CUT) {
           this.erase();
         }
       });
@@ -105,7 +104,7 @@
             event.stopPropagation();
             return;
           }
-  
+
           if (/^text\/plain/i.test(type)) {
             this.pasteText_(item, type);
             event.stopPropagation();
@@ -116,9 +115,8 @@
         // Some of the clipboard APIs are not available on Safari/IE
         // Allow Piskel to fallback on local currentSelection pasting.
       }
-  
+
       // temporarily keeping this code path for tests and fallbacks.
-      console.log(this.currentSelection);
       if (this.currentSelection && this.currentSelection.hasPastedContent) {
         this.pastePixelsOnCurrentFrame_(this.currentSelection.pixels);
       }
@@ -146,15 +144,59 @@
           // without synchronizing it to the clipboard.
           // TODO: the selection should store the origin of the selection and the selection itself
           // separately.
-          pixels = this.currentSelection.pixels;
+
+          let noColor = false;
+          let firstRow = 0;
+          let firstCol = 0;
+
+          for (let a = 0; a < this.currentSelection.pixels.length; a++) {
+            const p = this.currentSelection.pixels[a];
+
+            if (a == 0) {
+              firstRow = p.row;
+              firstCol = p.col;
+            } else {
+              firstRow = Math.min(firstRow, p.row);
+              firstCol = Math.min(firstCol, p.col);
+            }
+
+            if (p.color === undefined) {
+              noColor = true;
+            }
+          }
+
+          if (!noColor) {
+            pixels = this.currentSelection.pixels;
+          }
+
+          let firstPixelRow = 0;
+          let firstPixelCol = 0;
+
+          for (let a = 0; a < pixels.length; a++) {
+            const p = pixels[a];
+
+            if (a == 0) {
+              firstPixelRow = p.row;
+              firstPixelCol = p.col;
+            } else {
+              firstPixelRow = Math.min(firstPixelRow, p.row);
+              firstPixelCol = Math.min(firstPixelCol, p.col);
+            }
+          }
+
+          pixels.forEach(p => {
+            const rowRelative = p.row - firstPixelRow;
+            const colRelative = p.col - firstPixelCol;
+            p.row = firstRow + rowRelative;
+            p.col = firstCol + colRelative;
+          });
         }
-  
+
         if (pixels) {
           // If the current clipboard data is some random text, pixels will not be defined.
           this.pastePixelsOnCurrentFrame_(pixels);
         }
       });
-      
     });
   };
 
