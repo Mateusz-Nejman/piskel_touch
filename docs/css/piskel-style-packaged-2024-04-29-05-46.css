@@ -1053,6 +1053,7 @@ body {
  */
 
 .tool-paint-bucket .drawing-canvas-container:hover,
+.tool-outliner .drawing-canvas-container:hover,
 .tool-colorswap .drawing-canvas-container:hover {
   cursor: url(../img/cursors/paint-bucket.png) 14 14, pointer;
 }
@@ -1365,123 +1366,129 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 46px;
   height: 46px;
 }
-.icon-tool-paint-bucket {
+.icon-tool-outliner {
   background-image: url(../img/icons.png);
   background-position: -92px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-pen {
+.icon-tool-paint-bucket {
   background-image: url(../img/icons.png);
   background-position: -138px -182px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle-select {
+.icon-tool-pen {
   background-image: url(../img/icons.png);
   background-position: -228px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rectangle {
+.icon-tool-rectangle-select {
   background-image: url(../img/icons.png);
   background-position: -228px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-shape-select {
+.icon-tool-rectangle {
   background-image: url(../img/icons.png);
   background-position: -228px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-stroke {
+.icon-tool-shape-select {
   background-image: url(../img/icons.png);
   background-position: -228px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-vertical-mirror-pen {
+.icon-tool-stroke {
   background-image: url(../img/icons.png);
   background-position: 0px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-copy {
+.icon-tool-vertical-mirror-pen {
   background-image: url(../img/icons.png);
   background-position: -46px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-cut {
+.icon-touch-copy {
   background-image: url(../img/icons.png);
   background-position: -92px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-delete {
+.icon-touch-cut {
   background-image: url(../img/icons.png);
   background-position: -138px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-paste {
+.icon-touch-delete {
   background-image: url(../img/icons.png);
   background-position: -184px -228px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-redo {
+.icon-touch-paste {
   background-image: url(../img/icons.png);
   background-position: -274px 0px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-undo {
+.icon-touch-redo {
   background-image: url(../img/icons.png);
   background-position: -274px -46px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-zoom-in {
+.icon-touch-undo {
   background-image: url(../img/icons.png);
   background-position: -274px -92px;
   width: 46px;
   height: 46px;
 }
-.icon-touch-zoom-out {
+.icon-touch-zoom-in {
   background-image: url(../img/icons.png);
   background-position: -274px -138px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-center {
+.icon-touch-zoom-out {
   background-image: url(../img/icons.png);
   background-position: -274px -184px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-clone {
+.icon-tool-center {
   background-image: url(../img/icons.png);
   background-position: 0px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-crop {
+.icon-tool-clone {
   background-image: url(../img/icons.png);
   background-position: -46px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-flip {
+.icon-tool-crop {
   background-image: url(../img/icons.png);
   background-position: -92px -274px;
   width: 46px;
   height: 46px;
 }
-.icon-tool-rotate {
+.icon-tool-flip {
   background-image: url(../img/icons.png);
   background-position: -138px -274px;
+  width: 46px;
+  height: 46px;
+}
+.icon-tool-rotate {
+  background-image: url(../img/icons.png);
+  background-position: -184px -274px;
   width: 46px;
   height: 46px;
 }
@@ -1585,6 +1592,10 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
     background-size: 320px 320px;
   }
   .icon-tool-noise {
+    background-image: url(../img/icons@2x.png);
+    background-size: 320px 320px;
+  }
+  .icon-tool-outliner {
     background-image: url(../img/icons@2x.png);
     background-size: 320px 320px;
   }

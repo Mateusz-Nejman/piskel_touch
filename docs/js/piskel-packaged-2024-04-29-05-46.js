@@ -13802,6 +13802,76 @@ if (!Uint32Array.prototype.fill) {
     },
 
     /**
+     * Apply the outliner tool in a frame at the (col, row) initial position
+     * with the replacement color.
+     *
+     * @param frame pskl.model.Frame The frame target in which we want to paintbucket
+     * @param col number Column coordinate in the frame
+     * @param row number Row coordinate in the frame
+     * @param replacementColor string Hexadecimal color used to fill the area
+     * @param fillCorners boolean If true, also paint corner pixels
+     *
+     * @return an array of the pixel coordinates paint with the replacement color
+     */
+    outlineSimilarConnectedPixelsFromFrame: function(frame, col, row, replacementColor, fillCorners) {
+      /**
+       * Acts like floodfill, except that a given pixel is only painted if it has at
+       * least one non-filled-color neighbor.
+       * 
+       */
+      if (typeof replacementColor == 'string') {
+        replacementColor = pskl.utils.colorToInt(replacementColor);
+      }
+
+      if (fillCorners===undefined) {
+        fillCorners = false;
+      }
+
+      var targetColor;
+      try {
+        targetColor = frame.getPixel(col, row);
+      } catch (e) {
+        // Frame out of bound exception.
+      }
+
+      if (targetColor === null || targetColor == replacementColor) {
+        return;
+      }
+
+      var atLeastOneNeighborHasNonTargetColor = function(pixel) {
+        for (var y = -1; y <= 1; y++ ) {
+          for (var x = -1; x <= 1; x++ ) {
+            if (x != 0 || y != 0) {
+              if (fillCorners || (x == 0 || y == 0)) {
+                try {
+                  var pixelColor = frame.getPixel(pixel.col + x, pixel.row + y);
+                  if ( pixelColor !== null && pixelColor !== targetColor) {
+                    return true;
+                  }
+                } catch (e) {
+                  // Frame out of bound exception.
+                }
+              }
+            }
+          }
+        }
+        return false;
+      };
+
+      var pixels = pskl.PixelUtils.getSimilarConnectedPixelsFromFrame(frame, col, row);
+      pixels = pixels.filter(pixel => atLeastOneNeighborHasNonTargetColor(pixel));
+
+      var paintedPixels = [];
+
+      for (var pixel of pixels) {
+        frame.setPixel(pixel.col, pixel.row, replacementColor);
+        paintedPixels.push(pixel);
+      }
+
+      return paintedPixels;
+    },
+
+    /**
      * Starting from a provided origin, visit connected pixels using a visitor function.
      * After visiting a pixel, select the 4 connected pixels (up, right, down, left).
      * Call the provided visitor on each pixel. The visitor should return true if the
@@ -25178,7 +25248,8 @@ return Q;
       new pskl.tools.drawing.DitheringTool(),
       new pskl.tools.drawing.ColorPicker(),
       new pskl.tools.drawing.NoiseTool(),
-      new pskl.tools.drawing.NoiseFillTool()
+      new pskl.tools.drawing.NoiseFillTool(),
+      new pskl.tools.drawing.Outliner()
     ];
 
     this.toolIconBuilder = new pskl.tools.ToolIconBuilder();
@@ -33791,7 +33862,45 @@ ns.ToolsHelper = {
     pskl.PixelUtils.paintNoiseSimilarConnectedPixelsFromFrame(frame, replayData.col, replayData.row);
   };
 })();
-;(function () {
+;/**
+ * @provide pskl.tools.drawing.Outliner
+ *
+ * @require pskl.utils
+ */
+(function() {
+  var ns = $.namespace('pskl.tools.drawing');
+
+  ns.Outliner = function() {
+    this.toolId = 'tool-outliner';
+    this.helpText = 'Outliner tool';
+    this.shortcut = pskl.service.keyboard.Shortcuts.TOOL.OUTLINER;
+    this.tooltipDescriptors = [
+      {key : 'ctrl', description : 'Fill corners'}
+    ];
+  };
+
+  pskl.utils.inherit(ns.Outliner, ns.BaseTool);
+
+  /**
+     * @override
+     */
+  ns.Outliner.prototype.applyToolAt = function(col, row, frame, overlay, event) {
+    var fillCorners = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+    var color = this.getToolColor();
+    pskl.PixelUtils.outlineSimilarConnectedPixelsFromFrame(frame, col, row, color, fillCorners);
+
+    this.raiseSaveStateEvent({
+      col : col,
+      row : row,
+      color : color,
+      fillCorners: fillCorners
+    });
+  };
+
+  ns.Outliner.prototype.replay = function (frame, replayData) {
+    pskl.PixelUtils.outlineSimilarConnectedPixelsFromFrame(frame, replayData.col, replayData.row, replayData.color, replayData.fillCorners);
+  };
+})();;(function () {
   var ns = $.namespace('pskl.tools.transform');
 
   ns.AbstractTransformTool = function () {};

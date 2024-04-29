@@ -235,6 +235,7 @@
   "js/tools/drawing/DitheringTool.js",
   "js/tools/drawing/NoiseTool.js",
   "js/tools/drawing/NoiseFillTool.js",
+  "js/tools/drawing/Outliner.js",
   "js/tools/transform/AbstractTransformTool.js",
   "js/tools/transform/Center.js",
   "js/tools/transform/Clone.js",
