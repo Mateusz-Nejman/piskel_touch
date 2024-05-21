@@ -1,7 +1,7 @@
 Piskel Touch Edition
 ======
 
-**[Github Pages](https://mateusz-nejman.github.io/piskel/)**
+**[Github Pages](https://mateusz-nejman.github.io/piskel_touch/)**
 
 For original piskel, see **[piskelapp.com](https://www.piskelapp.com)**, **[GitHub](https://github.com/piskelapp/piskel)**
 

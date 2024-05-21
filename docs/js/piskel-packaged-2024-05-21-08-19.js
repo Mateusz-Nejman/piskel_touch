@@ -24055,6 +24055,7 @@ return Q;
       this.piskelController.toggleFrameVisibilityAt(index);
     }
 
+    $.publish(Events.FORCE_REFRESH, null);
     this.flagForRedraw_();
   };
 
