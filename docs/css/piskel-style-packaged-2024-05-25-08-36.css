@@ -3961,6 +3961,16 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   height: 100%;
 }
 
+.preview-list-wrapper .buttons
+{
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  width: 100px;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
 .top-overflow,
 .bottom-overflow {
   height: 20px;
@@ -4087,18 +4097,25 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   color: black;
 }
 
-.preview-tile .tile-overlay.delete-frame-action {
-   top: 0;
-   right: 0;
+.duplicate-frame-action, .delete-frame-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
    border-bottom-left-radius: 3px;
    cursor: pointer;
+   z-index: 10;
+   background-color: rgba(100, 100, 100, 0.6);
+   opacity: 1.0;
+   height: 30px;
+   width: 50px;
+   border: none;
+   display: block;
 }
 
-.preview-tile .tile-overlay.duplicate-frame-action {
-   bottom: 0;
-   right: 0;
-   border-bottom-left-radius: 3px;
-   cursor: pointer;
+.duplicate-frame-action .icon, .delete-frame-action .icon {
+  width: 30px;
+  height: 30px;
 }
 
 .preview-tile .tile-overlay.dnd-action {

@@ -23949,6 +23949,8 @@ return Q;
     this.piskelController = piskelController;
     this.container = container;
     this.previewList = container.querySelector('#preview-list');
+    this.duplicateButton = container.querySelector('.duplicate-frame-action');
+    this.deleteButton = container.querySelector('.delete-frame-action');
     this.refreshZoom_();
 
     this.redrawFlag = true;
@@ -23972,6 +23974,9 @@ return Q;
     this.previewListScroller = document.querySelector('#preview-list-scroller');
     this.previewListScroller.addEventListener('scroll', this.updateScrollerOverflows.bind(this));
     this.container.addEventListener('click', this.onContainerClick_.bind(this));
+    this.duplicateButton.addEventListener('click', this.onDuplicateClick_.bind(this));
+    this.deleteButton.addEventListener('click', this.onDeleteClick_.bind(this));
+
     this.updateScrollerOverflows();
   };
 
@@ -24024,26 +24029,33 @@ return Q;
     this.container.classList.toggle('bottom-overflow-visible', overflowBottom);
   };
 
+  ns.FramesListController.prototype.onDuplicateClick_ = function () {
+    const index = this.piskelController.getCurrentFrameIndex();
+    this.piskelController.duplicateFrameAt(index);
+    const clonedTile = this.createPreviewTile_(index + 1);
+    this.previewList.insertBefore(clonedTile, this.tiles[index].nextSibling);
+    this.tiles.splice(index, 0, clonedTile);
+    this.updateScrollerOverflows();
+  };
+
+  ns.FramesListController.prototype.onDeleteClick_ = function () {
+    const index = this.piskelController.getCurrentFrameIndex();
+    this.piskelController.removeFrameAt(index);
+    this.previewList.removeChild(this.tiles[index]);
+    this.tiles.splice(index, 1);
+    this.updateScrollerOverflows();
+  };
   ns.FramesListController.prototype.onContainerClick_ = function (event) {
     var target = pskl.utils.Dom.getParentWithData(event.target, 'tileAction');
     if (!target) {
       return;
     }
+
+    //getCurrentFrameIndex
     var action = target.dataset.tileAction;
     var index = parseInt(target.dataset.tileNumber, 10);
 
-    if (action === ACTION.CLONE) {
-      this.piskelController.duplicateFrameAt(index);
-      var clonedTile = this.createPreviewTile_(index + 1);
-      this.previewList.insertBefore(clonedTile, this.tiles[index].nextSibling);
-      this.tiles.splice(index, 0, clonedTile);
-      this.updateScrollerOverflows();
-    } else if (action === ACTION.DELETE) {
-      this.piskelController.removeFrameAt(index);
-      this.previewList.removeChild(this.tiles[index]);
-      this.tiles.splice(index, 1);
-      this.updateScrollerOverflows();
-    } else if (action === ACTION.SELECT && !this.justDropped) {
+    if (action === ACTION.SELECT && !this.justDropped) {
       this.piskelController.setCurrentFrameIndex(index);
     } else if (action === ACTION.NEW_FRAME) {
       this.piskelController.addFrame();
@@ -24211,31 +24223,6 @@ return Q;
     canvasContainer.appendChild(canvasBackground);
     canvasContainer.appendChild(this.getCanvasForFrame(currentFrame));
     previewTileRoot.appendChild(canvasContainer);
-
-    // Add clone button
-    var cloneFrameButton = document.createElement('button');
-    cloneFrameButton.setAttribute('rel', 'tooltip');
-    cloneFrameButton.setAttribute('data-placement', 'right');
-    cloneFrameButton.setAttribute('data-tile-number', tileNumber);
-    cloneFrameButton.setAttribute('data-tile-action', ACTION.CLONE);
-    cloneFrameButton.setAttribute('title', 'Duplicate this frame');
-    cloneFrameButton.className = 'tile-overlay duplicate-frame-action icon-frame-duplicate-white';
-    previewTileRoot.appendChild(cloneFrameButton);
-
-    // Add delete button
-    var deleteButton = document.createElement('button');
-    deleteButton.setAttribute('rel', 'tooltip');
-    deleteButton.setAttribute('data-placement', 'right');
-    deleteButton.setAttribute('title', 'Delete this frame');
-    deleteButton.setAttribute('data-tile-number', tileNumber);
-    deleteButton.setAttribute('data-tile-action', ACTION.DELETE);
-    deleteButton.className = 'tile-overlay delete-frame-action icon-frame-recyclebin-white';
-    previewTileRoot.appendChild(deleteButton);
-
-    // Add 'dragndrop handle'.
-    var dndHandle = document.createElement('div');
-    dndHandle.className = 'tile-overlay dnd-action icon-frame-dragndrop-white' ;
-    previewTileRoot.appendChild(dndHandle);
 
     // Add tile count
     var tileCount = document.createElement('button');

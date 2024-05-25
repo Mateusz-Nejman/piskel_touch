@@ -51,6 +51,10 @@
   <div id="column-wrapper" class="column-wrapper">
     <div class='column left-column'>
       <div id="preview-list-wrapper" class="preview-list-wrapper">
+<div class="buttons">
+  <button rel="tooltip" class="tile-overlay duplicate-frame-action" data-original-title="Duplicate this frame"><div class="icon icon-frame-duplicate-white"></div></button>
+  <button rel="tooltip" class="tile-overlay delete-frame-action" data-original-title="Delete this frame"><div class="icon icon-frame-recyclebin-white"></div></button>
+</div>
 <div id="preview-list-scroller" class="preview-list-scroller">
   <ul class="preview-list" id="preview-list"></ul>
 </div>
@@ -1202,9 +1206,9 @@
   (function () {
 
 /**
- * See @Gruntfile.js => after build, -2024-05-21-08-19 is replaced by the build version
+ * See @Gruntfile.js => after build, -2024-05-25-08-36 is replaced by the build version
  */
-var version = '-2024-05-21-08-19';
+var version = '-2024-05-25-08-36';
 var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
 if (versionHasNotBeenReplaced)  {
   version = '';
