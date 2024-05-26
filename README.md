@@ -7,7 +7,7 @@ For original piskel, see **[piskelapp.com](https://www.piskelapp.com)**, **[GitH
 
 ## Differences
 - Touch support (tested on Dell Latitude 7390 2-in-1)
-- New tools (Pixelart noise, Outline from ![gingerbeardman/piskel-playdate](https://github.com/gingerbeardman/piskel-playdate))
+- New tools (Pixelart noise, Outline from [gingerbeardman/piskel-playdate](https://github.com/gingerbeardman/piskel-playdate))
 - Date removed from saving filename
 - Theme changed to blue color (I like it)
 - Touch buttons for copy/cut/paste/delete/undo/redo actions
