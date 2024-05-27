@@ -26,7 +26,7 @@
       var oldColor = frame.getPixel(col, row);
       var newColor = this.getToolColor();
 
-      var allLayers = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+      var allLayers = event.ctrlKey;
       var allFrames = event.shiftKey;
       this.swapColors_(oldColor, newColor, allLayers, allFrames);
 

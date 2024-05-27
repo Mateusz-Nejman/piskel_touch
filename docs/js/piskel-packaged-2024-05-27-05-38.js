@@ -12938,17 +12938,20 @@ if (!Uint32Array.prototype.fill) {
   var ns = $.namespace('pskl.utils');
 
   ns.Environment = {
-    detectNodeWebkit : function () {
-      var isNode = (typeof window.process !== 'undefined' && typeof window.require !== 'undefined');
-      var isNodeWebkit = false;
-      if (isNode) {
-        try {
-          isNodeWebkit = (typeof window.require('nw.gui') !== 'undefined');
-        } catch (e) {
-          isNodeWebkit = false;
-        }
+    detectElectron : function () {
+      if (typeof window !== 'undefined' && typeof window.process !== 'undefined' && window.process.type === 'renderer') {
+        return true;
       }
-      return isNodeWebkit;
+
+      if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+        return true;
+      }
+
+      if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
+        return true;
+      }
+
+      return false;
     },
 
     isIntegrationTest : function () {
@@ -13125,12 +13128,15 @@ if (!Uint32Array.prototype.fill) {
      */
     saveToFile : function(content, filename) {
       var deferred = Q.defer();
-      var fs = window.require('fs');
-      fs.writeFile(filename, content, function (err) {
-        if (err) {
-          deferred.reject('FileUtilsDesktop::savetoFile() - error saving file: ' + filename + ' Error: ' + err);
-        } else {
-          deferred.resolve();
+      window.electron.writeFile({
+        fileName: filename,
+        content: content,
+        endFunc : function(err) {
+          if (err) {
+            deferred.reject('FileUtilsDesktop::savetoFile() - error saving file: ' + filename + ' Error: ' + err);
+          } else {
+            deferred.resolve();
+          }
         }
       });
 
@@ -13139,13 +13145,15 @@ if (!Uint32Array.prototype.fill) {
 
     readFile : function(filename) {
       var deferred = Q.defer();
-      var fs = window.require('fs');
-      // NOTE: currently loading everything as utf8, which may not be desirable in future
-      fs.readFile(filename, 'utf8', function (err, data) {
-        if (err) {
-          deferred.reject('FileUtilsDesktop::readFile() - error reading file: ' + filename + ' Error: ' + err);
-        } else {
-          deferred.resolve(data);
+      window.electron.readFile({
+        fileName: filename,
+        encoding: 'utf8',
+        endFunc: function (err, data) {
+          if (err) {
+            deferred.reject('FileUtilsDesktop::readFile() - error reading file: ' + filename + ' Error: ' + err);
+          } else {
+            deferred.resolve(data);
+          }
         }
       });
       return deferred.promise;
@@ -14206,7 +14214,7 @@ if (!Uint32Array.prototype.fill) {
           function (piskel) {
             // if using Node-Webkit, store the savePath on load
             // Note: the 'path' property is unique to Node-Webkit, and holds the full path
-            if (pskl.utils.Environment.detectNodeWebkit()) {
+            if (pskl.utils.Environment.detectElectron()) {
               piskel.savePath = file.path;
             }
             onSuccess(piskel);
@@ -14468,10 +14476,6 @@ if (!Uint32Array.prototype.fill) {
     if (descriptor.key) {
       tpl = pskl.utils.Template.get('tooltip-modifier-descriptor-template');
       descriptor.key = descriptor.key.toUpperCase();
-      if (pskl.utils.UserAgent.isMac) {
-        descriptor.key = descriptor.key.replace('CTRL', 'CMD');
-        descriptor.key = descriptor.key.replace('ALT', 'OPTION');
-      }
     } else {
       tpl = pskl.utils.Template.get('tooltip-simple-descriptor-template');
     }
@@ -23597,7 +23601,7 @@ return Q;
     delta = delta || 0;
     var modifier = (delta / 120);
 
-    if (pskl.utils.UserAgent.isMac ? evt.metaKey : evt.ctrlKey) {
+    if (evt.ctrlKey) {
       modifier = modifier * 5;
       // prevent default to prevent the default browser UI resize
       evt.preventDefault();
@@ -27253,7 +27257,7 @@ return Q;
   };
 
   ns.FileController.prototype.getPartials_ = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
+    if (pskl.utils.Environment.detectElectron()) {
       return [PARTIALS.DESKTOP];
     }
 
@@ -29920,7 +29924,7 @@ return Q;
   };
 
   ns.StorageService.prototype.onOpenKey_ = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
+    if (pskl.utils.Environment.detectElectron()) {
       pskl.app.desktopStorageService.openPiskel();
     }
     // no other implementation for now
@@ -29930,7 +29934,7 @@ return Q;
     var piskel = this.piskelController.getPiskel();
     if (pskl.app.isLoggedIn()) {
       this.saveToGallery(this.piskelController.getPiskel());
-    } else if (pskl.utils.Environment.detectNodeWebkit()) {
+    } else if (pskl.utils.Environment.detectElectron()) {
       this.saveToDesktop(this.piskelController.getPiskel());
     } else {
       // saveToLocalStorage might display a native confirm dialog
@@ -29944,7 +29948,7 @@ return Q;
   };
 
   ns.StorageService.prototype.onSaveAsKey_ = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
+    if (pskl.utils.Environment.detectElectron()) {
       this.saveToDesktop(this.piskelController.getPiskel(), true);
     }
     // no other implementation for now
@@ -30231,9 +30235,20 @@ return Q;
       return this.saveAtPath_(piskel, piskel.savePath);
     } else {
       var name = piskel.getDescriptor().name;
-      var filenamePromise = pskl.utils.FileUtilsDesktop.chooseFilenameDialog(name, PISKEL_EXTENSION);
-      return filenamePromise.then(this.saveAtPath_.bind(this, piskel));
+      var promise = this.saveDialog(name);
+      return promise.then((e, d) => {
+        if (!e.canceled) {
+          return this.saveAtPath_(piskel, e.filePath);
+        }
+      });
     }
+  };
+
+  ns.DesktopStorageService.prototype.saveDialog = function (name) {
+    return window.electron.openDialog('saveDialog', {
+      defaultPath: name,
+      filters: [{extensions: ['piskel'], name: 'Piskel file'}]
+    });
   };
 
   ns.DesktopStorageService.prototype.saveAtPath_ = function (piskel, savePath) {
@@ -30446,27 +30461,30 @@ return Q;
   };
 
   ns.BeforeUnloadService.prototype.init = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
-      // Add a dedicated listener to window 'close' event in nwjs environment.
-      var win = require('nw.gui').Window.get();
-      win.on('close', this.onNwWindowClose.bind(this, win));
+    if (pskl.utils.Environment.detectElectron()) {
+      window.electron.handle('close', (event, data) => {
+        const onClose = this.onElectronWindowClose();
+        if (onClose) {
+          window.electron.send('closeEmit', 'closeEmit');
+          return true;
+        }
+
+        return false;
+      });
     }
 
     window.addEventListener('beforeunload', this.onBeforeUnload.bind(this));
   };
 
-  /**
-   * In nw.js environment "onbeforeunload" is not triggered when closing the window.
-   * Polyfill the behavior here.
-   */
-  ns.BeforeUnloadService.prototype.onNwWindowClose = function (win) {
+  ns.BeforeUnloadService.prototype.onElectronWindowClose = function () {
     var msg = this.onBeforeUnload();
-    if (msg) {
+    if (msg !== undefined) {
       if (!window.confirm(msg)) {
         return false;
       }
     }
-    win.close(true);
+
+    return true;
   };
 
   ns.BeforeUnloadService.prototype.onBeforeUnload = function (evt) {
@@ -30482,6 +30500,8 @@ return Q;
       }
       return confirmationMessage;
     }
+
+    return undefined;
   };
 
 })();
@@ -31322,7 +31342,7 @@ return Q;
     },
 
     isCtrlKeyPressed_ : function (evt) {
-      return pskl.utils.UserAgent.isMac ? evt.metaKey : evt.ctrlKey;
+      return evt.ctrlKey;
     }
   };
 })();
@@ -32707,7 +32727,7 @@ ns.ToolsHelper = {
     }
 
     var step = oncePerPixel ? DEFAULT_STEP * 2 : DEFAULT_STEP;
-    var isDarken = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+    var isDarken = event.ctrlKey;
 
     var color;
     if (isDarken) {
@@ -32748,7 +32768,7 @@ ns.ToolsHelper = {
     var mirroredCol = this.getSymmetricCol_(col, frame);
     var mirroredRow = this.getSymmetricRow_(row, frame);
 
-    var hasCtrlKey = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+    var hasCtrlKey = event.ctrlKey;
     if (!hasCtrlKey) {
       this.drawUsingPenSize(color, mirroredCol, row, frame, overlay);
     }
@@ -33181,7 +33201,7 @@ ns.ToolsHelper = {
     var colDiff = col - this.startCol;
     var rowDiff = row - this.startRow;
 
-    var ctrlKey = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+    var ctrlKey = event.ctrlKey;
     pskl.tools.ToolsHelper.getTargetFrames(ctrlKey, event.shiftKey).forEach(function (f) {
       // for the current frame, the backup clone should be reused as reference
       // the current frame has been modified by the user action already
@@ -33694,7 +33714,7 @@ ns.ToolsHelper = {
       var oldColor = frame.getPixel(col, row);
       var newColor = this.getToolColor();
 
-      var allLayers = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+      var allLayers = event.ctrlKey;
       var allFrames = event.shiftKey;
       this.swapColors_(oldColor, newColor, allLayers, allFrames);
 
@@ -33873,7 +33893,7 @@ ns.ToolsHelper = {
      * @override
      */
   ns.Outliner.prototype.applyToolAt = function(col, row, frame, overlay, event) {
-    var fillCorners = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
+    var fillCorners = event.ctrlKey;
     var color = this.getToolColor();
     pskl.PixelUtils.outlineSimilarConnectedPixelsFromFrame(frame, col, row, color, fillCorners);
 
@@ -33897,7 +33917,7 @@ ns.ToolsHelper = {
 
   ns.AbstractTransformTool.prototype.applyTransformation = function (evt) {
     var allFrames = evt.shiftKey;
-    var allLayers = pskl.utils.UserAgent.isMac ?  evt.metaKey : evt.ctrlKey;
+    var allLayers = evt.ctrlKey;
 
     this.applyTool_(evt.altKey, allFrames, allLayers);
 
@@ -34785,13 +34805,6 @@ ns.ToolsHelper = {
 
       if (pskl.devtools) {
         pskl.devtools.init();
-      }
-
-      if (pskl.utils.Environment.detectNodeWebkit() && pskl.utils.UserAgent.isMac) {
-        var gui = require('nw.gui');
-        var mb = new gui.Menu({type : 'menubar'});
-        mb.createMacBuiltin('Piskel');
-        gui.Window.get().menu = mb;
       }
 
       if (!pskl.utils.Environment.isIntegrationTest() && pskl.utils.UserAgent.isUnsupported()) {

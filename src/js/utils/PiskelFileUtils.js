@@ -24,7 +24,7 @@
           function (piskel) {
             // if using Node-Webkit, store the savePath on load
             // Note: the 'path' property is unique to Node-Webkit, and holds the full path
-            if (pskl.utils.Environment.detectNodeWebkit()) {
+            if (pskl.utils.Environment.detectElectron()) {
               piskel.savePath = file.path;
             }
             onSuccess(piskel);

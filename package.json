@@ -1,7 +1,6 @@
 {
   "name": "piskel_touch",
-  "version": "1.1",
-  "chromium-args": "--disable-features=nw2",
+  "version": "2.0.0",
   "description": "Piskel Touch Edition",
   "author": "Mateusz Nejman <mateusz_nejman@hotmail.com>",
   "contributors": [
@@ -22,20 +21,21 @@
     "piskel-root": "./misc/scripts/piskel-root",
     "piskel-cli": "./cli/index.js"
   },
-  "main": "./dest/prod/index.html",
+  "main": "./src/electron.js",
   "scripts": {
     "test": "grunt test",
     "dev": "grunt play",
-    "start": "grunt build && nw",
+    "start": "grunt build && electron .",
     "preversion": "grunt test build",
     "postversion": "git push && git push --tags && npm publish",
     "release": "grunt && node ./bin/copy-to-piskel-website",
-    "build": "grunt desktop && change_icon.bat",
-    "build:mac": "grunt desktop-mac",
+    "build": "grunt desktop && electron-builder build --win",
     "format": "grunt eslint --fix"
   },
   "devDependencies": {
     "dateformat": "4.5.1",
+    "electron": "^30.0.8",
+    "electron-builder": "24.6.3",
     "fs-extra": "10.0.0",
     "grunt": "1.6.1",
     "grunt-casperjs": "^2.2.1",
@@ -44,15 +44,14 @@
     "grunt-contrib-concat": "2.1.0",
     "grunt-contrib-connect": "4.0.0",
     "grunt-contrib-copy": "1.0.0",
-    "grunt-contrib-uglify": "5.2.2",
     "grunt-contrib-jshint": "3.0.0",
+    "grunt-contrib-uglify": "5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "23.0.0",
     "grunt-include-replace": "5.0.0",
     "grunt-jscs": "3.0.1",
     "grunt-karma": "4.0.2",
     "grunt-leading-indent": "0.2.0",
-    "grunt-nw-builder": "4.6.1",
     "grunt-replace": "2.0.2",
     "grunt-spritesmith": "^6.9.0",
     "jasmine-core": "3.8.0",
@@ -60,18 +59,10 @@
     "karma-jasmine": "4.0.1",
     "karma-phantomjs-launcher": "1.0.4",
     "load-grunt-tasks": "5.1.0",
-    "nw": "0.85.0",
     "phantomjs": "2.1.7",
     "phantomjs-polyfill-object-assign": "0.0.2",
     "promise-polyfill": "8.2.0",
     "rmdir": "1.2.0"
-  },
-  "window": {
-    "title": "Piskel Touch Edition",
-    "icon": "dest/prod/logo.png",
-    "toolbar": false,
-    "width": 1000,
-    "height": 700
   },
   "dependencies": {
     "minimist": "^1.2.5"

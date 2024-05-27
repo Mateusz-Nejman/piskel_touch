@@ -26,10 +26,6 @@
     if (descriptor.key) {
       tpl = pskl.utils.Template.get('tooltip-modifier-descriptor-template');
       descriptor.key = descriptor.key.toUpperCase();
-      if (pskl.utils.UserAgent.isMac) {
-        descriptor.key = descriptor.key.replace('CTRL', 'CMD');
-        descriptor.key = descriptor.key.replace('ALT', 'OPTION');
-      }
     } else {
       tpl = pskl.utils.Template.get('tooltip-simple-descriptor-template');
     }
