@@ -8,17 +8,20 @@
   var ns = $.namespace('pskl.utils');
 
   ns.Environment = {
-    detectNodeWebkit : function () {
-      var isNode = (typeof window.process !== 'undefined' && typeof window.require !== 'undefined');
-      var isNodeWebkit = false;
-      if (isNode) {
-        try {
-          isNodeWebkit = (typeof window.require('nw.gui') !== 'undefined');
-        } catch (e) {
-          isNodeWebkit = false;
-        }
+    detectElectron : function () {
+      if (typeof window !== 'undefined' && typeof window.process !== 'undefined' && window.process.type === 'renderer') {
+        return true;
       }
-      return isNodeWebkit;
+
+      if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+        return true;
+      }
+
+      if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
+        return true;
+      }
+
+      return false;
     },
 
     isIntegrationTest : function () {

@@ -14,9 +14,20 @@
       return this.saveAtPath_(piskel, piskel.savePath);
     } else {
       var name = piskel.getDescriptor().name;
-      var filenamePromise = pskl.utils.FileUtilsDesktop.chooseFilenameDialog(name, PISKEL_EXTENSION);
-      return filenamePromise.then(this.saveAtPath_.bind(this, piskel));
+      var promise = this.saveDialog(name);
+      return promise.then((e, d) => {
+        if (!e.canceled) {
+          return this.saveAtPath_(piskel, e.filePath);
+        }
+      });
     }
+  };
+
+  ns.DesktopStorageService.prototype.saveDialog = function (name) {
+    return window.electron.openDialog('saveDialog', {
+      defaultPath: name,
+      filters: [{extensions: ['piskel'], name: 'Piskel file'}]
+    });
   };
 
   ns.DesktopStorageService.prototype.saveAtPath_ = function (piskel, savePath) {

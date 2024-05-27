@@ -41,7 +41,7 @@
   };
 
   ns.StorageService.prototype.onOpenKey_ = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
+    if (pskl.utils.Environment.detectElectron()) {
       pskl.app.desktopStorageService.openPiskel();
     }
     // no other implementation for now
@@ -51,7 +51,7 @@
     var piskel = this.piskelController.getPiskel();
     if (pskl.app.isLoggedIn()) {
       this.saveToGallery(this.piskelController.getPiskel());
-    } else if (pskl.utils.Environment.detectNodeWebkit()) {
+    } else if (pskl.utils.Environment.detectElectron()) {
       this.saveToDesktop(this.piskelController.getPiskel());
     } else {
       // saveToLocalStorage might display a native confirm dialog
@@ -65,7 +65,7 @@
   };
 
   ns.StorageService.prototype.onSaveAsKey_ = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
+    if (pskl.utils.Environment.detectElectron()) {
       this.saveToDesktop(this.piskelController.getPiskel(), true);
     }
     // no other implementation for now

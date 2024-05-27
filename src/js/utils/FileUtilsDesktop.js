@@ -48,12 +48,15 @@
      */
     saveToFile : function(content, filename) {
       var deferred = Q.defer();
-      var fs = window.require('fs');
-      fs.writeFile(filename, content, function (err) {
-        if (err) {
-          deferred.reject('FileUtilsDesktop::savetoFile() - error saving file: ' + filename + ' Error: ' + err);
-        } else {
-          deferred.resolve();
+      window.electron.writeFile({
+        fileName: filename,
+        content: content,
+        endFunc : function(err) {
+          if (err) {
+            deferred.reject('FileUtilsDesktop::savetoFile() - error saving file: ' + filename + ' Error: ' + err);
+          } else {
+            deferred.resolve();
+          }
         }
       });
 
@@ -62,13 +65,15 @@
 
     readFile : function(filename) {
       var deferred = Q.defer();
-      var fs = window.require('fs');
-      // NOTE: currently loading everything as utf8, which may not be desirable in future
-      fs.readFile(filename, 'utf8', function (err, data) {
-        if (err) {
-          deferred.reject('FileUtilsDesktop::readFile() - error reading file: ' + filename + ' Error: ' + err);
-        } else {
-          deferred.resolve(data);
+      window.electron.readFile({
+        fileName: filename,
+        encoding: 'utf8',
+        endFunc: function (err, data) {
+          if (err) {
+            deferred.reject('FileUtilsDesktop::readFile() - error reading file: ' + filename + ' Error: ' + err);
+          } else {
+            deferred.resolve(data);
+          }
         }
       });
       return deferred.promise;

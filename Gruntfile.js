@@ -264,44 +264,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
-    /**
-     * DESKTOP BUILDS
-     */
-
-    nwjs : {
-      win_x64 : {
-        options: {
-          mode: "build",
-          version : "0.85.0",
-          flavor: "normal",
-          platform: "win",
-          arch: "x64",
-          outDir: './dest/desktop/',
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
-      },
-      macos : {
-        options: {
-          downloadUrl: 'https://dl.nwjs.io/',
-          osx64: true,
-          version : "0.19.4",
-          build_dir: './dest/desktop/',
-          flavor: "normal",
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
-      },
-      macos_old : {
-        options: {
-          downloadUrl: 'https://dl.nwjs.io/',
-          osx64: true,
-          version : "0.12.3",
-          build_dir: './dest/desktop/old',
-          flavor: "normal",
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
-      }
-    }
   });
 
   // TEST TASKS
@@ -327,9 +289,7 @@ module.exports = function(grunt) {
   grunt.registerTask('merge-statics', ['concat:js', 'concat:css', 'uglify']);
   grunt.registerTask('build',  ['clean:prod', 'sprite', 'merge-statics', 'build-index.html', 'replace:mainPartial', 'replace:css', 'copy:prod']);
   grunt.registerTask('build-dev',  ['clean:dev', 'sprite', 'build-index.html', 'copy:dev']);
-  grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:win_x64']);
-  grunt.registerTask('desktop-mac', ['clean:desktop', 'default', 'nwjs:macos']);
-  grunt.registerTask('desktop-mac-old', ['clean:desktop', 'default', 'replace:desktop', 'nwjs:macos_old']);
+  grunt.registerTask('desktop', ['clean:desktop', 'default']);
 
   // SERVER TASKS
   // Start webserver and watch for changes

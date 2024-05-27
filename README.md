@@ -6,6 +6,8 @@ Piskel Touch Edition
 For original piskel, see **[piskelapp.com](https://www.piskelapp.com)**, **[GitHub](https://github.com/piskelapp/piskel)**
 
 ## Differences
+- Built on Electron instead of NodeWebkit
+- Support only web & native windows
 - Touch support (tested on Dell Latitude 7390 2-in-1)
 - New tools (Pixelart noise, Outline from [gingerbeardman/piskel-playdate](https://github.com/gingerbeardman/piskel-playdate))
 - Date removed from saving filename

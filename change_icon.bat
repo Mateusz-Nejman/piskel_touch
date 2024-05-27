@@ -1,1 +1,0 @@
-"%RESOURCE_HACKER_PATH%\\ResourceHacker.exe" -open "dest\\desktop\\piskel_touch.exe" -save "dest\\desktop\\Piskel Touch Edition.exe" -action addoverwrite -res icon.ico -mask ICONGROUP,IDR_MAINFRAME,
