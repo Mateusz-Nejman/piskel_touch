@@ -57,7 +57,7 @@
     }
 
     var step = oncePerPixel ? DEFAULT_STEP * 2 : DEFAULT_STEP;
-    var isDarken = event.ctrlKey;
+    var isDarken = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
 
     var color;
     if (isDarken) {

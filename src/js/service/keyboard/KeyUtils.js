@@ -74,7 +74,7 @@
     },
 
     isCtrlKeyPressed_ : function (evt) {
-      return evt.ctrlKey;
+      return pskl.utils.UserAgent.isMac ? evt.metaKey : evt.ctrlKey;
     }
   };
 })();

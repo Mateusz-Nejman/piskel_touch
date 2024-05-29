@@ -6,30 +6,27 @@
   };
 
   ns.BeforeUnloadService.prototype.init = function () {
-    if (pskl.utils.Environment.detectElectron()) {
-      window.electron.handle('close', (event, data) => {
-        const onClose = this.onElectronWindowClose();
-        if (onClose) {
-          window.electron.send('closeEmit', 'closeEmit');
-          return true;
-        }
-
-        return false;
-      });
+    if (pskl.utils.Environment.detectNodeWebkit()) {
+      // Add a dedicated listener to window 'close' event in nwjs environment.
+      var win = require('nw.gui').Window.get();
+      win.on('close', this.onNwWindowClose.bind(this, win));
     }
 
     window.addEventListener('beforeunload', this.onBeforeUnload.bind(this));
   };
 
-  ns.BeforeUnloadService.prototype.onElectronWindowClose = function () {
+  /**
+   * In nw.js environment "onbeforeunload" is not triggered when closing the window.
+   * Polyfill the behavior here.
+   */
+  ns.BeforeUnloadService.prototype.onNwWindowClose = function (win) {
     var msg = this.onBeforeUnload();
-    if (msg !== undefined) {
+    if (msg) {
       if (!window.confirm(msg)) {
         return false;
       }
     }
-
-    return true;
+    win.close(true);
   };
 
   ns.BeforeUnloadService.prototype.onBeforeUnload = function (evt) {
@@ -45,8 +42,6 @@
       }
       return confirmationMessage;
     }
-
-    return undefined;
   };
 
 })();

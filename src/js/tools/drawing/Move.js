@@ -75,7 +75,7 @@
     var colDiff = col - this.startCol;
     var rowDiff = row - this.startRow;
 
-    var ctrlKey = event.ctrlKey;
+    var ctrlKey = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
     pskl.tools.ToolsHelper.getTargetFrames(ctrlKey, event.shiftKey).forEach(function (f) {
       // for the current frame, the backup clone should be reused as reference
       // the current frame has been modified by the user action already

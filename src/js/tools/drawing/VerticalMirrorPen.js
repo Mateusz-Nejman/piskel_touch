@@ -26,7 +26,7 @@
     var mirroredCol = this.getSymmetricCol_(col, frame);
     var mirroredRow = this.getSymmetricRow_(row, frame);
 
-    var hasCtrlKey = event.ctrlKey;
+    var hasCtrlKey = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
     if (!hasCtrlKey) {
       this.drawUsingPenSize(color, mirroredCol, row, frame, overlay);
     }

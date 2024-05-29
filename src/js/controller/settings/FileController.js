@@ -168,7 +168,7 @@
   };
 
   ns.FileController.prototype.getPartials_ = function () {
-    if (pskl.utils.Environment.detectElectron()) {
+    if (pskl.utils.Environment.detectNodeWebkit()) {
       return [PARTIALS.DESKTOP];
     }
 

@@ -21,7 +21,7 @@
      * @override
      */
   ns.Outliner.prototype.applyToolAt = function(col, row, frame, overlay, event) {
-    var fillCorners = event.ctrlKey;
+    var fillCorners = pskl.utils.UserAgent.isMac ?  event.metaKey : event.ctrlKey;
     var color = this.getToolColor();
     pskl.PixelUtils.outlineSimilarConnectedPixelsFromFrame(frame, col, row, color, fillCorners);
 

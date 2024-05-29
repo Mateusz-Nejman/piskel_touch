@@ -126,6 +126,9 @@
     var screenCoordinates = pskl.app.drawingController.getScreenCoordinates(recordEvent.coords.x, recordEvent.coords.y);
     event.clientX = screenCoordinates.x;
     event.clientY = screenCoordinates.y;
+    if (pskl.utils.UserAgent.isMac && event.ctrlKey) {
+      event.metaKey = true;
+    }
 
     if (event.type == 'mousedown') {
       pskl.app.drawingController.onMousedown_(event);
@@ -138,6 +141,9 @@
 
   ns.DrawingTestPlayer.prototype.playKeyboardEvent_ = function (recordEvent) {
     var event = recordEvent.event;
+    if (pskl.utils.UserAgent.isMac) {
+      event.metaKey = event.ctrlKey;
+    }
 
     event.preventDefault = function () {};
     pskl.app.shortcutService.onKeyDown_(event);

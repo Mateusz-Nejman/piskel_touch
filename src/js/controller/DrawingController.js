@@ -272,7 +272,7 @@
     delta = delta || 0;
     var modifier = (delta / 120);
 
-    if (evt.ctrlKey) {
+    if (pskl.utils.UserAgent.isMac ? evt.metaKey : evt.ctrlKey) {
       modifier = modifier * 5;
       // prevent default to prevent the default browser UI resize
       evt.preventDefault();
