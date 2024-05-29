@@ -273,7 +273,7 @@ module.exports = function(grunt) {
       win_x64 : {
         options: {
           mode: "build",
-          version : "0.85.0",
+          version : "0.88.0",
           flavor: "normal",
           platform: "win",
           arch: "x64",
