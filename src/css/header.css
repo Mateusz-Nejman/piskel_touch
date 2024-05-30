@@ -1,0 +1,88 @@
+#main-wrapper {
+    margin-top: 55px;
+  }
+
+  .fake-piskelapp-header {
+    position: relative;
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+    font-size: 24px;
+    background: black;
+    color: #039BE5;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .piskel-name {
+    width: 228px;
+    height: 60px;
+    margin: 0;
+  }
+  .piskel-name.piskel-name-saving {
+    color: red;
+  }
+
+  .new-piskel-desktop {
+    position: absolute;
+    display: flex;
+    top: 7px;
+    right: 7px;
+
+    height: 26px;
+    width: 26px;
+
+    border-radius: 3px;
+    font-size: 22px;
+    color: black;
+    background: #039BE5;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .new-piskel-desktop:visited {
+    color: black;
+  }
+
+  .tabs {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .tab {
+    width: 72px;
+    height: 52px;
+    border: 4px #1f1f1f solid;
+    background-color: #1f1f1f;
+    position: relative;
+  }
+
+  .tab .tabPreview {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .tab.active {
+    background-color: #a0a0a0;
+    border: 4px #a0a0a0 solid;
+  }
+
+  .tabPreview .background-image-frame-container {
+    width: 52px;
+    height: 52px;
+    z-index: 102;
+    position: relative;
+  }
+
+  .tabPreview .canvas-background {
+    z-index: 101;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABlBMVEVMTExVVVUnhsEkAAAAHUlEQVR4AWOAAUYoQOePEAUj3v9oYDQ9gMBoegAAJFwCAbLaTIMAAAAASUVORK5CYII=) repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 52px;
+    height: 52px;
+}

@@ -14,6 +14,20 @@
     this.lastLoadState = -1;
   };
 
+  ns.HistoryService.prototype.set = function(data) {
+    this.stateQueue = data.stateQueue;
+    this.currentIndex = data.currentIndex;
+    this.lastLoadState = data.lastLoadState;
+  };
+
+  ns.HistoryService.prototype.get = function() {
+    return {
+      stateQueue: this.stateQueue,
+      currentIndex: this.currentIndex,
+      lastLoadState: this.lastLoadState
+    };
+  };
+
   // Force to save a state as a SNAPSHOT
   ns.HistoryService.SNAPSHOT = 'SNAPSHOT';
 

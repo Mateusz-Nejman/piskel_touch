@@ -8,6 +8,7 @@
   "css/layout.css",
   "css/font-icon.css",
   "css/forms.css",
+  "css/header.css",
   "css/settings.css",
   "css/settings-application.css",
   "css/settings-resize.css",
