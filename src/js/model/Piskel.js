@@ -22,6 +22,20 @@
     }
   };
 
+  ns.Piskel.prototype.clone = function () {
+    const piskel = new ns.Piskel(this.width, this.height, this.fps, this.descriptor);
+    piskel.savePath = this.savePath;
+
+    this.layers.forEach(l => {
+      piskel.layers.push(l.clone());
+    });
+
+    this.hiddenFrames.forEach(f => {
+      piskel.hiddenFrames.push(f);
+    });
+    return piskel;
+  };
+
   /**
    * Create a piskel instance from an existing set of (non empty) layers
    * Layers should all be synchronized : same number of frames, same dimensions

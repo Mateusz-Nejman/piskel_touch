@@ -38,6 +38,10 @@
       this.piskelController = new pskl.controller.piskel.PublicPiskelController(this.corePiskelController);
       this.piskelController.init();
 
+      this.piskelController.newPiskel();
+      const id = this.piskelController.newPiskel();
+      this.piskelController.selectPiskel(id);
+
       this.paletteImportService = new pskl.service.palette.PaletteImportService();
       this.paletteImportService.init();
 
@@ -178,7 +182,7 @@
       this.clipboardService = new pskl.service.ClipboardService(this.piskelController);
       this.clipboardService.init();
 
-      this.tabsController = new pskl.controller.TabsController(this.historyService);
+      this.tabsController = new pskl.controller.TabsController(this.piskelController, this.historyService);
 
       this.drawingLoop = new pskl.rendering.DrawingLoop();
       this.drawingLoop.addCallback(this.render, this);

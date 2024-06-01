@@ -5,8 +5,8 @@
   var PREVIEW_SIZE = 52;
   var RENDER_MINIMUM_DELAY = 300;
 
-  ns.TabPreviewController = function (tabsController, piskelController, container, index) {
-    this.piskelController = piskelController;
+  ns.TabPreviewController = function (tabsController, container, index) {
+    this.piskelController = tabsController.piskelController;
     this.container = container;
     this.tabsController = tabsController;
     this.index = index;

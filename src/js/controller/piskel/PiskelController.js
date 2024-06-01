@@ -3,7 +3,8 @@
 
   ns.PiskelController = function (piskel) {
     if (piskel) {
-      this.setPiskel(piskel);
+      this.defaultPiskel = piskel.clone();
+      this.piskels = []; //index; piskel
     } else {
       throw 'A piskel instance is mandatory for instanciating PiskelController';
     }
@@ -17,8 +18,25 @@
    *                 noSnapshot {Boolean} if true, do not save a snapshot in the piskel
    *                            history for this call to setPiskel
    */
+
+  ns.PiskelController.prototype.newPiskel = function () {
+    const index = this._uuidv4();
+    const piskel = this.defaultPiskel.clone();
+
+    this.piskels.push({
+      index: index,
+      piskel: piskel
+    });
+
+    this.currentLayerIndex = 0;
+    this.currentFrameIndex = 0;
+    this.layerIdCounter = 1;
+
+    return index;
+  };
+
   ns.PiskelController.prototype.setPiskel = function (piskel, options) {
-    this.piskel = piskel;
+    this._setPiskel(this.selectPiskel, piskel);
     options = options || {};
     if (!options.preserveState) {
       this.currentLayerIndex = 0;
@@ -28,31 +46,35 @@
     this.layerIdCounter = 1;
   };
 
+  ns.PiskelController.prototype.selectPiskel = function(index) {
+    this.selectedPiskel = index;
+  };
+
   ns.PiskelController.prototype.init = function () {
   };
 
   ns.PiskelController.prototype.getHeight = function () {
-    return this.piskel.getHeight();
+    return this._getPiskel(this.selectedPiskel).getHeight();
   };
 
   ns.PiskelController.prototype.getWidth = function () {
-    return this.piskel.getWidth();
+    return this._getPiskel(this.selectedPiskel).getWidth();
   };
 
   ns.PiskelController.prototype.getFPS = function () {
-    return this.piskel.fps;
+    return this._getPiskel(this.selectedPiskel).fps;
   };
 
   ns.PiskelController.prototype.setFPS = function (fps) {
     if (typeof fps !== 'number') {
       return;
     }
-    this.piskel.fps = fps;
+    this._getPiskel(this.selectedPiskel).fps = fps;
     $.publish(Events.FPS_CHANGED);
   };
 
   ns.PiskelController.prototype.getLayers = function () {
-    return this.piskel.getLayers();
+    return this._getPiskel(this.selectedPiskel).getLayers();
   };
 
   ns.PiskelController.prototype.getCurrentLayer = function () {
@@ -60,7 +82,7 @@
   };
 
   ns.PiskelController.prototype.getLayerAt = function (index) {
-    return this.piskel.getLayerAt(index);
+    return this._getPiskel(this.selectedPiskel).getLayerAt(index);
   };
 
   ns.PiskelController.prototype.hasLayerAt = function (index) {
@@ -92,7 +114,7 @@
   };
 
   ns.PiskelController.prototype.getPiskel = function () {
-    return this.piskel;
+    return this._getPiskel(this.selectedPiskel);
   };
 
   ns.PiskelController.prototype.isTransparent = function () {
@@ -126,7 +148,8 @@
   };
 
   ns.PiskelController.prototype.onFrameAddedAt_ = function (index) {
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (hiddenIndex) {
+    this._getPiskel(this.selectedPiskel).hiddenFrames =
+    this._getPiskel(this.selectedPiskel).hiddenFrames.map(function (hiddenIndex) {
       if (hiddenIndex >= index) {
         return hiddenIndex + 1;
       }
@@ -137,8 +160,8 @@
   };
 
   ns.PiskelController.prototype.createEmptyFrame_ = function () {
-    var w = this.piskel.getWidth();
-    var h = this.piskel.getHeight();
+    var w = this._getPiskel(this.selectedPiskel).getWidth();
+    var h = this._getPiskel(this.selectedPiskel).getHeight();
     return new pskl.model.Frame(w, h);
   };
 
@@ -148,7 +171,8 @@
     });
 
     // Update the array of hidden frames since some hidden indexes might have shifted.
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (hiddenIndex) {
+    this._getPiskel(this.selectedPiskel).hiddenFrames =
+    this._getPiskel(this.selectedPiskel).hiddenFrames.map(function (hiddenIndex) {
       if (hiddenIndex > index) {
         return hiddenIndex - 1;
       }
@@ -177,7 +201,7 @@
    * A visible frame will be included in the animated preview.
    */
   ns.PiskelController.prototype.toggleFrameVisibilityAt = function (index) {
-    var hiddenFrames = this.piskel.hiddenFrames;
+    var hiddenFrames = this._getPiskel(this.selectedPiskel).hiddenFrames;
     if (hiddenFrames.indexOf(index) === -1) {
       hiddenFrames.push(index);
     } else {
@@ -187,7 +211,7 @@
     }
 
     // Keep the hiddenFrames array sorted.
-    this.piskel.hiddenFrames = hiddenFrames.sort();
+    this._getPiskel(this.selectedPiskel).hiddenFrames = hiddenFrames.sort();
   };
 
   ns.PiskelController.prototype.moveFrame = function (fromIndex, toIndex) {
@@ -196,7 +220,8 @@
     });
 
     // Update the array of hidden frames since some hidden indexes might have shifted.
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (index) {
+    this._getPiskel(this.selectedPiskel).hiddenFrames =
+    this._getPiskel(this.selectedPiskel).hiddenFrames.map(function (index) {
       if (index === fromIndex) {
         return toIndex;
       }
@@ -218,19 +243,19 @@
   };
 
   ns.PiskelController.prototype.hasVisibleFrameAt = function (index) {
-    return this.piskel.hiddenFrames.indexOf(index) === -1;
+    return this._getPiskel(this.selectedPiskel).hiddenFrames.indexOf(index) === -1;
   };
 
   ns.PiskelController.prototype.getVisibleFrameIndexes = function () {
     return this.getCurrentLayer().getFrames().map(function (frame, index) {
       return index;
     }).filter(function (index) {
-      return this.piskel.hiddenFrames.indexOf(index) === -1;
+      return this._getPiskel(this.selectedPiskel).hiddenFrames.indexOf(index) === -1;
     }.bind(this));
   };
 
   ns.PiskelController.prototype.getFrameCount = function () {
-    return this.piskel.getFrameCount();
+    return this._getPiskel(this.selectedPiskel).getFrameCount();
   };
 
   ns.PiskelController.prototype.setCurrentFrameIndex = function (index) {
@@ -290,7 +315,7 @@
     if (layer && downLayer) {
       var mergedLayer = pskl.utils.LayerUtils.mergeLayers(layer, downLayer);
       this.removeLayerAt(index);
-      this.piskel.addLayerAt(mergedLayer, index);
+      this._getPiskel(this.selectedPiskel).addLayerAt(mergedLayer, index);
       this.removeLayerAt(index - 1);
       this.selectLayer(mergedLayer);
     }
@@ -309,7 +334,7 @@
     var layer = this.getCurrentLayer();
     var clone = pskl.utils.LayerUtils.clone(layer);
     var currentLayerIndex = this.getCurrentLayerIndex();
-    this.piskel.addLayerAt(clone, currentLayerIndex + 1);
+    this._getPiskel(this.selectedPiskel).addLayerAt(clone, currentLayerIndex + 1);
     this.setCurrentLayerIndex(currentLayerIndex + 1);
   };
 
@@ -323,7 +348,7 @@
         layer.addFrame(this.createEmptyFrame_());
       }
       var currentLayerIndex = this.getCurrentLayerIndex();
-      this.piskel.addLayerAt(layer, currentLayerIndex + 1);
+      this._getPiskel(this.selectedPiskel).addLayerAt(layer, currentLayerIndex + 1);
       this.setCurrentLayerIndex(currentLayerIndex + 1);
     } else {
       throw 'Layer name should be unique';
@@ -331,18 +356,18 @@
   };
 
   ns.PiskelController.prototype.hasLayerForName_ = function (name) {
-    return this.piskel.getLayersByName(name).length > 0;
+    return this._getPiskel(this.selectedPiskel).getLayersByName(name).length > 0;
   };
 
   ns.PiskelController.prototype.moveLayerUp = function (toTop) {
     var layer = this.getCurrentLayer();
-    this.piskel.moveLayerUp(layer, toTop);
+    this._getPiskel(this.selectedPiskel).moveLayerUp(layer, toTop);
     this.selectLayer(layer);
   };
 
   ns.PiskelController.prototype.moveLayerDown = function (toBottom) {
     var layer = this.getCurrentLayer();
-    this.piskel.moveLayerDown(layer, toBottom);
+    this._getPiskel(this.selectedPiskel).moveLayerDown(layer, toBottom);
     this.selectLayer(layer);
   };
 
@@ -357,7 +382,7 @@
     }
 
     var layer = this.getLayerAt(index);
-    this.piskel.removeLayer(layer);
+    this._getPiskel(this.selectedPiskel).removeLayer(layer);
 
     // Update the selected layer if needed.
     if (this.getCurrentLayerIndex() === index) {
@@ -366,7 +391,7 @@
   };
 
   ns.PiskelController.prototype.serialize = function () {
-    return pskl.utils.serialization.Serializer.serialize(this.piskel);
+    return pskl.utils.serialization.Serializer.serialize(this._getPiskel(this.selectedPiskel));
   };
 
   /**
@@ -375,5 +400,38 @@
    */
   ns.PiskelController.prototype.isEmpty = function () {
     return pskl.app.currentColorsService.getCurrentColors().length === 0;
+  };
+
+  ns.PiskelController.prototype.getPiskelIds = function () {
+    return this.piskels.map(p => p.index);
+  };
+
+  ns.PiskelController.prototype.getSelectedPiskel = function () {
+    return this.selectedPiskel;
+  };
+
+  ns.PiskelController.prototype._uuidv4 = function () {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+      .replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+  };
+
+  ns.PiskelController.prototype._getPiskel = function (index) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      return this.piskels[arrayIndex].piskel;
+    }
+  };
+
+  ns.PiskelController.prototype._setPiskel = function (index, piskel) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      this.piskels[arrayIndex].piskel = piskel;
+    }
   };
 })();

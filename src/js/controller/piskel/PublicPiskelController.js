@@ -50,6 +50,12 @@
     return this.piskelController;
   };
 
+  ns.PublicPiskelController.prototype.newPiskel = function () {
+    const id = this.piskelController.newPiskel();
+    $.publish(Events.PISKEL_ADDED);
+    return id;
+  };
+
   /**
    * Set the current piskel. Will reset the selected frame and layer unless specified
    * @param {Object} piskel
@@ -69,6 +75,12 @@
         type : pskl.service.HistoryService.SNAPSHOT
       });
     }
+  };
+
+  ns.PublicPiskelController.prototype.selectPiskel = function(index) {
+    this.piskelController.selectPiskel(index);
+    $.publish(Events.FRAME_SIZE_CHANGED);
+    $.publish(Events.PISKEL_RESET);
   };
 
   ns.PublicPiskelController.prototype.resetWrap_ = function (methodName) {
@@ -113,5 +125,13 @@
 
   ns.PublicPiskelController.prototype.replay = function (frame, replayData) {
     replayData.fn.apply(this.piskelController, replayData.args);
+  };
+
+  ns.PublicPiskelController.prototype.getPiskelIds = function () {
+    return this.piskelController.getPiskelIds();
+  };
+
+  ns.PublicPiskelController.prototype.getSelectedPiskel = function () {
+    return this.piskelController.getSelectedPiskel();
   };
 })();
