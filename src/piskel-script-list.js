@@ -127,6 +127,8 @@
   "js/controller/TransformationsController.js",
   "js/controller/CanvasBackgroundController.js",
   "js/controller/UserWarningController.js",
+  "js/controller/TabsController.js",
+  "js/controller/preview/TabPreviewController.js",
 
   // Settings sub-controllers
   "js/controller/settings/AbstractSettingController.js",

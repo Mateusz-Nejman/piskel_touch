@@ -11,6 +11,16 @@
     }
   };
 
+  ns.Layer.prototype.clone = function () {
+    const layer = new ns.Layer(this.name);
+    layer.opacity = this.opacity;
+    this.frames.forEach(f => {
+      layer.frames.push(f.clone());
+    });
+
+    return layer;
+  };
+
   /**
    * Create a Layer instance from an already existing set a Frames
    * @static

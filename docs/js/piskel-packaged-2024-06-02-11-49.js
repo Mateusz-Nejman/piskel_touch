@@ -12132,9 +12132,13 @@ var Events = {
   PISKEL_SAVE_STATE: 'PISKEL_SAVE_STATE',
   PISKEL_DESCRIPTOR_UPDATED : 'PISKEL_DESCRIPTOR_UPDATED',
   PISKEL_SAVED_STATUS_UPDATE : 'PISKEL_SAVED_STATUS_UPDATE',
+  PISKEL_ADDED : 'PISKEL_ADDED',
+  PISKEL_REMOVED : 'PISKEL_REMOVED',
+  PISKEL_CHANGED : 'PISKEL_CHANGED',
 
   HISTORY_STATE_SAVED: 'HISTORY_STATE_SAVED',
   HISTORY_STATE_LOADED: 'HISTORY_STATE_LOADED',
+  HISTORY_DATA: 'HISTORY_DATA',
 
   FORCE_REFRESH: 'FORCE_REFRESH',
 
@@ -20487,6 +20491,16 @@ return Q;
     }
   };
 
+  ns.Layer.prototype.clone = function () {
+    const layer = new ns.Layer(this.name);
+    layer.opacity = this.opacity;
+    this.frames.forEach(f => {
+      layer.frames.push(f.clone());
+    });
+
+    return layer;
+  };
+
   /**
    * Create a Layer instance from an already existing set a Frames
    * @static
@@ -20854,6 +20868,20 @@ return Q;
     } else {
       throw 'Missing arguments in Piskel constructor : ' + Array.prototype.join.call(arguments, ',');
     }
+  };
+
+  ns.Piskel.prototype.clone = function () {
+    const piskel = new ns.Piskel(this.width, this.height, this.fps, this.descriptor);
+    piskel.savePath = this.savePath;
+
+    this.layers.forEach(l => {
+      piskel.layers.push(l.clone());
+    });
+
+    this.hiddenFrames.forEach(f => {
+      piskel.hiddenFrames.push(f);
+    });
+    return piskel;
   };
 
   /**
@@ -22748,7 +22776,8 @@ return Q;
 
   ns.PiskelController = function (piskel) {
     if (piskel) {
-      this.setPiskel(piskel);
+      this.defaultPiskel = piskel.clone();
+      this.piskels = []; //index; piskel
     } else {
       throw 'A piskel instance is mandatory for instanciating PiskelController';
     }
@@ -22762,8 +22791,25 @@ return Q;
    *                 noSnapshot {Boolean} if true, do not save a snapshot in the piskel
    *                            history for this call to setPiskel
    */
+
+  ns.PiskelController.prototype.newPiskel = function () {
+    const index = this._uuidv4();
+    const piskel = this.defaultPiskel.clone();
+
+    this.piskels.push({
+      index: index,
+      piskel: piskel
+    });
+
+    this.currentLayerIndex = 0;
+    this.currentFrameIndex = 0;
+    this.layerIdCounter = 1;
+
+    return index;
+  };
+
   ns.PiskelController.prototype.setPiskel = function (piskel, options) {
-    this.piskel = piskel;
+    this._setPiskel(this.selectedPiskel, piskel);
     options = options || {};
     if (!options.preserveState) {
       this.currentLayerIndex = 0;
@@ -22773,31 +22819,35 @@ return Q;
     this.layerIdCounter = 1;
   };
 
+  ns.PiskelController.prototype.selectPiskel = function(index) {
+    this.selectedPiskel = index;
+  };
+
   ns.PiskelController.prototype.init = function () {
   };
 
   ns.PiskelController.prototype.getHeight = function () {
-    return this.piskel.getHeight();
+    return this._getPiskel(this.selectedPiskel).getHeight();
   };
 
   ns.PiskelController.prototype.getWidth = function () {
-    return this.piskel.getWidth();
+    return this._getPiskel(this.selectedPiskel).getWidth();
   };
 
   ns.PiskelController.prototype.getFPS = function () {
-    return this.piskel.fps;
+    return this._getPiskel(this.selectedPiskel).fps;
   };
 
   ns.PiskelController.prototype.setFPS = function (fps) {
     if (typeof fps !== 'number') {
       return;
     }
-    this.piskel.fps = fps;
+    this._getPiskel(this.selectedPiskel).fps = fps;
     $.publish(Events.FPS_CHANGED);
   };
 
   ns.PiskelController.prototype.getLayers = function () {
-    return this.piskel.getLayers();
+    return this._getPiskel(this.selectedPiskel).getLayers();
   };
 
   ns.PiskelController.prototype.getCurrentLayer = function () {
@@ -22805,7 +22855,7 @@ return Q;
   };
 
   ns.PiskelController.prototype.getLayerAt = function (index) {
-    return this.piskel.getLayerAt(index);
+    return this._getPiskel(this.selectedPiskel).getLayerAt(index);
   };
 
   ns.PiskelController.prototype.hasLayerAt = function (index) {
@@ -22837,7 +22887,11 @@ return Q;
   };
 
   ns.PiskelController.prototype.getPiskel = function () {
-    return this.piskel;
+    return this._getPiskel(this.selectedPiskel);
+  };
+
+  ns.PiskelController.prototype.getPiskelData = function () {
+    return this._getPiskelData(this.selectedPiskel);
   };
 
   ns.PiskelController.prototype.isTransparent = function () {
@@ -22871,7 +22925,8 @@ return Q;
   };
 
   ns.PiskelController.prototype.onFrameAddedAt_ = function (index) {
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (hiddenIndex) {
+    this._getPiskel(this.selectedPiskel).hiddenFrames =
+    this._getPiskel(this.selectedPiskel).hiddenFrames.map(function (hiddenIndex) {
       if (hiddenIndex >= index) {
         return hiddenIndex + 1;
       }
@@ -22882,8 +22937,8 @@ return Q;
   };
 
   ns.PiskelController.prototype.createEmptyFrame_ = function () {
-    var w = this.piskel.getWidth();
-    var h = this.piskel.getHeight();
+    var w = this._getPiskel(this.selectedPiskel).getWidth();
+    var h = this._getPiskel(this.selectedPiskel).getHeight();
     return new pskl.model.Frame(w, h);
   };
 
@@ -22893,7 +22948,8 @@ return Q;
     });
 
     // Update the array of hidden frames since some hidden indexes might have shifted.
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (hiddenIndex) {
+    this._getPiskel(this.selectedPiskel).hiddenFrames =
+    this._getPiskel(this.selectedPiskel).hiddenFrames.map(function (hiddenIndex) {
       if (hiddenIndex > index) {
         return hiddenIndex - 1;
       }
@@ -22922,7 +22978,7 @@ return Q;
    * A visible frame will be included in the animated preview.
    */
   ns.PiskelController.prototype.toggleFrameVisibilityAt = function (index) {
-    var hiddenFrames = this.piskel.hiddenFrames;
+    var hiddenFrames = this._getPiskel(this.selectedPiskel).hiddenFrames;
     if (hiddenFrames.indexOf(index) === -1) {
       hiddenFrames.push(index);
     } else {
@@ -22932,7 +22988,7 @@ return Q;
     }
 
     // Keep the hiddenFrames array sorted.
-    this.piskel.hiddenFrames = hiddenFrames.sort();
+    this._getPiskel(this.selectedPiskel).hiddenFrames = hiddenFrames.sort();
   };
 
   ns.PiskelController.prototype.moveFrame = function (fromIndex, toIndex) {
@@ -22941,7 +22997,8 @@ return Q;
     });
 
     // Update the array of hidden frames since some hidden indexes might have shifted.
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (index) {
+    this._getPiskel(this.selectedPiskel).hiddenFrames =
+    this._getPiskel(this.selectedPiskel).hiddenFrames.map(function (index) {
       if (index === fromIndex) {
         return toIndex;
       }
@@ -22963,19 +23020,19 @@ return Q;
   };
 
   ns.PiskelController.prototype.hasVisibleFrameAt = function (index) {
-    return this.piskel.hiddenFrames.indexOf(index) === -1;
+    return this._getPiskel(this.selectedPiskel).hiddenFrames.indexOf(index) === -1;
   };
 
   ns.PiskelController.prototype.getVisibleFrameIndexes = function () {
     return this.getCurrentLayer().getFrames().map(function (frame, index) {
       return index;
     }).filter(function (index) {
-      return this.piskel.hiddenFrames.indexOf(index) === -1;
+      return this._getPiskel(this.selectedPiskel).hiddenFrames.indexOf(index) === -1;
     }.bind(this));
   };
 
   ns.PiskelController.prototype.getFrameCount = function () {
-    return this.piskel.getFrameCount();
+    return this._getPiskel(this.selectedPiskel).getFrameCount();
   };
 
   ns.PiskelController.prototype.setCurrentFrameIndex = function (index) {
@@ -23035,7 +23092,7 @@ return Q;
     if (layer && downLayer) {
       var mergedLayer = pskl.utils.LayerUtils.mergeLayers(layer, downLayer);
       this.removeLayerAt(index);
-      this.piskel.addLayerAt(mergedLayer, index);
+      this._getPiskel(this.selectedPiskel).addLayerAt(mergedLayer, index);
       this.removeLayerAt(index - 1);
       this.selectLayer(mergedLayer);
     }
@@ -23054,7 +23111,7 @@ return Q;
     var layer = this.getCurrentLayer();
     var clone = pskl.utils.LayerUtils.clone(layer);
     var currentLayerIndex = this.getCurrentLayerIndex();
-    this.piskel.addLayerAt(clone, currentLayerIndex + 1);
+    this._getPiskel(this.selectedPiskel).addLayerAt(clone, currentLayerIndex + 1);
     this.setCurrentLayerIndex(currentLayerIndex + 1);
   };
 
@@ -23068,7 +23125,7 @@ return Q;
         layer.addFrame(this.createEmptyFrame_());
       }
       var currentLayerIndex = this.getCurrentLayerIndex();
-      this.piskel.addLayerAt(layer, currentLayerIndex + 1);
+      this._getPiskel(this.selectedPiskel).addLayerAt(layer, currentLayerIndex + 1);
       this.setCurrentLayerIndex(currentLayerIndex + 1);
     } else {
       throw 'Layer name should be unique';
@@ -23076,18 +23133,18 @@ return Q;
   };
 
   ns.PiskelController.prototype.hasLayerForName_ = function (name) {
-    return this.piskel.getLayersByName(name).length > 0;
+    return this._getPiskel(this.selectedPiskel).getLayersByName(name).length > 0;
   };
 
   ns.PiskelController.prototype.moveLayerUp = function (toTop) {
     var layer = this.getCurrentLayer();
-    this.piskel.moveLayerUp(layer, toTop);
+    this._getPiskel(this.selectedPiskel).moveLayerUp(layer, toTop);
     this.selectLayer(layer);
   };
 
   ns.PiskelController.prototype.moveLayerDown = function (toBottom) {
     var layer = this.getCurrentLayer();
-    this.piskel.moveLayerDown(layer, toBottom);
+    this._getPiskel(this.selectedPiskel).moveLayerDown(layer, toBottom);
     this.selectLayer(layer);
   };
 
@@ -23102,7 +23159,7 @@ return Q;
     }
 
     var layer = this.getLayerAt(index);
-    this.piskel.removeLayer(layer);
+    this._getPiskel(this.selectedPiskel).removeLayer(layer);
 
     // Update the selected layer if needed.
     if (this.getCurrentLayerIndex() === index) {
@@ -23111,7 +23168,7 @@ return Q;
   };
 
   ns.PiskelController.prototype.serialize = function () {
-    return pskl.utils.serialization.Serializer.serialize(this.piskel);
+    return pskl.utils.serialization.Serializer.serialize(this._getPiskel(this.selectedPiskel));
   };
 
   /**
@@ -23120,6 +23177,67 @@ return Q;
    */
   ns.PiskelController.prototype.isEmpty = function () {
     return pskl.app.currentColorsService.getCurrentColors().length === 0;
+  };
+
+  ns.PiskelController.prototype.getPiskelIds = function () {
+    return this.piskels.map(p => p.index);
+  };
+
+  ns.PiskelController.prototype.getSelectedPiskel = function () {
+    return this.selectedPiskel;
+  };
+
+  ns.PiskelController.prototype.closePiskel = function (index) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      if (pskl.app.savedStatusService.isDirty(index)) {
+        var msg = 'Your current sprite has unsaved changes. Are you sure you want to quit?';
+        if (!window.confirm(msg)) {
+          return false;
+        }
+      }
+
+      this.piskels = this.piskels.filter(p => p.piskel !== this.piskels[arrayIndex].piskel);
+      this.selectPiskel(this.piskels[arrayIndex - (arrayIndex > 0 ? 1 : 0)].index);
+
+      return true;
+    }
+
+    return false;
+  };
+
+  ns.PiskelController.prototype.debug = function () {
+    console.log(this.piskels);
+  };
+
+  ns.PiskelController.prototype._uuidv4 = function () {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+      .replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+  };
+
+  ns.PiskelController.prototype._getPiskel = function (index) {
+    return this._getPiskelData(index).piskel;
+  };
+
+  ns.PiskelController.prototype._getPiskelData = function (index) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      return this.piskels[arrayIndex];
+    }
+  };
+
+  ns.PiskelController.prototype._setPiskel = function (index, piskel) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      this.piskels[arrayIndex].piskel = piskel;
+    }
   };
 })();
 ;(function () {
@@ -23174,6 +23292,12 @@ return Q;
     return this.piskelController;
   };
 
+  ns.PublicPiskelController.prototype.newPiskel = function () {
+    const id = this.piskelController.newPiskel();
+    $.publish(Events.PISKEL_ADDED, id);
+    return id;
+  };
+
   /**
    * Set the current piskel. Will reset the selected frame and layer unless specified
    * @param {Object} piskel
@@ -23193,6 +23317,12 @@ return Q;
         type : pskl.service.HistoryService.SNAPSHOT
       });
     }
+  };
+
+  ns.PublicPiskelController.prototype.selectPiskel = function(index) {
+    this.piskelController.selectPiskel(index);
+    $.publish(Events.FRAME_SIZE_CHANGED);
+    $.publish(Events.PISKEL_RESET);
   };
 
   ns.PublicPiskelController.prototype.resetWrap_ = function (methodName) {
@@ -23237,6 +23367,23 @@ return Q;
 
   ns.PublicPiskelController.prototype.replay = function (frame, replayData) {
     replayData.fn.apply(this.piskelController, replayData.args);
+  };
+
+  ns.PublicPiskelController.prototype.getPiskelIds = function () {
+    return this.piskelController.getPiskelIds();
+  };
+
+  ns.PublicPiskelController.prototype.getSelectedPiskel = function () {
+    return this.piskelController.getSelectedPiskel();
+  };
+
+  ns.PublicPiskelController.prototype.closePiskel = function (index) {
+    if (this.piskelController.closePiskel(index)) {
+      $.publish(Events.PISKEL_REMOVED, index);
+      return true;
+    }
+
+    return false;
   };
 })();
 ;(function () {
@@ -24287,6 +24434,7 @@ return Q;
     $.subscribe(Events.PISKEL_DESCRIPTOR_UPDATED, this.updateHeader_.bind(this));
     $.subscribe(Events.PISKEL_RESET, this.updateHeader_.bind(this));
     $.subscribe(Events.PISKEL_SAVED_STATUS_UPDATE, this.updateHeader_.bind(this));
+    $.subscribe(Events.PISKEL_CHANGED, this.updateHeader_.bind(this));
 
     this.updateHeader_();
   };
@@ -24319,7 +24467,6 @@ return Q;
     }
     this.piskelName_.classList.remove('piskel-name-saving');
   };
-
 })();
 ;(function () {
   var ns = $.namespace('pskl.controller');
@@ -26108,6 +26255,268 @@ return Q;
         'hideDelay' : 5000
       }]);
     }
+  };
+})();
+;(function () {
+  var ns = $.namespace('pskl.controller');
+
+  ns.TabsController = function (piskelController, historyService) {
+    this.historyService = historyService;
+    this.piskelController = piskelController;
+    this.tabControllers = [];
+    this.selectedTab = null;
+    this.tabsContainer = document.querySelector('#tabsContainer');
+    this.addCurrent();
+    this.setCurrent(this.piskelController.getSelectedPiskel());
+    document.querySelector('.addTabButton').addEventListener('click', this._newPiskel.bind(this));
+    $.subscribe(Events.PISKEL_ADDED, this._refreshButtons.bind(this));
+    $.subscribe(Events.PISKEL_REMOVED, this._refreshButtons.bind(this));
+  };
+
+  ns.TabsController.prototype.addCurrent = function() {
+    const ids = this.piskelController.getPiskelIds();
+    ids.forEach(this.add.bind(this));
+    this._refreshButtons();
+  };
+
+  ns.TabsController.prototype.addEmpty = function() {
+    //TODO
+  };
+
+  ns.TabsController.prototype.add = function(index) {
+    const newTab = document.createElement('div');
+    newTab.classList.add('tab');
+    newTab.classList.add('tab' + index);
+    const previewContainer = document.createElement('div');
+    previewContainer.classList.add('tabPreview');
+    previewContainer.classList.add('tabPreview' + index);
+    const canvasBackground = document.createElement('div');
+    canvasBackground.classList.add('canvas-background');
+    previewContainer.append(canvasBackground);
+    newTab.append(previewContainer);
+    previewContainer.addEventListener('click', this._onTabSelect.bind(this, index));
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('closeButton');
+    closeButton.setAttribute('type', 'button');
+    closeButton.textContent = 'x';
+    closeButton.addEventListener('click', this._onTabClose.bind(this, index));
+    newTab.append(closeButton);
+    this.tabsContainer.append(newTab);
+    this.tabControllers.push({
+      controller: new pskl.controller.preview.TabPreviewController(this,
+        previewContainer, index),
+      index: index
+    });
+  };
+
+  ns.TabsController.prototype.setCurrent = function(index) {
+    this.piskelController.selectPiskel(index);
+    const ids = this.piskelController.getPiskelIds();
+
+    ids.forEach(i => {
+      if (index == i) {
+        document.querySelector('.tab' + i).classList.add('active');
+      } else {
+        document.querySelector('.tab' + i).classList.remove('active');
+      }
+    });
+  };
+
+  ns.TabsController.prototype.render = function (delta) {
+    this.tabControllers.forEach(element => {
+      element.controller.render(delta);
+    });
+  };
+
+  ns.TabsController.prototype.isSelected = function (index) {
+    return this.piskelController.getSelectedPiskel() == index;
+  };
+
+  ns.TabsController.prototype._onTabSelect = function (index, event) {
+    this.setCurrent(index);
+    $.publish(Events.PISKEL_CHANGED, index);
+  };
+
+  ns.TabsController.prototype._onTabClose = function (index) {
+    if (this.piskelController.closePiskel(index)) {
+      document.querySelector('.tab' + index).remove();
+      this._refreshButtons();
+    }
+  };
+
+  ns.TabsController.prototype._newPiskel = function () {
+    const id = this.piskelController.newPiskel();
+    this.add(id);
+    this._onTabSelect(id);
+  };
+
+  ns.TabsController.prototype._refreshButtons = function () {
+    document.querySelector('.closeButton').setAttribute('style', 'display: none');
+    const ids = this.piskelController.getPiskelIds();
+
+    if (ids.length > 1) {
+      document.querySelector('.closeButton').setAttribute('style', 'display: block');
+    }
+  };
+})();
+;(function () {
+  var ns = $.namespace('pskl.controller.preview');
+
+  // Preview is a square of PREVIEW_SIZE x PREVIEW_SIZE
+  var PREVIEW_SIZE = 52;
+  var RENDER_MINIMUM_DELAY = 300;
+
+  ns.TabPreviewController = function (tabsController, container, index) {
+    this.piskelController = tabsController.piskelController;
+    this.container = container;
+    this.tabsController = tabsController;
+    this.index = index;
+
+    this.elapsedTime = 0;
+    this.currentIndex = 0;
+    this.lastRenderTime = 0;
+    this.renderFlag = true;
+
+    this.renderer = new pskl.rendering.frame.BackgroundImageFrameRenderer(this.container);
+    this.previewActionsController = new ns.PreviewActionsController(this, container);
+
+    this.init();
+  };
+
+  ns.TabPreviewController.prototype.init = function () {
+    var width = Constants.ANIMATED_PREVIEW_WIDTH + Constants.RIGHT_COLUMN_PADDING_LEFT;
+    document.querySelector('.right-column').style.width = width + 'px';
+
+    $.subscribe(Events.FRAME_SIZE_CHANGED, this.onFrameSizeChange_.bind(this));
+    $.subscribe(Events.USER_SETTINGS_CHANGED, this.onUserSettingsChange_.bind(this));
+    $.subscribe(Events.PISKEL_SAVE_STATE, this.setRenderFlag_.bind(this, true));
+    $.subscribe(Events.PISKEL_RESET, this.setRenderFlag_.bind(this, true));
+    this.previewActionsController.init();
+
+    this.updateZoom_();
+    this.updateContainerDimensions_();
+  };
+
+  ns.TabPreviewController.prototype.onUserSettingsChange_ = function (evt, name, value) {
+    if (!this.tabsController.isSelected(this.index)) {
+      return;
+    }
+    if (name === pskl.UserSettings.SEAMLESS_MODE) {
+      this.onFrameSizeChange_();
+    } else {
+      this.updateZoom_();
+      this.updateContainerDimensions_();
+    }
+  };
+
+  ns.TabPreviewController.prototype.updateZoom_ = function () {
+    const zoom = this.calculateZoom_();
+    this.renderer.setZoom(zoom);
+    this.setRenderFlag_(true);
+  };
+
+  ns.TabPreviewController.prototype.getZoom = function () {
+    return this.calculateZoom_();
+  };
+
+  ns.TabPreviewController.prototype.getCoordinates = function(x, y) {
+    var containerRect = this.container.getBoundingClientRect();
+    x = x - containerRect.left;
+    y = y - containerRect.top;
+    var zoom = this.getZoom();
+    return {
+      x : Math.floor(x / zoom),
+      y : Math.floor(y / zoom)
+    };
+  };
+
+  ns.TabPreviewController.prototype.render = function (delta) {
+    this.elapsedTime += delta;
+    var index = this.getNextIndex_(delta);
+    if (this.shouldRender_() || this.currentIndex != index) {
+      this.currentIndex = index;
+      var frame = pskl.utils.LayerUtils.mergeFrameAt(this.piskelController.getLayers(), index);
+      this.renderer.render(frame);
+      this.renderFlag = false;
+      this.lastRenderTime = Date.now();
+    }
+  };
+
+  ns.TabPreviewController.prototype.getNextIndex_ = function (delta) {
+    var fps = this.piskelController.getFPS();
+    if (fps === 0) {
+      return this.piskelController.getCurrentFrameIndex();
+    } else {
+      var index = Math.floor(this.elapsedTime / (1000 / fps));
+      var frameIndexes = this.piskelController.getVisibleFrameIndexes();
+      if (frameIndexes.length <= index) {
+        this.elapsedTime = 0;
+        index = (frameIndexes.length) ? frameIndexes[0] : this.piskelController.getCurrentFrameIndex();
+        return index;
+      }
+      return frameIndexes[index];
+    }
+  };
+
+  /**
+     * Calculate the preview zoom depending on the framesheet size
+     */
+  ns.TabPreviewController.prototype.calculateZoom_ = function () {
+    var frame = this.piskelController.getCurrentFrame();
+    var hZoom = PREVIEW_SIZE / frame.getHeight();
+    var wZoom = PREVIEW_SIZE / frame.getWidth();
+
+    return Math.min(hZoom, wZoom);
+  };
+
+  ns.TabPreviewController.prototype.onFrameSizeChange_ = function () {
+    if (!this.tabsController.isSelected(this.index)) {
+      return;
+    }
+    this.updateZoom_();
+    this.updateContainerDimensions_();
+  };
+
+  ns.TabPreviewController.prototype.updateContainerDimensions_ = function () {
+    var isSeamless = pskl.UserSettings.get(pskl.UserSettings.SEAMLESS_MODE);
+    this.renderer.setRepeated(isSeamless);
+
+    var width;
+    var height;
+
+    if (isSeamless) {
+      height = PREVIEW_SIZE;
+      width = PREVIEW_SIZE;
+    } else {
+      var zoom = this.getZoom();
+      var frame = this.piskelController.getCurrentFrame();
+      height = frame.getHeight() * zoom;
+      width = frame.getWidth() * zoom;
+    }
+
+    var containerEl = this.container;
+    containerEl.style.height = height + 'px';
+    containerEl.style.width = width + 'px';
+
+    var horizontalMargin = (PREVIEW_SIZE - height) / 2;
+    containerEl.style.marginTop = horizontalMargin + 'px';
+    containerEl.style.marginBottom = horizontalMargin + 'px';
+
+    var verticalMargin = (PREVIEW_SIZE - width) / 2;
+    containerEl.style.marginLeft = verticalMargin + 'px';
+    containerEl.style.marginRight = verticalMargin + 'px';
+  };
+
+  ns.TabPreviewController.prototype.setRenderFlag_ = function (bool) {
+    if (!this.tabsController.isSelected(this.index)) {
+      return;
+    }
+    this.renderFlag = bool;
+  };
+
+  ns.TabPreviewController.prototype.shouldRender_ = function () {
+    return this.renderFlag &&
+              (Date.now() - this.lastRenderTime > RENDER_MINIMUM_DELAY);
   };
 })();
 ;(function () {
@@ -30495,10 +30904,7 @@ return Q;
     this.shortcutService = shortcutService || pskl.app.shortcutService;
     this.deserializer = deserializer || pskl.utils.serialization.arraybuffer.ArrayBufferDeserializer;
     this.serializer = serializer || pskl.utils.serialization.arraybuffer.ArrayBufferSerializer;
-
-    this.stateQueue = [];
-    this.currentIndex = -1;
-    this.lastLoadState = -1;
+    this.states = [];
   };
 
   // Force to save a state as a SNAPSHOT
@@ -30518,6 +30924,13 @@ return Q;
 
   ns.HistoryService.prototype.init = function () {
     $.subscribe(Events.PISKEL_SAVE_STATE, this.onSaveStateEvent.bind(this));
+    $.subscribe(Events.PISKEL_ADDED, this._piskelAdded.bind(this));
+
+    const ids = this.piskelController.getPiskelIds();
+
+    ids.forEach(index => {
+      this.addPiskel(index);
+    });
 
     var shortcuts = pskl.service.keyboard.Shortcuts;
     this.shortcutService.registerShortcut(shortcuts.MISC.UNDO, this.undo.bind(this));
@@ -30533,8 +30946,9 @@ return Q;
   };
 
   ns.HistoryService.prototype.saveState = function (action) {
-    this.stateQueue = this.stateQueue.slice(0, this.currentIndex + 1);
-    this.currentIndex = this.currentIndex + 1;
+    const historyState = this.getState();
+    historyState.stateQueue = historyState.stateQueue.slice(0, historyState.currentIndex + 1);
+    historyState.currentIndex = historyState.currentIndex + 1;
 
     var state = {
       action : action,
@@ -30545,7 +30959,7 @@ return Q;
     };
 
     var isSnapshot = action.type === ns.HistoryService.SNAPSHOT;
-    var isAtAutoSnapshotInterval = this.currentIndex % ns.HistoryService.SNAPSHOT_PERIOD === 0;
+    var isAtAutoSnapshotInterval = historyState.currentIndex % ns.HistoryService.SNAPSHOT_PERIOD === 0;
     if (isSnapshot || isAtAutoSnapshotInterval) {
       var piskel = this.piskelController.getPiskel();
       state.piskel = this.serializer.serialize(piskel);
@@ -30553,17 +30967,22 @@ return Q;
 
     // If the new state pushes over MAX_SAVED_STATES, erase all states between the first and
     // second snapshot states.
-    if (this.stateQueue.length > ns.HistoryService.MAX_SAVED_STATES) {
+    if (historyState.stateQueue.length > ns.HistoryService.MAX_SAVED_STATES) {
       var firstSnapshotIndex = this.getNextSnapshotIndex_(1);
-      this.stateQueue.splice(0, firstSnapshotIndex);
-      this.currentIndex = this.currentIndex - firstSnapshotIndex;
+      historyState.stateQueue.splice(0, firstSnapshotIndex);
+      historyState.currentIndex = historyState.currentIndex - firstSnapshotIndex;
     }
-    this.stateQueue.push(state);
+    historyState.stateQueue.push(state);
+    this.setState(historyState);
     $.publish(Events.HISTORY_STATE_SAVED);
   };
 
-  ns.HistoryService.prototype.getCurrentStateId = function () {
-    var state = this.stateQueue[this.currentIndex];
+  ns.HistoryService.prototype.getCurrentStateId = function (index = null) {
+    if (index == null) {
+      index = this.piskelController.getSelectedPiskel();
+    }
+    const historyState = this._getState(index);
+    var state = historyState.stateQueue[historyState.currentIndex];
     if (!state) {
       return false;
     }
@@ -30572,37 +30991,43 @@ return Q;
   };
 
   ns.HistoryService.prototype.undo = function () {
-    this.loadState(this.currentIndex - 1);
+    const historyState = this.getState();
+    this.loadState(historyState.currentIndex - 1);
   };
 
   ns.HistoryService.prototype.redo = function () {
-    this.loadState(this.currentIndex + 1);
+    const historyState = this.getState();
+    this.loadState(historyState.currentIndex + 1);
   };
 
   ns.HistoryService.prototype.isLoadStateAllowed_ = function (index) {
-    var timeOk = (Date.now() - this.lastLoadState) > ns.HistoryService.LOAD_STATE_INTERVAL;
-    var indexInRange = index >= 0 && index < this.stateQueue.length;
+    const historyState = this.getState();
+    var timeOk = (Date.now() - historyState.lastLoadState) > ns.HistoryService.LOAD_STATE_INTERVAL;
+    var indexInRange = index >= 0 && index < historyState.stateQueue.length;
     return timeOk && indexInRange;
   };
 
   ns.HistoryService.prototype.getPreviousSnapshotIndex_ = function (index) {
-    while (this.stateQueue[index] && !this.stateQueue[index].piskel) {
+    const historyState = this.getState();
+    while (historyState.stateQueue[index] && !historyState.stateQueue[index].piskel) {
       index = index - 1;
     }
     return index;
   };
 
   ns.HistoryService.prototype.getNextSnapshotIndex_ = function (index) {
-    while (this.stateQueue[index] && !this.stateQueue[index].piskel) {
+    const historyState = this.getState();
+    while (historyState.stateQueue[index] && !historyState.stateQueue[index].piskel) {
       index = index + 1;
     }
     return index;
   };
 
   ns.HistoryService.prototype.loadState = function (index) {
+    const historyState = this.getState();
     try {
       if (this.isLoadStateAllowed_(index)) {
-        this.lastLoadState = Date.now();
+        historyState.lastLoadState = Date.now();
 
         var snapshotIndex = this.getPreviousSnapshotIndex_(index);
         if (snapshotIndex < 0) {
@@ -30615,8 +31040,9 @@ return Q;
     } catch (error) {
       console.error('[CRITICAL ERROR] : Unable to load a history state.');
       this.logError_(error);
-      this.stateQueue = [];
-      this.currentIndex = -1;
+      historyState.stateQueue = [];
+      historyState.currentIndex = -1;
+      this.setState(historyState);
     }
 
     $.publish(Events.FORCE_REFRESH, null);
@@ -30632,7 +31058,8 @@ return Q;
   };
 
   ns.HistoryService.prototype.getSnapshotFromState_ = function (stateIndex) {
-    var state = this.stateQueue[stateIndex];
+    const historyState = this.getState();
+    var state = historyState.stateQueue[stateIndex];
     var piskelSnapshot = state.piskel;
 
     state.piskel = piskelSnapshot;
@@ -30641,25 +31068,28 @@ return Q;
   };
 
   ns.HistoryService.prototype.onPiskelLoaded_ = function (index, snapshotIndex, piskel) {
+    const historyState = this.getState();
+    const origPiskel = this.piskelController.getPiskel();
     var originalSize = this.getPiskelSize_();
-    piskel.setDescriptor(this.piskelController.piskel.getDescriptor());
+    piskel.setDescriptor(origPiskel.getDescriptor());
     // propagate save path to the new piskel instance
-    piskel.savePath = this.piskelController.piskel.savePath;
+    piskel.savePath = origPiskel.savePath;
     this.piskelController.setPiskel(piskel);
 
     for (var i = snapshotIndex + 1 ; i <= index ; i++) {
-      var state = this.stateQueue[i];
+      var state = historyState.stateQueue[i];
       this.setupState(state);
       this.replayState(state);
     }
 
     // Should only do this when going backwards
-    var lastState = this.stateQueue[index + 1];
+    var lastState = historyState.stateQueue[index + 1];
     if (lastState) {
       this.setupState(lastState);
     }
 
-    this.currentIndex = index;
+    historyState.currentIndex = index;
+    this.setState(historyState);
     $.publish(Events.PISKEL_RESET);
     $.publish(Events.HISTORY_STATE_LOADED);
     if (originalSize !== this.getPiskelSize_()) {
@@ -30683,6 +31113,47 @@ return Q;
     var layer = this.piskelController.getLayerAt(state.layerIndex);
     var frame = layer.getFrameAt(state.frameIndex);
     action.scope.replay(frame, action.replay);
+  };
+
+  ns.HistoryService.prototype.getState = function () {
+    return this._getState(this.piskelController.getSelectedPiskel());
+  };
+
+  ns.HistoryService.prototype.setState = function (state) {
+    const arrayIndex = this.states.findIndex(s => s.index == state.index);
+
+    if (arrayIndex >= 0) {
+      this.states[arrayIndex] = state;
+    }
+  };
+
+  ns.HistoryService.prototype.addPiskel = function (index) {
+    this.states.push({
+      stateQueue: [],
+      currentIndex: -1,
+      lastLoadState: -1,
+      index: index
+    });
+  };
+
+  ns.HistoryService.prototype._piskelAdded = function (e, index) {
+    this.addPiskel(index);
+  };
+
+  ns.HistoryService.prototype._piskelRemoved = function (index) {
+    const arrayIndex = this.states.findIndex(s => s.index == index);
+
+    if (arrayIndex >= 0) {
+      return this.states.remove(this.states[arrayIndex]);
+    }
+  };
+
+  ns.HistoryService.prototype._getState = function (index) {
+    const arrayIndex = this.states.findIndex(s => s.index == index);
+
+    if (arrayIndex >= 0) {
+      return this.states[arrayIndex];
+    }
   };
 
 })();
@@ -31174,20 +31645,27 @@ return Q;
   ns.SavedStatusService = function (piskelController, historyService) {
     this.piskelController = piskelController;
     this.historyService = historyService;
-    this.lastSavedStateIndex = '';
-
     this.publishStatusUpdateEvent_ = this.publishStatusUpdateEvent_.bind(this);
+    this.stateIndexes = [];
   };
 
   ns.SavedStatusService.prototype.init = function () {
     $.subscribe(Events.TOOL_RELEASED, this.publishStatusUpdateEvent_);
     $.subscribe(Events.PISKEL_RESET, this.publishStatusUpdateEvent_);
     $.subscribe(Events.PISKEL_SAVED, this.onPiskelSaved.bind(this));
-    this.lastSavedStateIndex = this.historyService.getCurrentStateId();
+    $.subscribe(Events.PISKEL_ADDED, this._piskelAdded.bind(this));
+
+    const ids = this.piskelController.getPiskelIds();
+
+    ids.forEach(i => {
+      this._piskelAdded(null, i);
+    });
   };
 
   ns.SavedStatusService.prototype.onPiskelSaved = function () {
-    this.lastSavedStateIndex = this.historyService.getCurrentStateId();
+    const state = this.getState();
+    state.stateIndex = this.historyService.getCurrentStateId();
+    this.setState(state);
     this.publishStatusUpdateEvent_();
   };
 
@@ -31195,8 +31673,39 @@ return Q;
     $.publish(Events.PISKEL_SAVED_STATUS_UPDATE);
   };
 
-  ns.SavedStatusService.prototype.isDirty = function () {
-    return (this.lastSavedStateIndex != this.historyService.getCurrentStateId());
+  ns.SavedStatusService.prototype.isDirty = function (index = null) {
+    if (index == null) {
+      index = this.piskelController.getSelectedPiskel();
+    }
+    const state = this._getState(index);
+    return (state.stateIndex != this.historyService.getCurrentStateId(index));
+  };
+
+  ns.SavedStatusService.prototype.getState = function () {
+    return this._getState(this.piskelController.getSelectedPiskel());
+  };
+
+  ns.SavedStatusService.prototype.setState = function (state) {
+    const arrayIndex = this.stateIndexes.findIndex(s => s.index == state.index);
+
+    if (arrayIndex >= 0) {
+      this.stateIndexes[arrayIndex] = state;
+    }
+  };
+
+  ns.SavedStatusService.prototype._piskelAdded = function (e, index) {
+    this.stateIndexes.push({
+      stateIndex: this.historyService.getCurrentStateId(),
+      index: index
+    });
+  };
+
+  ns.SavedStatusService.prototype._getState = function (index) {
+    const arrayIndex = this.stateIndexes.findIndex(s => s.index == index);
+
+    if (arrayIndex >= 0) {
+      return this.stateIndexes[arrayIndex];
+    }
   };
 })();
 ;(function () {
@@ -34631,6 +35140,7 @@ ns.ToolsHelper = {
 
       this.piskelController = new pskl.controller.piskel.PublicPiskelController(this.corePiskelController);
       this.piskelController.init();
+      this.piskelController.selectPiskel(this.piskelController.newPiskel());
 
       this.paletteImportService = new pskl.service.palette.PaletteImportService();
       this.paletteImportService.init();
@@ -34772,6 +35282,8 @@ ns.ToolsHelper = {
       this.clipboardService = new pskl.service.ClipboardService(this.piskelController);
       this.clipboardService.init();
 
+      this.tabsController = new pskl.controller.TabsController(this.piskelController, this.historyService);
+
       this.drawingLoop = new pskl.rendering.DrawingLoop();
       this.drawingLoop.addCallback(this.render, this);
       this.drawingLoop.start();
@@ -34837,6 +35349,7 @@ ns.ToolsHelper = {
       this.drawingController.render(delta);
       this.previewController.render(delta);
       this.framesListController.render(delta);
+      this.tabsController.render(delta);
     },
 
     getFirstFrameAsPng : function () {

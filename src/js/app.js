@@ -37,6 +37,7 @@
 
       this.piskelController = new pskl.controller.piskel.PublicPiskelController(this.corePiskelController);
       this.piskelController.init();
+      this.piskelController.selectPiskel(this.piskelController.newPiskel());
 
       this.paletteImportService = new pskl.service.palette.PaletteImportService();
       this.paletteImportService.init();
@@ -178,6 +179,8 @@
       this.clipboardService = new pskl.service.ClipboardService(this.piskelController);
       this.clipboardService.init();
 
+      this.tabsController = new pskl.controller.TabsController(this.piskelController, this.historyService);
+
       this.drawingLoop = new pskl.rendering.DrawingLoop();
       this.drawingLoop.addCallback(this.render, this);
       this.drawingLoop.start();
@@ -243,6 +246,7 @@
       this.drawingController.render(delta);
       this.previewController.render(delta);
       this.framesListController.render(delta);
+      this.tabsController.render(delta);
     },
 
     getFirstFrameAsPng : function () {
