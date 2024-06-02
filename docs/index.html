@@ -72,58 +72,11 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center;">
       <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   </div>
-  <style type="text/css">
-  #main-wrapper {
-    margin-top: 40px;
-  }
-
-  .fake-piskelapp-header {
-    position: relative;
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    font-size: 24px;
-    background: black;
-    color: #039BE5;
-    z-index: 100;
-  }
-
-  .piskel-name.piskel-name-saving {
-    color: red;
-  }
-
-  .new-piskel-desktop {
-    position: absolute;
-    display: flex;
-    top: 7px;
-    right: 7px;
-
-    height: 26px;
-    width: 26px;
-
-    border-radius: 3px;
-    font-size: 22px;
-    color: black;
-    background: #039BE5;
-    text-decoration: none;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .new-piskel-desktop:visited {
-    color: black;
-  }
-</style>
-<div class="fake-piskelapp-header">
-  <a
-    href="index.html"
-    target="_blank"
-    class="new-piskel-desktop button button-primary"
-    title="Create a new sprite"
-    rel="tooltip"
-    data-placement="left"
-    >+</a>
-  <span class="piskel-name"></span>
+  <div class="fake-piskelapp-header">
+  <p class="piskel-name"></p>
+  <div class="tabs" id="tabsContainer">
+  </div>
+  <button class="addTabButton">+</button>
 </div>
 
   <!-- the comment below indicates the beginning of markup reused by the editor integrated in piskelapp.com -->
@@ -957,7 +910,7 @@
       Piskel
       <span rel="tooltip" data-placement="bottom" title="View release notes">
         <a  class="settings-version" target="_blank"
-            href="https://github.com/piskelapp/piskel/releases/tag/v1.1">v1.1</a>
+            href="https://github.com/piskelapp/piskel/releases/tag/v2.0">v2.0</a>
       </span>
     </div>
   </div>
@@ -1336,9 +1289,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-05-25-08-36 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-06-02-11-49 is replaced by the build version
    */
-  var version = '-2024-05-25-08-36';
+  var version = '-2024-06-02-11-49';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
@@ -1356,7 +1309,7 @@
       document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
     }, 300);
     pskl.app.init();
-    pskl._releaseVersion = '1.1';
+    pskl._releaseVersion = '2.0';
     // cleanup
     delete window.pskl_exports;
     delete window.loadDebugScripts;

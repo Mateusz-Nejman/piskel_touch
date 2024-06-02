@@ -52,7 +52,7 @@
 
   ns.PublicPiskelController.prototype.newPiskel = function () {
     const id = this.piskelController.newPiskel();
-    $.publish(Events.PISKEL_ADDED);
+    $.publish(Events.PISKEL_ADDED, id);
     return id;
   };
 
@@ -133,5 +133,14 @@
 
   ns.PublicPiskelController.prototype.getSelectedPiskel = function () {
     return this.piskelController.getSelectedPiskel();
+  };
+
+  ns.PublicPiskelController.prototype.closePiskel = function (index) {
+    if (this.piskelController.closePiskel(index)) {
+      $.publish(Events.PISKEL_REMOVED, index);
+      return true;
+    }
+
+    return false;
   };
 })();

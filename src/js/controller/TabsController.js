@@ -9,11 +9,15 @@
     this.tabsContainer = document.querySelector('#tabsContainer');
     this.addCurrent();
     this.setCurrent(this.piskelController.getSelectedPiskel());
+    document.querySelector('.addTabButton').addEventListener('click', this._newPiskel.bind(this));
+    $.subscribe(Events.PISKEL_ADDED, this._refreshButtons.bind(this));
+    $.subscribe(Events.PISKEL_REMOVED, this._refreshButtons.bind(this));
   };
 
   ns.TabsController.prototype.addCurrent = function() {
     const ids = this.piskelController.getPiskelIds();
     ids.forEach(this.add.bind(this));
+    this._refreshButtons();
   };
 
   ns.TabsController.prototype.addEmpty = function() {
@@ -31,7 +35,13 @@
     canvasBackground.classList.add('canvas-background');
     previewContainer.append(canvasBackground);
     newTab.append(previewContainer);
-    newTab.addEventListener('click', this._onTabSelect.bind(this, index));
+    previewContainer.addEventListener('click', this._onTabSelect.bind(this, index));
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('closeButton');
+    closeButton.setAttribute('type', 'button');
+    closeButton.textContent = 'x';
+    closeButton.addEventListener('click', this._onTabClose.bind(this, index));
+    newTab.append(closeButton);
     this.tabsContainer.append(newTab);
     this.tabControllers.push({
       controller: new pskl.controller.preview.TabPreviewController(this,
@@ -63,7 +73,30 @@
     return this.piskelController.getSelectedPiskel() == index;
   };
 
-  ns.TabsController.prototype._onTabSelect = function (index) {
+  ns.TabsController.prototype._onTabSelect = function (index, event) {
     this.setCurrent(index);
+    $.publish(Events.PISKEL_CHANGED, index);
+  };
+
+  ns.TabsController.prototype._onTabClose = function (index) {
+    if (this.piskelController.closePiskel(index)) {
+      document.querySelector('.tab' + index).remove();
+      this._refreshButtons();
+    }
+  };
+
+  ns.TabsController.prototype._newPiskel = function () {
+    const id = this.piskelController.newPiskel();
+    this.add(id);
+    this._onTabSelect(id);
+  };
+
+  ns.TabsController.prototype._refreshButtons = function () {
+    document.querySelector('.closeButton').setAttribute('style', 'display: none');
+    const ids = this.piskelController.getPiskelIds();
+
+    if (ids.length > 1) {
+      document.querySelector('.closeButton').setAttribute('style', 'display: block');
+    }
   };
 })();

@@ -36,7 +36,7 @@
   };
 
   ns.PiskelController.prototype.setPiskel = function (piskel, options) {
-    this._setPiskel(this.selectPiskel, piskel);
+    this._setPiskel(this.selectedPiskel, piskel);
     options = options || {};
     if (!options.preserveState) {
       this.currentLayerIndex = 0;
@@ -115,6 +115,10 @@
 
   ns.PiskelController.prototype.getPiskel = function () {
     return this._getPiskel(this.selectedPiskel);
+  };
+
+  ns.PiskelController.prototype.getPiskelData = function () {
+    return this._getPiskelData(this.selectedPiskel);
   };
 
   ns.PiskelController.prototype.isTransparent = function () {
@@ -410,6 +414,30 @@
     return this.selectedPiskel;
   };
 
+  ns.PiskelController.prototype.closePiskel = function (index) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      if (pskl.app.savedStatusService.isDirty(index)) {
+        var msg = 'Your current sprite has unsaved changes. Are you sure you want to quit?';
+        if (!window.confirm(msg)) {
+          return false;
+        }
+      }
+
+      this.piskels = this.piskels.filter(p => p.piskel !== this.piskels[arrayIndex].piskel);
+      this.selectPiskel(this.piskels[arrayIndex - (arrayIndex > 0 ? 1 : 0)].index);
+
+      return true;
+    }
+
+    return false;
+  };
+
+  ns.PiskelController.prototype.debug = function () {
+    console.log(this.piskels);
+  };
+
   ns.PiskelController.prototype._uuidv4 = function () {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
       .replace(/[xy]/g, function (c) {
@@ -420,10 +448,14 @@
   };
 
   ns.PiskelController.prototype._getPiskel = function (index) {
+    return this._getPiskelData(index).piskel;
+  };
+
+  ns.PiskelController.prototype._getPiskelData = function (index) {
     const arrayIndex = this.piskels.findIndex(p => p.index == index);
 
     if (arrayIndex >= 0) {
-      return this.piskels[arrayIndex].piskel;
+      return this.piskels[arrayIndex];
     }
   };
 

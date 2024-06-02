@@ -65,6 +65,42 @@
     position: relative;
   }
 
+  .tab.active .closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    font-size: 22px;
+    color: black;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+  }
+
+  .tab.active .closeButton:hover {
+    background-color: #1f1f1f;
+    color: white;
+  }
+
+  .tab .closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    font-size: 22px;
+    background-color: #1f1f1f;
+    color: white;
+    text-decoration: none;
+    border: none;
+  }
+
+  .tab .closeButton:hover {
+    color: black;
+    background-color: #a0a0a0;
+  }
+
   .tab.active {
     background-color: #a0a0a0;
     border: 4px #a0a0a0 solid;
@@ -85,4 +121,19 @@
     left: 0;
     width: 52px;
     height: 52px;
+}
+
+.addTabButton {
+  height: 60px;
+  width: 32px;
+  font-size: 22px;
+  color: white;
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+}
+
+.addTabButton:hover {
+  background-color: #a0a0a0;
+  color: black;
 }

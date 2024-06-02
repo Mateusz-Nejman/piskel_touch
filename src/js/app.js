@@ -37,10 +37,7 @@
 
       this.piskelController = new pskl.controller.piskel.PublicPiskelController(this.corePiskelController);
       this.piskelController.init();
-
-      this.piskelController.newPiskel();
-      const id = this.piskelController.newPiskel();
-      this.piskelController.selectPiskel(id);
+      this.piskelController.selectPiskel(this.piskelController.newPiskel());
 
       this.paletteImportService = new pskl.service.palette.PaletteImportService();
       this.paletteImportService.init();

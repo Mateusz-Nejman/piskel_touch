@@ -19,6 +19,7 @@
     $.subscribe(Events.PISKEL_DESCRIPTOR_UPDATED, this.updateHeader_.bind(this));
     $.subscribe(Events.PISKEL_RESET, this.updateHeader_.bind(this));
     $.subscribe(Events.PISKEL_SAVED_STATUS_UPDATE, this.updateHeader_.bind(this));
+    $.subscribe(Events.PISKEL_CHANGED, this.updateHeader_.bind(this));
 
     this.updateHeader_();
   };
@@ -51,5 +52,4 @@
     }
     this.piskelName_.classList.remove('piskel-name-saving');
   };
-
 })();
