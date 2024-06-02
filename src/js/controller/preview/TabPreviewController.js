@@ -12,13 +12,10 @@
     this.index = index;
 
     this.elapsedTime = 0;
-    this.currentIndex = 0;
     this.lastRenderTime = 0;
     this.renderFlag = true;
 
     this.renderer = new pskl.rendering.frame.BackgroundImageFrameRenderer(this.container);
-    this.previewActionsController = new ns.PreviewActionsController(this, container);
-
     this.init();
   };
 
@@ -30,7 +27,6 @@
     $.subscribe(Events.USER_SETTINGS_CHANGED, this.onUserSettingsChange_.bind(this));
     $.subscribe(Events.PISKEL_SAVE_STATE, this.setRenderFlag_.bind(this, true));
     $.subscribe(Events.PISKEL_RESET, this.setRenderFlag_.bind(this, true));
-    this.previewActionsController.init();
 
     this.updateZoom_();
     this.updateContainerDimensions_();
@@ -71,10 +67,10 @@
 
   ns.TabPreviewController.prototype.render = function (delta) {
     this.elapsedTime += delta;
-    var index = this.getNextIndex_(delta);
-    if (this.shouldRender_() || this.currentIndex != index) {
-      this.currentIndex = index;
-      var frame = pskl.utils.LayerUtils.mergeFrameAt(this.piskelController.getLayers(), index);
+    var index = 0;
+    if (this.shouldRender_() || 0 != index) {
+      const piskel = this.piskelController._getPiskel(this.index);
+      var frame = pskl.utils.LayerUtils.mergeFrameAt(piskel.getLayers(), 0);
       this.renderer.render(frame);
       this.renderFlag = false;
       this.lastRenderTime = Date.now();
@@ -84,13 +80,13 @@
   ns.TabPreviewController.prototype.getNextIndex_ = function (delta) {
     var fps = this.piskelController.getFPS();
     if (fps === 0) {
-      return this.piskelController.getCurrentFrameIndex();
+      return 0;
     } else {
       var index = Math.floor(this.elapsedTime / (1000 / fps));
       var frameIndexes = this.piskelController.getVisibleFrameIndexes();
       if (frameIndexes.length <= index) {
         this.elapsedTime = 0;
-        index = (frameIndexes.length) ? frameIndexes[0] : this.piskelController.getCurrentFrameIndex();
+        index = (frameIndexes.length) ? frameIndexes[0] : 0;
         return index;
       }
       return frameIndexes[index];
@@ -101,9 +97,10 @@
      * Calculate the preview zoom depending on the framesheet size
      */
   ns.TabPreviewController.prototype.calculateZoom_ = function () {
-    var frame = this.piskelController.getCurrentFrame();
-    var hZoom = PREVIEW_SIZE / frame.getHeight();
-    var wZoom = PREVIEW_SIZE / frame.getWidth();
+    const piskel = this.piskelController._getPiskel(this.index);
+    const frame = piskel.layers[0].frames[0];
+    const hZoom = PREVIEW_SIZE / frame.getHeight();
+    const wZoom = PREVIEW_SIZE / frame.getWidth();
 
     return Math.min(hZoom, wZoom);
   };
@@ -128,7 +125,8 @@
       width = PREVIEW_SIZE;
     } else {
       var zoom = this.getZoom();
-      var frame = this.piskelController.getCurrentFrame();
+      const piskel = this.piskelController._getPiskel(this.index);
+      var frame = piskel.layers[0].frames[0];
       height = frame.getHeight() * zoom;
       width = frame.getWidth() * zoom;
     }
