@@ -40,6 +40,19 @@
     return (state.stateIndex != this.historyService.getCurrentStateId(index));
   };
 
+  ns.SavedStatusService.prototype.isDirtyAny = function () {
+    const ids = this.piskelController.getPiskelIds();
+    let dirty = false;
+
+    ids.forEach(index => {
+      if (this.isDirty(index)) {
+        dirty = true;
+      }
+    });
+
+    return dirty;
+  };
+
   ns.SavedStatusService.prototype.getState = function () {
     return this._getState(this.piskelController.getSelectedPiskel());
   };

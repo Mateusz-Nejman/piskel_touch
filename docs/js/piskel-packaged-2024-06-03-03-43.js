@@ -30880,7 +30880,7 @@ return Q;
     // Attempt one last backup. Some of it may fail due to the asynchronous
     // nature of IndexedDB.
     pskl.app.backupService.backup();
-    if (pskl.app.savedStatusService.isDirty()) {
+    if (pskl.app.savedStatusService.isDirtyAny()) {
       var confirmationMessage = 'Your current sprite has unsaved changes. Are you sure you want to quit?';
 
       evt = evt || window.event;
@@ -31677,6 +31677,19 @@ return Q;
     }
     const state = this._getState(index);
     return (state.stateIndex != this.historyService.getCurrentStateId(index));
+  };
+
+  ns.SavedStatusService.prototype.isDirtyAny = function () {
+    const ids = this.piskelController.getPiskelIds();
+    let dirty = false;
+
+    ids.forEach(index => {
+      if (this.isDirty(index)) {
+        dirty = true;
+      }
+    });
+
+    return dirty;
   };
 
   ns.SavedStatusService.prototype.getState = function () {

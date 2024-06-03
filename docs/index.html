@@ -910,7 +910,7 @@
       Piskel
       <span rel="tooltip" data-placement="bottom" title="View release notes">
         <a  class="settings-version" target="_blank"
-            href="https://github.com/piskelapp/piskel/releases/tag/v2.0">v2.0</a>
+            href="https://github.com/piskelapp/piskel/releases/tag/v2.0.1">v2.0.1</a>
       </span>
     </div>
   </div>
@@ -1289,9 +1289,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-06-02-01-20 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-06-03-03-43 is replaced by the build version
    */
-  var version = '-2024-06-02-01-20';
+  var version = '-2024-06-03-03-43';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
@@ -1309,7 +1309,7 @@
       document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
     }, 300);
     pskl.app.init();
-    pskl._releaseVersion = '2.0';
+    pskl._releaseVersion = '2.0.1';
     // cleanup
     delete window.pskl_exports;
     delete window.loadDebugScripts;

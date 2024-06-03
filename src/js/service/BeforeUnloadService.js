@@ -33,7 +33,7 @@
     // Attempt one last backup. Some of it may fail due to the asynchronous
     // nature of IndexedDB.
     pskl.app.backupService.backup();
-    if (pskl.app.savedStatusService.isDirty()) {
+    if (pskl.app.savedStatusService.isDirtyAny()) {
       var confirmationMessage = 'Your current sprite has unsaved changes. Are you sure you want to quit?';
 
       evt = evt || window.event;
