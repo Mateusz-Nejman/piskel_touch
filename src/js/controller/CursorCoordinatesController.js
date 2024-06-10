@@ -32,7 +32,7 @@
     var x = this.coordinates.x;
     var y = this.coordinates.y;
     var currentFrame = this.piskelController.getCurrentFrame();
-    if (currentFrame.containsPixel(x, y)) {
+    if (currentFrame !== undefined && currentFrame.containsPixel(x, y)) {
       html += 'Cursor: (' + x + ':' + y + ') ';
       if (this.origin) {
         var dX = Math.abs(x - this.origin.x) + 1;

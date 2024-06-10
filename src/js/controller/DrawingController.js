@@ -207,7 +207,7 @@
     }
 
     var coords = this.getSpriteCoordinates(this._clientX, this._clientY);
-    if (!frame.containsPixel(coords.x, coords.y)) {
+    if (frame !== undefined && !frame.containsPixel(coords.x, coords.y)) {
       return;
     }
 
@@ -443,7 +443,7 @@
 
   ns.DrawingController.prototype.render = function () {
     var currentFrame = this.piskelController.getCurrentFrame();
-    if (!currentFrame.isSameSize(this.overlayFrame)) {
+    if (currentFrame !== undefined && !currentFrame.isSameSize(this.overlayFrame)) {
       this.overlayFrame = pskl.model.Frame.createEmptyFromFrame(currentFrame);
     }
 

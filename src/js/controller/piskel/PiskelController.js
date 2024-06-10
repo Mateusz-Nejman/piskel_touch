@@ -102,7 +102,13 @@
 
   ns.PiskelController.prototype.getCurrentFrame = function () {
     var layer = this.getCurrentLayer();
-    return layer.getFrameAt(this.currentFrameIndex);
+    this.clampCurrentFrameIndex();
+    return layer.getFrameAt(this.currentFrameIndex, true);
+  };
+
+  ns.PiskelController.prototype.clampCurrentFrameIndex = function () {
+    const frameCount = this.getCurrentLayer().frames.length;
+    this.setCurrentFrameIndex(Math.min(Math.max(this.currentFrameIndex, 0), frameCount - 1));
   };
 
   ns.PiskelController.prototype.getCurrentLayerIndex = function () {

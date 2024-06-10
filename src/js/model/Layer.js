@@ -64,7 +64,10 @@
     return this.frames;
   };
 
-  ns.Layer.prototype.getFrameAt = function (index) {
+  ns.Layer.prototype.getFrameAt = function (index, clamp = false) {
+    if (clamp) {
+      index = Math.min(Math.max(index, 0), this.frames.length - 1);
+    }
     return this.frames[index];
   };
 

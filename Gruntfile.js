@@ -66,6 +66,7 @@ module.exports = function(grunt) {
       all: ['dest', 'src/img/icons.png', 'src/css/icons.css'],
       prod: ['dest/prod', 'dest/tmp'],
       desktop: ['dest/desktop', 'dest/tmp'],
+      desktop_dev: ['dest/desktop_dev', 'dest/tmp'],
       dev: ['dest/dev', 'dest/tmp']
     },
 
@@ -281,6 +282,17 @@ module.exports = function(grunt) {
         },
         src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
       },
+      win_x64_dev : {
+        options: {
+          mode: "build",
+          version : "0.88.0",
+          flavor: "sdk",
+          platform: "win",
+          arch: "x64",
+          outDir: './dest/desktop_dev/',
+        },
+        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop_dev/"]
+      },
       macos : {
         options: {
           downloadUrl: 'https://dl.nwjs.io/',
@@ -328,6 +340,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build',  ['clean:prod', 'sprite', 'merge-statics', 'build-index.html', 'replace:mainPartial', 'replace:css', 'copy:prod']);
   grunt.registerTask('build-dev',  ['clean:dev', 'sprite', 'build-index.html', 'copy:dev']);
   grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:win_x64']);
+  grunt.registerTask('desktop-dev', ['clean:desktop_dev', 'default', 'nwjs:win_x64_dev']);
   grunt.registerTask('desktop-mac', ['clean:desktop', 'default', 'nwjs:macos']);
   grunt.registerTask('desktop-mac-old', ['clean:desktop', 'default', 'replace:desktop', 'nwjs:macos_old']);
 

@@ -30,6 +30,7 @@
     "postversion": "git push && git push --tags && npm publish",
     "release": "grunt && node ./bin/copy-to-piskel-website",
     "build": "grunt desktop && change_icon.bat",
+    "build:dev": "grunt desktop-dev",
     "build:mac": "grunt desktop-mac",
     "format": "grunt eslint --fix"
   },
