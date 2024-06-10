@@ -20544,7 +20544,10 @@ return Q;
     return this.frames;
   };
 
-  ns.Layer.prototype.getFrameAt = function (index) {
+  ns.Layer.prototype.getFrameAt = function (index, clamp = false) {
+    if (clamp) {
+      index = Math.min(Math.max(index, 0), this.frames.length - 1);
+    }
     return this.frames[index];
   };
 
@@ -22875,7 +22878,13 @@ return Q;
 
   ns.PiskelController.prototype.getCurrentFrame = function () {
     var layer = this.getCurrentLayer();
-    return layer.getFrameAt(this.currentFrameIndex);
+    this.clampCurrentFrameIndex();
+    return layer.getFrameAt(this.currentFrameIndex, true);
+  };
+
+  ns.PiskelController.prototype.clampCurrentFrameIndex = function () {
+    const frameCount = this.getCurrentLayer().frames.length;
+    this.setCurrentFrameIndex(Math.min(Math.max(this.currentFrameIndex, 0), frameCount - 1));
   };
 
   ns.PiskelController.prototype.getCurrentLayerIndex = function () {
@@ -23420,7 +23429,7 @@ return Q;
     var x = this.coordinates.x;
     var y = this.coordinates.y;
     var currentFrame = this.piskelController.getCurrentFrame();
-    if (currentFrame.containsPixel(x, y)) {
+    if (currentFrame !== undefined && currentFrame.containsPixel(x, y)) {
       html += 'Cursor: (' + x + ':' + y + ') ';
       if (this.origin) {
         var dX = Math.abs(x - this.origin.x) + 1;
@@ -23679,7 +23688,7 @@ return Q;
     }
 
     var coords = this.getSpriteCoordinates(this._clientX, this._clientY);
-    if (!frame.containsPixel(coords.x, coords.y)) {
+    if (frame !== undefined && !frame.containsPixel(coords.x, coords.y)) {
       return;
     }
 
@@ -23915,7 +23924,7 @@ return Q;
 
   ns.DrawingController.prototype.render = function () {
     var currentFrame = this.piskelController.getCurrentFrame();
-    if (!currentFrame.isSameSize(this.overlayFrame)) {
+    if (currentFrame !== undefined && !currentFrame.isSameSize(this.overlayFrame)) {
       this.overlayFrame = pskl.model.Frame.createEmptyFromFrame(currentFrame);
     }
 
