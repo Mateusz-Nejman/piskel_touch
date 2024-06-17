@@ -6,27 +6,23 @@
   };
 
   ns.BeforeUnloadService.prototype.init = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
-      // Add a dedicated listener to window 'close' event in nwjs environment.
-      var win = require('nw.gui').Window.get();
-      win.on('close', this.onNwWindowClose.bind(this, win));
+    if (pskl.utils.Environment.detectNative()) {
+      // eslint-disable-next-line no-undef
+      Neutralino.events.on('windowClose', this.onNativeWindowClose.bind(this));
     }
 
     window.addEventListener('beforeunload', this.onBeforeUnload.bind(this));
   };
 
-  /**
-   * In nw.js environment "onbeforeunload" is not triggered when closing the window.
-   * Polyfill the behavior here.
-   */
-  ns.BeforeUnloadService.prototype.onNwWindowClose = function (win) {
+  ns.BeforeUnloadService.prototype.onNativeWindowClose = function () {
     var msg = this.onBeforeUnload();
     if (msg) {
       if (!window.confirm(msg)) {
         return false;
       }
     }
-    win.close(true);
+    // eslint-disable-next-line no-undef
+    Neutralino.app.exit();
   };
 
   ns.BeforeUnloadService.prototype.onBeforeUnload = function (evt) {

@@ -88,6 +88,7 @@
 
     loadScript('piskel-style-list.js', 'loadStyles()');
   } else {
+    loadScript("js/neutralino.js", null);
     var script;
     if (window.location.href.indexOf('pack') != -1) {
       script = 'js/piskel-packaged' + version + '.js';

@@ -40,3 +40,15 @@ report
 *.private.*
 
 package-lock.json
+
+#neutralino files
+bin/neutralino-linux_arm64
+bin/neutralino-linux_armhf
+bin/neutralino-linux_x64
+bin/neutralino-mac_arm64
+bin/neutralino-mac_universal
+bin/neutralino-mac_x64
+bin/neutralino-win_x64.exe
+src/js/neutralino.d.ts
+src/js/neutralino.js
+neutralinojs.log

@@ -18,6 +18,11 @@
       // This id is used to keep track of sessions in the BackupService.
       this.sessionId = pskl.utils.Uuid.generate();
 
+      console.log(pskl.utils.Environment.detectNative());
+      if (pskl.utils.Environment.detectNative()) {
+        Neutralino.init();
+      }
+
       this.shortcutService = new pskl.service.keyboard.ShortcutService();
       this.shortcutService.init();
 
@@ -196,7 +201,7 @@
         pskl.devtools.init();
       }
 
-      if (pskl.utils.Environment.detectNodeWebkit() && pskl.utils.UserAgent.isMac) {
+      if (pskl.utils.Environment.detectNative() && pskl.utils.UserAgent.isMac) {
         var gui = require('nw.gui');
         var mb = new gui.Menu({type : 'menubar'});
         mb.createMacBuiltin('Piskel');

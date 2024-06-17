@@ -218,6 +218,7 @@ module.exports = function(grunt) {
           // dest/js/piskel-packaged-min.js should have been created by the uglify task
           {src: ['dest/tmp/js/piskel-packaged-min.js'], dest: 'dest/prod/js/piskel-packaged-min' + version + '.js'},
           {src: ['dest/tmp/index.html'], dest: 'dest/prod/index.html'},
+          {src: ['src/js/neutralino.js'], dest: 'dest/prod/js/neutralino.js'},
           {src: ['src/logo.png'], dest: 'dest/prod/logo.png'},
           {src: ['src/js/lib/gif/gif.ie.worker.js'], dest: 'dest/prod/js/lib/gif/gif.ie.worker.js'},
           {expand: true, src: ['img/**'], cwd: 'src/', dest: 'dest/prod/', filter: 'isFile'},
@@ -264,55 +265,6 @@ module.exports = function(grunt) {
           casperjsOptions: casperjsOptions
         }
       }
-    },
-
-    /**
-     * DESKTOP BUILDS
-     */
-
-    nwjs : {
-      win_x64 : {
-        options: {
-          mode: "build",
-          version : "0.88.0",
-          flavor: "normal",
-          platform: "win",
-          arch: "x64",
-          outDir: './dest/desktop/',
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
-      },
-      win_x64_dev : {
-        options: {
-          mode: "build",
-          version : "0.88.0",
-          flavor: "sdk",
-          platform: "win",
-          arch: "x64",
-          outDir: './dest/desktop_dev/',
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop_dev/"]
-      },
-      macos : {
-        options: {
-          downloadUrl: 'https://dl.nwjs.io/',
-          osx64: true,
-          version : "0.19.4",
-          build_dir: './dest/desktop/',
-          flavor: "normal",
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
-      },
-      macos_old : {
-        options: {
-          downloadUrl: 'https://dl.nwjs.io/',
-          osx64: true,
-          version : "0.12.3",
-          build_dir: './dest/desktop/old',
-          flavor: "normal",
-        },
-        src: ['./dest/prod/**/*', "./package.json", "!./dest/desktop/"]
-      }
     }
   });
 
@@ -339,10 +291,10 @@ module.exports = function(grunt) {
   grunt.registerTask('merge-statics', ['concat:js', 'concat:css', 'uglify']);
   grunt.registerTask('build',  ['clean:prod', 'sprite', 'merge-statics', 'build-index.html', 'replace:mainPartial', 'replace:css', 'copy:prod']);
   grunt.registerTask('build-dev',  ['clean:dev', 'sprite', 'build-index.html', 'copy:dev']);
-  grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:win_x64']);
-  grunt.registerTask('desktop-dev', ['clean:desktop_dev', 'default', 'nwjs:win_x64_dev']);
-  grunt.registerTask('desktop-mac', ['clean:desktop', 'default', 'nwjs:macos']);
-  grunt.registerTask('desktop-mac-old', ['clean:desktop', 'default', 'replace:desktop', 'nwjs:macos_old']);
+  //TODO grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:win_x64']);
+  //TODO grunt.registerTask('desktop-dev', ['clean:desktop_dev', 'default', 'nwjs:win_x64_dev']);
+  //TODO grunt.registerTask('desktop-mac', ['clean:desktop', 'default', 'nwjs:macos']);
+  //TODO grunt.registerTask('desktop-mac-old', ['clean:desktop', 'default', 'replace:desktop', 'nwjs:macos_old']);
 
   // SERVER TASKS
   // Start webserver and watch for changes

@@ -1,0 +1,51 @@
+{
+    "applicationId": "piskel_touch",
+    "version": "3.0.0",
+    "defaultMode": "window",
+    "port": 0,
+    "documentRoot": "/dest/prod/",
+    "url": "/",
+    "enableServer": true,
+    "enableNativeAPI": true,
+    "tokenSecurity": "one-time",
+    "logging": {
+      "enabled": true,
+      "writeToLogFile": true
+    },
+    "nativeAllowList": [
+      "app.*",
+      "os.*",
+      "filesystem.*",
+      "debug.log"
+    ],
+    "globalVariables": {
+      "ISNEUTRALINO": true
+    },
+    "modes": {
+      "window": {
+        "title": "Piskel Touch Edition",
+        "width": 1000,
+        "height": 700,
+        "minWidth": 400,
+        "minHeight": 200,
+        "center": true,
+        "fullScreen": false,
+        "alwaysOnTop": false,
+        "icon": "/dest/prod/logo.png",
+        "enableInspector": false,
+        "borderless": false,
+        "maximize": false,
+        "hidden": false,
+        "resizable": true,
+        "exitProcessOnClose": false
+      }
+    },
+    "cli": {
+      "binaryName": "Piskel Touch Edition",
+      "resourcesPath": "/dest/prod/",
+      "clientLibrary": "/src/js/neutralino.js",
+      "distributionPath": "/dest/desktop/",
+      "binaryVersion": "5.2.0",
+      "clientVersion": "5.2.0"
+    }
+  }

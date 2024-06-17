@@ -35,15 +35,37 @@
       if (saveAs) {
         saveAs(content, filename);
       } else {
-        var downloadLink = document.createElement('a');
-        content = window.URL.createObjectURL(content);
-        downloadLink.setAttribute('href', content);
-        downloadLink.setAttribute('download', filename);
-        document.body.appendChild(downloadLink);
-        downloadLink.addEventListener('click', stopPropagation);
-        downloadLink.click();
-        downloadLink.removeEventListener('click', stopPropagation);
-        document.body.removeChild(downloadLink);
+        if (pskl.utils.Environment.detectNative()) {
+          const extension = filename.split('.').pop();
+
+          if (extension != 'zip' && extension != 'png') {
+            return;
+          }
+
+          const filters = {
+            zip: [{name: 'Zip file', extensions: ['zip']}],
+            png: [{name: 'PNG image', extensions: ['png']}]
+          };
+          // eslint-disable-next-line no-undef
+          Neutralino.os.showSaveDialog('Save to file', {
+            defaultPath: filename,
+            filters: filters[extension]
+          }).then(path => {
+            content.arrayBuffer().then(data => {
+              ns.FileUtilsDesktop.saveToFileBinary(data, path);
+            });
+          });
+        } else {
+          var downloadLink = document.createElement('a');
+          content = window.URL.createObjectURL(content);
+          downloadLink.setAttribute('href', content);
+          downloadLink.setAttribute('download', filename);
+          document.body.appendChild(downloadLink);
+          downloadLink.addEventListener('click', stopPropagation);
+          downloadLink.click();
+          downloadLink.removeEventListener('click', stopPropagation);
+          document.body.removeChild(downloadLink);
+        }
       }
     }
 

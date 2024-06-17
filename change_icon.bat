@@ -1,2 +1,2 @@
-"%RESOURCE_HACKER_PATH%\\ResourceHacker.exe" -open "dest\\desktop\\piskel_touch.exe" -save "dest\\desktop\\Piskel Touch Edition.exe" -action addoverwrite -res icon.ico -mask ICONGROUP,IDR_MAINFRAME,
-del "dest\\desktop\\piskel_touch.exe"
+"%RESOURCE_HACKER_PATH%\\ResourceHacker.exe" -open "dest\\desktop\\Piskel Touch Edition\\Piskel Touch Edition-win_x64.exe" -save "dest\\desktop\\Piskel Touch Edition.exe" -action addoverwrite -res icon.ico -mask ICONGROUP,IDR_MAINFRAME,
+copy "dest\\desktop\\Piskel Touch Edition\\resources.neu" "dest\\desktop\\resources.neu"

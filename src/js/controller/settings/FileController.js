@@ -168,7 +168,7 @@
   };
 
   ns.FileController.prototype.getPartials_ = function () {
-    if (pskl.utils.Environment.detectNodeWebkit()) {
+    if (pskl.utils.Environment.detectNative()) {
       return [PARTIALS.DESKTOP];
     }
 

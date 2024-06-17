@@ -14,7 +14,7 @@
       return this.saveAtPath_(piskel, piskel.savePath);
     } else {
       var name = piskel.getDescriptor().name;
-      var filenamePromise = pskl.utils.FileUtilsDesktop.chooseFilenameDialog(name, PISKEL_EXTENSION);
+      var filenamePromise = pskl.utils.FileUtilsDesktop.chooseFilenameDialogSave(name);
       return filenamePromise.then(this.saveAtPath_.bind(this, piskel));
     }
   };
@@ -32,7 +32,7 @@
   };
 
   ns.DesktopStorageService.prototype.openPiskel = function () {
-    return pskl.utils.FileUtilsDesktop.chooseFilenameDialog().then(this.load);
+    return pskl.utils.FileUtilsDesktop.chooseFilenameDialogOpen().then(this.load);
   };
 
   ns.DesktopStorageService.prototype.load = function (savePath) {

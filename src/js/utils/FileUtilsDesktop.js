@@ -16,27 +16,23 @@
   };
 
   ns.FileUtilsDesktop = {
-    chooseFilenameDialog : function (nwsaveas, accept) {
-      var deferred = Q.defer();
-      var fileInputElement = getFileInputElement(nwsaveas, accept);
-      var changeListener = function (evt) {
-        fileInputElement.removeEventListener('change', changeListener);
-        document.removeEventListener('click', changeListener);
-        deferred.resolve(fileInputElement.value);
-      };
-
-      // fix for issue #322 :
-      window.setTimeout(function () {
-        fileInputElement.click();
-        fileInputElement.addEventListener('change', changeListener);
-        // there is no way to detect a cancelled fileInput popup
-        // as a crappy workaround we add a click listener on the document
-        // on top the change event listener
-        // todo : listen to dirty check instead
-        document.addEventListener('mousedown', changeListener);
-      }, 50);
-
-      return deferred.promise;
+    chooseFilenameDialogOpen : function() {
+      // eslint-disable-next-line no-undef
+      return Neutralino.os.showOpenDialog('Open file', {
+        filters: [
+          {name: 'Images', extensions: ['jpg', 'png', 'bmp']},
+          {name: 'Piskel files', extensions: ['piskel']}
+        ]
+      });
+    },
+    chooseFilenameDialogSave : function(name) {
+      // eslint-disable-next-line no-undef
+      return Neutralino.os.showSaveDialog('Save to file', {
+        defaultPath: name,
+        filters: [
+          {name: 'Piskel files', extensions: ['piskel']}
+        ]
+      });
     },
 
     /**
@@ -58,6 +54,10 @@
       });
 
       return deferred.promise;
+    },
+    saveToFileBinary : function(content, filename) {
+      // eslint-disable-next-line no-undef
+      return Neutralino.filesystem.writeBinaryFile(filename, content);
     },
 
     readFile : function(filename) {
