@@ -61,7 +61,16 @@ module.exports = function(grunt) {
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
 
+  grunt.loadNpmTasks('grunt-exec');
   grunt.initConfig({
+    exec: {
+      build: {
+        command: 'neu build'
+      },
+      init: {
+        command: 'neu update'
+      }
+    },
     clean: {
       all: ['dest', 'src/img/icons.png', 'src/css/icons.css'],
       prod: ['dest/prod', 'dest/tmp'],
@@ -287,15 +296,12 @@ module.exports = function(grunt) {
   grunt.registerTask('precommit', ['test']);
 
   // BUILD TASKS
+  grunt.registerTask('init', ['exec:init']);
   grunt.registerTask('build-index.html', ['includereplace']);
   grunt.registerTask('merge-statics', ['concat:js', 'concat:css', 'uglify']);
   grunt.registerTask('build',  ['clean:prod', 'sprite', 'merge-statics', 'build-index.html', 'replace:mainPartial', 'replace:css', 'copy:prod']);
   grunt.registerTask('build-dev',  ['clean:dev', 'sprite', 'build-index.html', 'copy:dev']);
-  //TODO grunt.registerTask('desktop', ['clean:desktop', 'default', 'nwjs:win_x64']);
-  //TODO grunt.registerTask('desktop-dev', ['clean:desktop_dev', 'default', 'nwjs:win_x64_dev']);
-  //TODO grunt.registerTask('desktop-mac', ['clean:desktop', 'default', 'nwjs:macos']);
-  //TODO grunt.registerTask('desktop-mac-old', ['clean:desktop', 'default', 'replace:desktop', 'nwjs:macos_old']);
-
+  grunt.registerTask('desktop', ['clean:desktop', 'init', 'default', 'exec:build']);
   // SERVER TASKS
   // Start webserver and watch for changes
   grunt.registerTask('serve', ['build', 'connect:prod', 'watch:prod']);

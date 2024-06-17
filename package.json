@@ -29,7 +29,7 @@
     "preversion": "grunt test build",
     "postversion": "git push && git push --tags && npm publish",
     "release": "grunt && node ./bin/copy-to-piskel-website",
-    "build": "grunt build && neu build && change_icon.bat",
+    "build": "grunt build && change_icon.bat",
     "format": "grunt eslint --fix"
   },
   "devDependencies": {
@@ -42,10 +42,11 @@
     "grunt-contrib-concat": "2.1.0",
     "grunt-contrib-connect": "4.0.0",
     "grunt-contrib-copy": "1.0.0",
-    "grunt-contrib-uglify": "5.2.2",
     "grunt-contrib-jshint": "3.0.0",
+    "grunt-contrib-uglify": "5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-eslint": "23.0.0",
+    "grunt-exec": "^3.0.0",
     "grunt-include-replace": "5.0.0",
     "grunt-jscs": "3.0.1",
     "grunt-karma": "4.0.2",
