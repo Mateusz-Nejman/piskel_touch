@@ -29,6 +29,7 @@
   ns.HistoryService.prototype.init = function () {
     $.subscribe(Events.PISKEL_SAVE_STATE, this.onSaveStateEvent.bind(this));
     $.subscribe(Events.PISKEL_ADDED, this._piskelAdded.bind(this));
+    $.subscribe(Events.PISKEL_REMOVED, this._piskelRemoved.bind(this));
 
     const ids = this.piskelController.getPiskelIds();
 
@@ -43,6 +44,10 @@
     this.saveState({
       type : ns.HistoryService.SNAPSHOT
     });
+  };
+
+  ns.HistoryService.prototype.clearHistory = function () {
+    this.states = [];
   };
 
   ns.HistoryService.prototype.onSaveStateEvent = function (evt, action) {

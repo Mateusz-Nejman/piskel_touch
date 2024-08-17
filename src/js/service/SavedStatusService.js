@@ -13,12 +13,17 @@
     $.subscribe(Events.PISKEL_RESET, this.publishStatusUpdateEvent_);
     $.subscribe(Events.PISKEL_SAVED, this.onPiskelSaved.bind(this));
     $.subscribe(Events.PISKEL_ADDED, this._piskelAdded.bind(this));
+    $.subscribe(Events.PISKEL_REMOVED, this._piskelRemoved.bind(this));
 
     const ids = this.piskelController.getPiskelIds();
 
     ids.forEach(i => {
       this._piskelAdded(null, i);
     });
+  };
+
+  ns.SavedStatusService.prototype.clearStates = function () {
+    this.stateIndexes = [];
   };
 
   ns.SavedStatusService.prototype.onPiskelSaved = function () {
@@ -70,6 +75,14 @@
       stateIndex: this.historyService.getCurrentStateId(),
       index: index
     });
+  };
+
+  ns.SavedStatusService.prototype._piskelRemoved = function (e, index) {
+    const arrayIndex = this.stateIndexes.findIndex(s => s.index == index);
+
+    if (arrayIndex >= 0) {
+      this.stateIndexes.splice(arrayIndex, 1);
+    }
   };
 
   ns.SavedStatusService.prototype._getState = function (index) {

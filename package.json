@@ -29,7 +29,7 @@
     "preversion": "grunt test build",
     "postversion": "git push && git push --tags && npm publish",
     "release": "grunt && node ./bin/copy-to-piskel-website",
-    "build": "grunt build && change_icon.bat",
+    "build": "grunt desktop && change_icon.bat",
     "format": "grunt eslint --fix"
   },
   "devDependencies": {

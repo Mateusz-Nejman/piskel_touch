@@ -20,8 +20,11 @@
    */
 
   ns.PiskelController.prototype.newPiskel = function () {
+    return this.addPiskel(this.defaultPiskel.clone());
+  };
+
+  ns.PiskelController.prototype.addPiskel = function (piskel) {
     const index = this._uuidv4();
-    const piskel = this.defaultPiskel.clone();
 
     this.piskels.push({
       index: index,
@@ -44,6 +47,10 @@
     }
 
     this.layerIdCounter = 1;
+  };
+
+  ns.PiskelController.prototype.clearPiskels = function () {
+    this.piskels = [];
   };
 
   ns.PiskelController.prototype.selectPiskel = function(index) {
@@ -418,6 +425,15 @@
 
   ns.PiskelController.prototype.getSelectedPiskel = function () {
     return this.selectedPiskel;
+  };
+
+  ns.PiskelController.prototype.removePiskel = function (index) {
+    const arrayIndex = this.piskels.findIndex(p => p.index == index);
+
+    if (arrayIndex >= 0) {
+      this.piskels.splice(arrayIndex, 1);
+      this.selectPiskel(this.piskels[this.piskels.length - 1].index);
+    }
   };
 
   ns.PiskelController.prototype.closePiskel = function (index) {

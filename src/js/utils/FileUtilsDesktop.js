@@ -1,20 +1,6 @@
 (function () {
   var ns = $.namespace('pskl.utils');
 
-  var getFileInputElement = function (nwsaveas, accept) {
-    var fileInputElement = document.createElement('INPUT');
-    fileInputElement.setAttribute('type', 'file');
-    fileInputElement.setAttribute('nwworkingdir', '');
-    if (nwsaveas) {
-      fileInputElement.setAttribute('nwsaveas', nwsaveas);
-    }
-    if (accept) {
-      fileInputElement.setAttribute('accept', accept);
-    }
-
-    return fileInputElement;
-  };
-
   ns.FileUtilsDesktop = {
     chooseFilenameDialogOpen : function() {
       // eslint-disable-next-line no-undef
@@ -43,17 +29,7 @@
      * @callback callback
      */
     saveToFile : function(content, filename) {
-      var deferred = Q.defer();
-      var fs = window.require('fs');
-      fs.writeFile(filename, content, function (err) {
-        if (err) {
-          deferred.reject('FileUtilsDesktop::savetoFile() - error saving file: ' + filename + ' Error: ' + err);
-        } else {
-          deferred.resolve();
-        }
-      });
-
-      return deferred.promise;
+      return Neutralino.filesystem.writeFile(filename, content);
     },
     saveToFileBinary : function(content, filename) {
       // eslint-disable-next-line no-undef
@@ -61,17 +37,31 @@
     },
 
     readFile : function(filename) {
-      var deferred = Q.defer();
-      var fs = window.require('fs');
-      // NOTE: currently loading everything as utf8, which may not be desirable in future
-      fs.readFile(filename, 'utf8', function (err, data) {
-        if (err) {
-          deferred.reject('FileUtilsDesktop::readFile() - error reading file: ' + filename + ' Error: ' + err);
-        } else {
-          deferred.resolve(data);
-        }
+      // eslint-disable-next-line no-undef
+      return Neutralino.filesystem.readFile(filename);
+    },
+
+    addPiskelFromFile : function(filename) {
+      const deferred = Q.defer();
+      pskl.utils.FileUtilsDesktop.readFile(filename).then(function (content) {
+        pskl.utils.PiskelFileUtils.decodePiskelFile(content, function (piskel) {
+          piskel.savePath = filename;
+          const index = pskl.app.piskelController.addPiskel(piskel);
+          pskl.app.tabsController.add(index);
+          deferred.resolve(index);
+        });
       });
+
       return deferred.promise;
-    }
+    },
+
+    addPiskels : function(filenames, callback) {
+      const promises = filenames.map(filename => pskl.utils.FileUtilsDesktop.addPiskelFromFile(filename));
+      const ids = pskl.app.piskelController.getPiskelIds();
+      Q.all(promises).fin(function explode() {
+        pskl.app.piskelController.selectPiskel(ids[ids.length - 1]);
+        callback();
+      });
+    },
   };
 })();

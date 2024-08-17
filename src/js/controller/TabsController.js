@@ -11,7 +11,7 @@
     this.setCurrent(this.piskelController.getSelectedPiskel());
     document.querySelector('.addTabButton').addEventListener('click', this._newPiskel.bind(this));
     $.subscribe(Events.PISKEL_ADDED, this._refreshButtons.bind(this));
-    $.subscribe(Events.PISKEL_REMOVED, this._refreshButtons.bind(this));
+    $.subscribe(Events.PISKEL_REMOVED, this._piskelRemoved.bind(this));
   };
 
   ns.TabsController.prototype.addCurrent = function() {
@@ -97,6 +97,16 @@
 
     if (ids.length > 1) {
       document.querySelector('.closeButton').setAttribute('style', 'display: block');
+    }
+  };
+
+  ns.TabsController.prototype._piskelRemoved = function(e, index) {
+    const arrayIndex = this.tabControllers.findIndex(s => s.index == index);
+
+    if (arrayIndex >= 0) {
+      this.tabControllers.splice(arrayIndex, 1);
+      document.querySelector('.tab' + index).remove();
+      this._refreshButtons();
     }
   };
 })();

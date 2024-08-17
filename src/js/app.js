@@ -18,8 +18,8 @@
       // This id is used to keep track of sessions in the BackupService.
       this.sessionId = pskl.utils.Uuid.generate();
 
-      console.log(pskl.utils.Environment.detectNative());
       if (pskl.utils.Environment.detectNative()) {
+        // eslint-disable-next-line no-undef
         Neutralino.init();
       }
 
@@ -42,7 +42,8 @@
 
       this.piskelController = new pskl.controller.piskel.PublicPiskelController(this.corePiskelController);
       this.piskelController.init();
-      this.piskelController.selectPiskel(this.piskelController.newPiskel());
+      const firstPiskelIndex = this.piskelController.newPiskel();
+      this.piskelController.selectPiskel(firstPiskelIndex);
 
       this.paletteImportService = new pskl.service.palette.PaletteImportService();
       this.paletteImportService.init();
@@ -191,6 +192,29 @@
       this.drawingLoop.start();
 
       this.initTooltips_();
+
+      if (pskl.utils.Environment.detectNative()) {
+        if (window.NL_ARGS.length > 1) {
+          const files = window.NL_ARGS.filter(filename => {
+            const piskelTest = /\.piskel$/i.test(filename);
+            const pngTest = /\.png$/i.test(filename);
+            const jpgTest = /\.jpg$/i.test(filename);
+            const bmpTest = /\.bmp$/i.test(filename);
+            const gifTest = /\.gif$/i.test(filename);
+
+            return piskelTest || pngTest || jpgTest || bmpTest || gifTest;
+          });
+
+          if (files.length > 0) {
+            //TODO check if file exists
+
+            $.namespace('pskl.utils').FileUtilsDesktop.addPiskels(files, () => {
+              this.piskelController.removePiskel(firstPiskelIndex);
+              $.publish(Events.PISKEL_REMOVED, firstPiskelIndex);
+            });
+          }
+        }
+      }
 
       var piskelData = this.getPiskelInitData_();
       if (piskelData && piskelData.piskel) {

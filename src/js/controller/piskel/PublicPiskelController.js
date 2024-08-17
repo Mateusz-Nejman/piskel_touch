@@ -56,6 +56,12 @@
     return id;
   };
 
+  ns.PublicPiskelController.prototype.addPiskel = function (piskel) {
+    const id = this.piskelController.addPiskel(piskel);
+    $.publish(Events.PISKEL_ADDED, id);
+    return id;
+  };
+
   /**
    * Set the current piskel. Will reset the selected frame and layer unless specified
    * @param {Object} piskel
