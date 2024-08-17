@@ -126,8 +126,17 @@
   ns.SelectionManager.prototype.pasteImage_ = function(clipboardItem, type) {
     clipboardItem.getType(type).then(blob => {
       pskl.utils.FileUtils.readImageFile(blob, function (image) {
-        pskl.app.fileDropperService.dropPosition_ = {x: 0, y: 0};
-        pskl.app.fileDropperService.onImageLoaded_(image, blob);
+        let dropX = 0;
+        let dropY = 0;
+
+        if(this.currentSelection != null)
+        {
+          dropX = this.currentSelection.pixels[0].col;
+          dropY = this.currentSelection.pixels[0].row;
+          console.log(dropX, dropY);
+        }
+        pskl.app.fileDropperService.dropPosition_ = {x: dropX, y: dropY};
+        pskl.app.fileDropperService.onImageLoaded_(image, blob, {x: dropX, y: dropY});
       }.bind(this));
     });
   };

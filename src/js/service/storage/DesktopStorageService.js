@@ -10,6 +10,8 @@
   ns.DesktopStorageService.prototype.init = function () {};
 
   ns.DesktopStorageService.prototype.save = function (piskel, saveAsNew) {
+    console.log(piskel);
+    console.log(saveAsNew);
     if (piskel.savePath && !saveAsNew) {
       return this.saveAtPath_(piskel, piskel.savePath);
     } else {

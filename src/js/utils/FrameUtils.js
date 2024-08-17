@@ -129,8 +129,6 @@
      */
     addImageToFrame: function (frame, image, x, y) {
       var imageFrame = pskl.utils.FrameUtils.createFromImage(image);
-      x = x - Math.floor(imageFrame.width / 2);
-      y = y - Math.floor(imageFrame.height / 2);
 
       x = Math.max(0, x);
       y = Math.max(0, y);

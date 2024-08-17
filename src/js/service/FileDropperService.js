@@ -61,7 +61,7 @@
     $.publish(Events.PISKEL_FILE_IMPORT_FAILED, [reason]);
   };
 
-  ns.FileDropperService.prototype.onImageLoaded_ = function (importedImage, file) {
+  ns.FileDropperService.prototype.onImageLoaded_ = function (importedImage, file, spriteDropPosition) {
     var piskelWidth = pskl.app.piskelController.getWidth();
     var piskelHeight = pskl.app.piskelController.getHeight();
 
@@ -82,10 +82,13 @@
 
     var currentFrame = this.piskelController.getCurrentFrame();
     // Convert client coordinates to sprite coordinates
-    var spriteDropPosition = pskl.app.drawingController.getSpriteCoordinates(
-      this.dropPosition_.x,
-      this.dropPosition_.y
-    );
+    if(spriteDropPosition === undefined)
+    {
+      spriteDropPosition = pskl.app.drawingController.getSpriteCoordinates(
+        this.dropPosition_.x,
+        this.dropPosition_.y
+      );
+    }
 
     var x = spriteDropPosition.x;
     var y = spriteDropPosition.y;
