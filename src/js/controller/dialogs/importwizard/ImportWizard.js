@@ -188,7 +188,7 @@
     }
 
     var file = this.mergeData.rawFiles[0];
-    return file.type.indexOf('image') === 0;
+    return pskl.utils.FileUtils.isFileImage(file);
   };
 
   ns.ImportWizard.prototype.hasSinglePiskelFile_ = function () {
@@ -197,6 +197,6 @@
     }
 
     var file = this.mergeData.rawFiles[0];
-    return (/\.piskel$/).test(file.name);
+    return pskl.utils.FileUtils.isFilePiskel(file);
   };
 })();

@@ -64,7 +64,7 @@
   };
 
   ns.ImageImport.prototype.createPiskelFromImage = function () {
-    var name = this.extractFileNameFromPath_(this.file_.name);
+    var name = this.extractFileNameFromPath_(pskl.utils.FileUtils.getFilePath(this.file_));
     // Remove extension from filename.
     name = name.replace(/\.[a-zA-Z]+$/, '');
 
@@ -180,7 +180,7 @@
     // the image again and we want to avoid retriggering the image onload
     this.importedImage_.onload = function () {};
 
-    var fileName = this.extractFileNameFromPath_(this.file_.name);
+    var fileName = this.extractFileNameFromPath_(pskl.utils.FileUtils.getFilePath(this.file_));
     this.fileNameContainer.textContent = fileName;
     this.fileNameContainer.setAttribute('title', fileName);
 

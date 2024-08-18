@@ -36,7 +36,17 @@
     this.addEventListener('.browse-backups-button', 'click', this.onBrowseBackupsClick_);
     // different handlers, depending on the Environment
     this.addEventListener(this.hiddenOpenInput, 'change', this.onOpenChange_);
-    this.addEventListener('.open-button', 'click', this.onOpenClick_);
+
+    if(pskl.utils.Environment.detectNative())
+    {
+      this.addEventListener('.open-native-button', 'click', this.onOpenNativeClick_);
+      document.querySelector('.open-button').remove();
+    }
+    else
+    {
+      this.addEventListener('.open-button', 'click', this.onOpenClick_);
+      document.querySelector('.open-native-button').remove();
+    }
 
     this.saveForm = document.querySelector('.save-form');
     this.insertSavePartials_();
@@ -86,10 +96,14 @@
   ns.FileController.prototype.closeDrawer_ = function () {
     $.publish(Events.CLOSE_SETTINGS_DRAWER);
   };
-  ns.FileController.prototype.onFileUploadChange_ = function (evt) {
-    var files = this.hiddenOpenInput.files;
+  ns.FileController.prototype.onFileUploadChange_ = function (files) {
+    if(files === undefined)
+    {
+      files = this.hiddenOpenInput.files;
+    }
+
     var areImages = Array.prototype.every.call(files, function (file) {
-      return file.type.indexOf('image') === 0;
+      return pskl.utils.FileUtils.isFileImage(file);
     });
     if (areImages) {
       $.publish(Events.DIALOG_SHOW, {
@@ -111,10 +125,10 @@
       if (this.isPiskel_(files[0])) {
         this.openPiskelFile_(files[0]);
       } else {
-        this.onFileUploadChange_(evt);
+        this.onFileUploadChange_(undefined);
       }
     } else {
-      this.onFileUploadChange_(evt);
+      this.onFileUploadChange_(undefined);
     }
   };
 
@@ -125,6 +139,20 @@
 
   ns.FileController.prototype.onOpenClick_ = function (evt) {
     this.hiddenOpenInput.click();
+  };
+
+  ns.FileController.prototype.onOpenNativeClick_ = function (evt) {
+    pskl.utils.FileUtilsDesktop.chooseFilenameDialogOpen().then(files => {
+      if (files.length == 1) {
+        if (this.isPiskel_(files[0])) {
+          this.openPiskelFile_(files[0]);
+        } else {
+          this.onFileUploadChange_(files); //TODO change to files
+        }
+      } else {
+        this.onFileUploadChange_(files); //TODO change to files
+      }
+    });
   };
 
   ns.FileController.prototype.onBrowseBackupsClick_ = function (evt) {
@@ -150,7 +178,7 @@
   };
 
   ns.FileController.prototype.isPiskel_ = function (file) {
-    return (/\.piskel$/).test(file.name);
+    return pskl.utils.FileUtils.isFilePiskel(file);
   };
 
   ns.FileController.prototype.onRestorePreviousSessionClick_ = function () {

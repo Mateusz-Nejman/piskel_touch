@@ -6,6 +6,22 @@
   };
 
   ns.FileUtils = {
+    getFilePath : function (file) {
+      if(typeof(file) === "string") {
+        return file;
+      }
+
+      return file.name;
+    },
+    getFileName : function (file) {
+
+    },
+    isFilePiskel : function (file) {
+      return (/\.piskel$/).test(typeof(file) === "string" ? file : file.name);
+    },
+    isFileImage : function (file) {
+      return !this.isFilePiskel(file);
+    },
     readFile : function (file, callback) {
       var reader = new FileReader();
       reader.addEventListener('loadend', function() {
@@ -23,11 +39,23 @@
     },
 
     readImageFile : function (file, callback) {
-      ns.FileUtils.readFile(file, function (content) {
-        var image = new Image();
-        image.onload = callback.bind(null, image);
-        image.src = content;
-      });
+      if(pskl.utils.Environment.detectNative()) {
+        ns.FileUtilsDesktop.readFileBinary(file).then(content => {
+          const data = new Uint8Array(content);
+          const base = btoa(String.fromCharCode(...new Uint8Array(data)));
+          var image = new Image();
+          image.onload = callback.bind(null, image);
+          image.src = "data:image/png;base64," + base;
+        });
+      }
+      else
+      {
+        ns.FileUtils.readFile(file, function (content) {
+          var image = new Image();
+          image.onload = callback.bind(null, image);
+          image.src = content;
+        });
+      }
     },
 
     downloadAsFile : function (content, filename) {

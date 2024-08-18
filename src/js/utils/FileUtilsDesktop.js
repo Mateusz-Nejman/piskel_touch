@@ -6,8 +6,9 @@
       // eslint-disable-next-line no-undef
       return Neutralino.os.showOpenDialog('Open file', {
         filters: [
+          {name: 'All supported', extensions: ['piskel', 'jpg', 'png', 'bmp']},
           {name: 'Images', extensions: ['jpg', 'png', 'bmp']},
-          {name: 'Piskel files', extensions: ['piskel']}
+          {name: 'Piskel files', extensions: ['piskel']},
         ]
       });
     },
@@ -39,6 +40,11 @@
     readFile : function(filename) {
       // eslint-disable-next-line no-undef
       return Neutralino.filesystem.readFile(filename);
+    },
+
+    readFileBinary: function(filename) {
+      console.log(filename);
+      return Neutralino.filesystem.readBinaryFile(filename);
     },
 
     addPiskelFromFile : function(filename) {

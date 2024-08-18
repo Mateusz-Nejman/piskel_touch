@@ -17,21 +17,29 @@
      * @param  {Function} onError NOT USED YET
      */
     loadFromFile : function (file, onSuccess, onError) {
-      pskl.utils.FileUtils.readFile(file, function (content) {
-        var rawPiskel = pskl.utils.Base64.toText(content);
-        ns.PiskelFileUtils.decodePiskelFile(
-          rawPiskel,
-          function (piskel) {
-            // if using Node-Webkit, store the savePath on load
-            // Note: the 'path' property is unique to Node-Webkit, and holds the full path
-            if (pskl.utils.Environment.detectNative()) {
-              piskel.savePath = file.path;
-            }
-            onSuccess(piskel);
-          },
-          onError
-        );
-      });
+      if(pskl.utils.Environment.detectNative()) {
+        pskl.utils.FileUtilsDesktop.readFile(file).then(function (content) {
+          ns.PiskelFileUtils.decodePiskelFile(
+            content,
+            function (piskel) {
+              piskel.savePath = file;
+              onSuccess(piskel);
+            },
+            onError
+          );
+        });
+      } else {
+        pskl.utils.FileUtils.readFile(file, function (content) {
+          var rawPiskel = pskl.utils.Base64.toText(content);
+          ns.PiskelFileUtils.decodePiskelFile(
+            rawPiskel,
+            function (piskel) {
+              onSuccess(piskel);
+            },
+            onError
+          );
+        });
+      }
     },
 
     decodePiskelFile : function (rawPiskel, onSuccess, onError) {
