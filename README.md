@@ -1,7 +1,8 @@
 Piskel Touch Edition
 ======
 
-**Deprecated. New C# piksel editor is in development**
+**Deprecated. New C# pixel-art software is in development**
+**[Mateusz-Nejman/Pixed](https://github.com/Mateusz-Nejman/Pixed/)**
 
 **[Github Pages](https://mateusz-nejman.github.io/piskel_touch/)**
 

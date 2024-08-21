@@ -910,7 +910,7 @@
       Piskel
       <span rel="tooltip" data-placement="bottom" title="View release notes">
         <a  class="settings-version" target="_blank"
-            href="https://github.com/piskelapp/piskel/releases/tag/v3.0.0">v3.0.0</a>
+            href="https://github.com/piskelapp/piskel/releases/tag/v3.0.1">v3.0.1</a>
       </span>
     </div>
   </div>
@@ -1097,6 +1097,7 @@
     
             <div class="import-section">
             <button type="button" class="button  button-primary open-button">Open from disk</button>
+            <button type="button" class="button  button-primary open-native-button">Open from disk</button>
             <span class="file-input-open-status"></span>
             <input style="display:none"
                 type="file" name="open-input"
@@ -1289,9 +1290,9 @@
     (function () {
 
   /**
-   * See @Gruntfile.js => after build, -2024-06-17-12-42 is replaced by the build version
+   * See @Gruntfile.js => after build, -2024-08-21-07-35 is replaced by the build version
    */
-  var version = '-2024-06-17-12-42';
+  var version = '-2024-08-21-07-35';
   var versionHasNotBeenReplaced = version.indexOf('@@') === 0;
   if (versionHasNotBeenReplaced)  {
     version = '';
@@ -1309,7 +1310,7 @@
       document.getElementById('loading-style').parentNode.removeChild(document.getElementById('loading-style'));
     }, 300);
     pskl.app.init();
-    pskl._releaseVersion = '3.0.0';
+    pskl._releaseVersion = '3.0.1';
     // cleanup
     delete window.pskl_exports;
     delete window.loadDebugScripts;
